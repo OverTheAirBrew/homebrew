@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: ~/overtheairbrew
+    working_directory: /overtheairbrew
     docker:
       - image: node:15
     environment:
@@ -34,9 +34,44 @@ jobs:
           command: |
             npm run test
             npm run coverage
+      - run:
+          name: Prune Production
+          command: npm prune --production
+      - persist_to_workspace:
+          root: /overtheairbrew
+          paths:
+            - .
+  push_release:
+    working_directory: /overtheairbrew
+    docker:
+      - image: circleci/golang:1.8
+    steps:
+      - attach_workspace:
+          at: /overtheairbrew
+      - run:
+          name: Download ghr
+          command: |
+            go get github.com/tcnksm/ghr
+      - run:
+          name: deploy release
+          command: |
+            export PACKAGE_FILE="$(npm pack --ignore-scripts)";
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ./${PACKAGE_FILE}
 workflows:
   version: 2
   build_release:
     jobs:
       - build:
           context: OVERTHEAIR_HOMEBREW
+          filters:
+            tags:
+              only: /^v.*/
+      - push_release:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
