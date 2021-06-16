@@ -12,7 +12,7 @@ describe('heaters', () => {
 
   describe('GET /heaters/:id', () => {
     it('should return a 404 when there is not a heater with the id', async () => {
-      const [{ id: id1 }, { id: id2 }] = await Peripheral.bulkCreate([
+      await Peripheral.bulkCreate([
         {
           communicationType: 'gpio',
           name: 'name',
@@ -41,7 +41,7 @@ describe('heaters', () => {
     });
 
     it('should return a mapped heater that is the one that was asked for', async () => {
-      const [{ id: id1 }, { id: id2 }] = await Peripheral.bulkCreate([
+      const [{ id: id1 }] = await Peripheral.bulkCreate([
         {
           communicationType: 'gpio',
           name: 'name',
