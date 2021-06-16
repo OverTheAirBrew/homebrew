@@ -5,6 +5,7 @@
   "main": "app/index.js",
   "scripts": {
     "test": "nyc --reporter=text-summary --reporter=lcov mocha 'test/**/*.spec.js' --exit",
+    "coverage": "codecov",
     "prebuild": "del 'app/**/*.{js,map}' 'test/**/*.{js,map}'",
     "build": "tsc",
     "migrate": "sequelize db:migrate",
@@ -22,6 +23,7 @@
     "@types/sinon": "^10.0.2",
     "@types/supertest": "^2.0.11",
     "chai": "^4.3.4",
+    "codecov": "^3.8.2",
     "del-cli": "^4.0.0",
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0",

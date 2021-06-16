@@ -1,4 +1,5 @@
-version: 2
+version: 2.1
+
 jobs:
   build:
     working_directory: ~/overtheairbrew
@@ -32,6 +33,9 @@ jobs:
           name: Test
           command: |
             npm run test
+            npm run coverage
+      - codecov/upload:
+          file: ~/overtheairbrew/coverage/coverage.opencover.xml
 workflows:
   version: 2
   build_release:
