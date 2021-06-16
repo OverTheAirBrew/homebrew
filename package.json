@@ -10,7 +10,9 @@
     "build": "tsc",
     "migrate": "sequelize db:migrate",
     "migrate:undo": "sequelize db:migrate:undo",
-    "migrate:undo:all": "sequelize db:migrate:undo:all"
+    "migrate:undo:all": "sequelize db:migrate:undo:all",
+    "postversion": "git push --follow-tags",
+    "prepublish": "git pull origin master"
   },
   "keywords": [],
   "author": "",

@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: /overtheairbrew
+    working_directory: ~/overtheairbrew
     docker:
       - image: node:15
     environment:
@@ -38,16 +38,16 @@ jobs:
           name: Prune Production
           command: npm prune --production
       - persist_to_workspace:
-          root: /overtheairbrew
+          root: ~/overtheairbrew
           paths:
             - .
   push_release:
-    working_directory: /overtheairbrew
+    working_directory: ~/overtheairbrew
     docker:
       - image: circleci/golang:1.8
     steps:
       - attach_workspace:
-          at: /overtheairbrew
+          at: ~/overtheairbrew
       - run:
           name: Download ghr
           command: |
