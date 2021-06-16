@@ -52,9 +52,9 @@ jobs:
       - run:
           name: Package File
           command: |
-            curl -fSL -o ghr.tar.gz "https://github.com/tcnksm/ghr/releases/download/v${GHR_VERSION}/ghr_v${GHR_VERSION}_linux_amd64.tar.gz"
+            curl -fSL -o ghr.tar.gz "https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_linux_amd64.tar.gz"
             tar -xvzf ghr.tar.gz
-            mv ghr_v${GHR_VERSION}_linux_amd64/ghr /usr/local/bin
+            mv ghr_v0.14.0_linux_amd64/ghr /usr/local/bin
             chown root:root /usr/local/bin/ghr
       - run:
           name: deploy release
