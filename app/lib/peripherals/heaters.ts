@@ -27,6 +27,11 @@ export async function getHeaters() {
   return await Promise.all(heaters.map(mapHeater));
 }
 
+export async function getHeaterById(id: string) {
+  const heater = await Repository.getPeripheralByTypeAndId('heater', id);
+  return await mapHeater(heater);
+}
+
 async function mapHeater(heater: IPeripheral) {
   return {
     id: heater.id,
