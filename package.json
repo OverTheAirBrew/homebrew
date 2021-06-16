@@ -37,7 +37,6 @@
     ]
   },
   "dependencies": {
-    "@overtheairbrew/node-validation": "^1.2.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",

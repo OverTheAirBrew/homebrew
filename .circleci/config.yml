@@ -1,0 +1,37 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/overtheairbrew
+    docker:
+      - image: node:15
+    environment:
+      NODE_ENV: test
+      LOGGING_LEVEL: info
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run: echo 'export BUILD_NO=${CIRCLE_BUILD_NUM}.0.0' >> $BASH_ENV
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install Dependencies
+          command: |
+            npm ci
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Build
+          command: |
+            npm run build
+      - run:
+          name: Test
+          command: |
+            npm run test
+workflows:
+  version: 2
+  build_release:
+    jobs:
+      - build:
+          context: OVERTHEAIR_HOMEBREW
