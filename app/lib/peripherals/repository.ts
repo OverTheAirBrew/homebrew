@@ -19,3 +19,13 @@ export async function createPeripheral(peripheral: {
   });
   return createdPeripheral.id;
 }
+
+export async function getPeripheralsOfType(type: PeripheralType) {
+  const peripherals = await Peripheral.findAll({
+    where: {
+      type,
+    },
+  });
+
+  return peripherals.map((peripheral) => peripheral.toJSON());
+}
