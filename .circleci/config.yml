@@ -1,5 +1,6 @@
 version: 2.1
-
+orbs:
+  github-release: h-matsuo/github-release@0.1.1
 jobs:
   build:
     working_directory: ~/overtheairbrew
@@ -49,17 +50,14 @@ jobs:
       - attach_workspace:
           at: ~/overtheairbrew
       - run:
-          name: Download ghr
-          command: |
-            curl -fSL -o ghr.tar.gz "https://github.com/tcnksm/ghr/releases/download/v${GHR_VERSION}/ghr_v${GHR_VERSION}_linux_amd64.tar.gz"
-            tar -xvzf ghr.tar.gz
-            mv ghr_v${GHR_VERSION}_linux_amd64/ghr /usr/local/bin
-            chown root:root /usr/local/bin/ghr
-      - run:
-          name: deploy release
+          name: Package File
           command: |
             export PACKAGE_FILE="$(npm pack --ignore-scripts)";
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ./${PACKAGE_FILE}
+      - github-release/create:
+          tag: v${CIRCLE_TAG}
+          title: Version v${CIRCLE_TAG}
+          description: This release is version v${CIRCLE_TAG} .
+          file-path: ./${PACKAGE_FILE}
 workflows:
   version: 2
   build_release:
