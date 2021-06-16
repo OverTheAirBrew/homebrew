@@ -10,8 +10,71 @@ describe('heaters', () => {
     await cleanup();
   });
 
+  describe('GET /heaters/:id', () => {
+    it('should return a 404 when there is not a heater with the id', async () => {
+      await Peripheral.bulkCreate([
+        {
+          communicationType: 'gpio',
+          name: 'name',
+          type: 'heater',
+          gpio: 1,
+        },
+        {
+          communicationType: 'gpio',
+          name: 'name1',
+          type: 'heater',
+          gpio: 2,
+        },
+      ]);
+
+      const { status, body } = await request(app)
+        .get(`/server/heaters/unknownid`)
+        .send()
+        .accept('application/json');
+
+      expect(status).to.eq(404);
+
+      expect(body).to.deep.eq({
+        code: 'PERIPHERAL_NOT_FOUND',
+        message: 'A heater cannot be found with id unknownid',
+      });
+    });
+
+    it('should return a mapped heater that is the one that was asked for', async () => {
+      const [{ id: id1 }] = await Peripheral.bulkCreate([
+        {
+          communicationType: 'gpio',
+          name: 'name',
+          type: 'heater',
+          gpio: 1,
+        },
+        {
+          communicationType: 'gpio',
+          name: 'name1',
+          type: 'heater',
+          gpio: 2,
+        },
+      ]);
+
+      const { status, body } = await request(app)
+        .get(`/server/heaters/${id1}`)
+        .send()
+        .accept('application/json');
+
+      expect(status).to.eq(200);
+
+      expect(body).to.deep.eq({
+        id: id1,
+        communicationType: 'gpio',
+        name: 'name',
+        type: 'heater',
+        gpio: 1,
+      });
+    });
+  });
+
   describe('GET /heaters', () => {
-    it('should retun a mapped list of heaters', async () => {
+    it('should return a mapped list of heaters', async () => {
       const [{ id: id1 }, { id: id2 }] = await Peripheral.bulkCreate([
         {
           communicationType: 'gpio',

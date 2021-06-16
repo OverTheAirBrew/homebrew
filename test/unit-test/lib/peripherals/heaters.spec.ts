@@ -7,12 +7,41 @@ import { ValidationResult } from 'fluent-ts-validator';
 import * as Repository from '../../../../app/lib/peripherals/repository';
 import {
   createHeater,
+  getHeaterById,
   getHeaters,
 } from '../../../../app/lib/peripherals/heaters';
 
 describe('lib/peripherals/heaters', () => {
   afterEach(() => {
     sinon.restore();
+  });
+
+  describe('getHeaterById', () => {
+    let getHeaterStub: sinon.SinonStub;
+
+    beforeEach(() => {
+      getHeaterStub = sinon
+        .stub(Repository, 'getPeripheralByTypeAndId')
+        .resolves({
+          id: 'id',
+          name: 'name',
+          communicationType: 'gpio',
+          type: 'heater',
+          gpio: 1,
+        });
+    });
+
+    it('should return a mapped heater', async () => {
+      const response = await getHeaterById('id');
+
+      expect(response).to.deep.eq({
+        id: 'id',
+        name: 'name',
+        communicationType: 'gpio',
+        type: 'heater',
+        gpio: 1,
+      });
+    });
   });
 
   describe('getHeaters', () => {
