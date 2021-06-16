@@ -1,0 +1,7 @@
+var path = require('path');
+
+module.exports = {
+  'config':          path.resolve('app/orm', 'config.js'),
+  'migrations-path': path.resolve('app/orm', 'migrations'),
+  'models-path':     path.resolve('app/orm', 'models'),
+};
