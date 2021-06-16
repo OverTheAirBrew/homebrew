@@ -148,3 +148,8 @@ typings
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode,typings
 
 .DS_Store
+
+**/*.js
+**/*.js.map
+
+app/ota.db
