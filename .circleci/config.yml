@@ -44,14 +44,17 @@ jobs:
   push_release:
     working_directory: ~/overtheairbrew
     docker:
-      - image: circleci/golang:1.8
+      - image: node:15
     steps:
       - attach_workspace:
           at: ~/overtheairbrew
       - run:
           name: Download ghr
           command: |
-            go get github.com/tcnksm/ghr
+            curl -fSL -o ghr.tar.gz "https://github.com/tcnksm/ghr/releases/download/v${GHR_VERSION}/ghr_v${GHR_VERSION}_linux_amd64.tar.gz"
+            tar -xvzf ghr.tar.gz
+            mv ghr_v${GHR_VERSION}_linux_amd64/ghr /usr/local/bin
+            chown root:root /usr/local/bin/ghr
       - run:
           name: deploy release
           command: |
