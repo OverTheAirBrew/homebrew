@@ -19,23 +19,6 @@ import { IHeater } from '../lib/peripherals/models';
 export class HeaterController {
   constructor(private heaterService: HeaterService) {}
 
-  @OpenAPI({
-    deprecated: true,
-    requestBody: {
-      content: {
-        Body: {
-          example: {
-            test: 'hello',
-          },
-        },
-      },
-    },
-    responses: {
-      default: {
-        description: 'hello',
-      },
-    },
-  })
   @Post('/heaters')
   @HttpCode(201)
   async createHeater(@Body() body: IHeater) {

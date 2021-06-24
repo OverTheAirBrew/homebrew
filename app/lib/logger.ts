@@ -14,7 +14,7 @@ interface ILoggingOptions {
 
 type LogLevel = 'debug' | 'info' | 'warning' | 'error' | 'verbose';
 
-class Logger {
+export class Logger {
   private readonly _options: ILoggingOptions;
   private readonly _logger: WinstonLogger;
 

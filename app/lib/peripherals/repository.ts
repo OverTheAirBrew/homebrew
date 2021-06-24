@@ -1,19 +1,17 @@
-import { BuildOptions, Model } from 'sequelize';
 import { Service } from 'typedi';
-import {
-  Peripheral,
+import Peripheral, {
   PeripheralCommunicationType,
   PeripheralType,
 } from '../../orm/models/peripherals';
 import { PeripheralNotFoundError } from '../errors/peripheral-not-found';
 
-export type RichModel = typeof Model & {
-  new (values?: Record<string, unknown>, options?: BuildOptions): Model;
-};
+import { BaseRepository } from '../base-repository';
 
 @Service()
-export class PeripheralsRepository {
-  constructor(private model: typeof Peripheral) {}
+export class PeripheralsRepository extends BaseRepository<Peripheral> {
+  constructor() {
+    super(Peripheral);
+  }
 
   public async createPeripheral(peripheral: {
     name: string;
@@ -31,7 +29,7 @@ export class PeripheralsRepository {
   }
 
   public async getPeripheralsOfType(type: PeripheralType) {
-    const peripherals = await Peripheral.findAll({
+    const peripherals = await this.model.findAll({
       where: {
         type,
       },

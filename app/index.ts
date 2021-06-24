@@ -1,22 +1,11 @@
 import { join } from 'path';
-import {
-  useExpressServer,
-  useContainer,
-  getMetadataArgsStorage,
-} from 'routing-controllers';
+import { useExpressServer, useContainer } from 'routing-controllers';
 import 'reflect-metadata';
 require('express-async-errors');
 import { exec } from 'child_process';
 import * as express from 'express';
 import { Container } from 'typedi';
 import { json } from 'body-parser';
-
-import {
-  init,
-  SPEC_OUTPUT_FILE_BEHAVIOR,
-  handleRequests,
-  handleResponses,
-} from 'express-oas-generator';
 
 interface IOptions {
   port: number;
@@ -39,10 +28,10 @@ export class OtaHomebrewApp {
       try {
         useContainer(Container);
 
-        await this.serveDocs();
-
         await this.runMigrations();
         await this.loadAllServerControllers();
+
+        resolve(undefined);
       } catch (err) {
         reject(err);
       }
@@ -51,34 +40,6 @@ export class OtaHomebrewApp {
     ready.then(() => {
       this.expressApp.listen(this.options.port);
     });
-  }
-
-  private async serveDocs() {
-    // const metadata = getMetadataArgsStorage();
-    // const spec = routingControllersToSpec(metadata);
-
-    const path = join(__dirname, 'docs.json');
-    // writeFileSync(path, JSON.stringify(spec));
-
-    init(
-      this.expressApp,
-      function (spec) {
-        spec.info.title = 'OverTheAir Homebrew';
-
-        return spec;
-      },
-      path,
-      60 * 1000,
-      'server/docs',
-      [],
-      [],
-      [],
-      true,
-      SPEC_OUTPUT_FILE_BEHAVIOR.RECREATE,
-    );
-    const a = 1;
-
-    // this.expressApp.use('/server/docs', swagger.serve, swagger.serveFiles());
   }
 
   private async runMigrations() {
@@ -104,52 +65,8 @@ export class OtaHomebrewApp {
   }
 }
 
+require('source-map-support/register');
+
 const app = new OtaHomebrewApp({
   port: 8081,
 });
-
-// import * as express from 'express';
-// import { json } from 'body-parser';
-// import { loadControllers } from './lib/load-server-controllers';
-// import { join } from 'path';
-// import { BaseError } from './lib/errors/ota-base-error';
-// import { logger } from './lib/logger';
-
-// const PORT = parseInt(process.env.PORT) || 8081;
-
-//
-
-// export const app = express();
-
-// const serverRouter = express.Router();
-
-// app.use(json());
-
-// app.use(
-//   '/server',
-//   loadControllers(serverRouter, join(__dirname, '/controllers')),
-// );
-
-// app.use(
-//   (
-//     err: BaseError,
-//     req: express.Request,
-//     res: express.Response,
-//     next: express.NextFunction,
-//   ) => {
-//     if (!err.errorCode) {
-//       return next(err);
-//     }
-
-//     const statusCode = err.httpCode;
-
-//     res.status(statusCode).send({
-//       code: err.errorCode,
-//       message: err.message,
-//     });
-//   },
-// );
-
-// app.listen(PORT, () => {
-//   logger.info(`Listening on ${PORT}`);
-// });

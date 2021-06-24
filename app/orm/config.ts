@@ -13,3 +13,5 @@ export const define = {
 export const dialectOptions = {
   charset: 'utf8mb4',
 };
+
+export const repositoryMode = true;
