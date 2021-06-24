@@ -22,4 +22,4 @@ Welcome to OverTheAirBrew Homebrew
   :hidden:
   :caption: Development
 
-  developent/plugins
+  development/plugins
