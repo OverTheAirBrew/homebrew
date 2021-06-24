@@ -1,43 +1,52 @@
 import { ValidationError } from '../errors/validation-error';
 import { IHeater } from './models';
-import { createHeaterValidator } from './validation';
+import { CreateHeaterValidator } from './validation';
 
-import * as Repository from './repository';
+import { PeripheralsRepository } from './repository';
 import { IPeripheral } from '../../orm/models/peripherals';
+import { Service } from 'typedi';
 
-export async function createHeater(request: IHeater) {
-  const validationResult = await createHeaterValidator.validateAsync(request);
+@Service()
+export class HeaterService {
+  constructor(
+    private validator: CreateHeaterValidator,
+    private repository: PeripheralsRepository,
+  ) {}
 
-  if (validationResult.isValid()) {
-    const id = await Repository.createPeripheral({
-      communicationType: request.communicationType,
-      name: request.name,
-      type: 'heater',
-      gpio: request.gpio,
-    });
+  public async createHeater(request: IHeater) {
+    const validationResult = await this.validator.validateAsync(request);
 
-    return id;
+    if (validationResult.isValid()) {
+      const id = await this.repository.createPeripheral({
+        communicationType: request.communicationType,
+        name: request.name,
+        type: 'heater',
+        gpio: request.gpio,
+      });
+
+      return id;
+    }
+
+    throw new ValidationError(validationResult);
   }
 
-  throw new ValidationError(validationResult);
-}
+  public async getHeaters() {
+    const heaters = await this.repository.getPeripheralsOfType('heater');
+    return await Promise.all(heaters.map(this.mapHeater));
+  }
 
-export async function getHeaters() {
-  const heaters = await Repository.getPeripheralsOfType('heater');
-  return await Promise.all(heaters.map(mapHeater));
-}
+  public async getHeaterById(id: string) {
+    const heater = await this.repository.getPeripheralByTypeAndId('heater', id);
+    return await this.mapHeater(heater);
+  }
 
-export async function getHeaterById(id: string) {
-  const heater = await Repository.getPeripheralByTypeAndId('heater', id);
-  return await mapHeater(heater);
-}
-
-async function mapHeater(heater: IPeripheral) {
-  return {
-    id: heater.id,
-    name: heater.name,
-    type: heater.type.toString(),
-    communicationType: heater.communicationType.toString(),
-    gpio: heater.gpio,
-  };
+  private async mapHeater(heater: IPeripheral) {
+    return {
+      id: heater.id,
+      name: heater.name,
+      type: heater.type.toString(),
+      communicationType: heater.communicationType.toString(),
+      gpio: heater.gpio,
+    };
+  }
 }

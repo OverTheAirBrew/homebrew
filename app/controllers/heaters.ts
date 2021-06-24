@@ -1,27 +1,59 @@
-import { Application, Request, Response } from 'express';
 import {
-  createHeater,
-  getHeaterById,
-  getHeaters,
-} from '../lib/peripherals/heaters';
+  Body,
+  Get,
+  HttpCode,
+  JsonController,
+  Param,
+  Post,
+} from 'routing-controllers';
+import { OpenAPI } from 'routing-controllers-openapi';
 
-export async function controller(app: Application) {
-  app.post('/heaters', async (req: Request, res: Response) => {
-    const id = await createHeater(req.body);
+import { Service } from 'typedi';
 
-    res.status(201).send({
+import { HeaterService } from '../lib/peripherals/heaters';
+
+import { IHeater } from '../lib/peripherals/models';
+
+@JsonController()
+@Service()
+export class HeaterController {
+  constructor(private heaterService: HeaterService) {}
+
+  @OpenAPI({
+    deprecated: true,
+    requestBody: {
+      content: {
+        Body: {
+          example: {
+            test: 'hello',
+          },
+        },
+      },
+    },
+    responses: {
+      default: {
+        description: 'hello',
+      },
+    },
+  })
+  @Post('/heaters')
+  @HttpCode(201)
+  async createHeater(@Body() body: IHeater) {
+    const id = await this.heaterService.createHeater(body);
+    return {
       id,
-    });
-  });
+    };
+  }
 
-  app.get('/heaters', async (req: Request, res: Response) => {
-    const heaters = await getHeaters();
-    res.status(200).send(heaters);
-  });
+  @Get('/heaters')
+  async getHeaters() {
+    const heaters = await this.heaterService.getHeaters();
+    return heaters;
+  }
 
-  app.get('/heaters/:id', async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const heater = await getHeaterById(id);
-    res.status(200).send(heater);
-  });
+  @Get('/heaters/:id')
+  async getHeater(@Param('id') id: string) {
+    const heater = await this.heaterService.getHeaterById(id);
+    return heater;
+  }
 }

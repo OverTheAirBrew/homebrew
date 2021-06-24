@@ -1,6 +1,7 @@
 import { BaseModel } from './base-model';
 import { sequelize } from '../connection';
 import { DataTypes } from 'sequelize';
+import { Service } from 'typedi';
 
 export type PeripheralCommunicationType = 'gpio';
 export type PeripheralType = 'heater';
@@ -15,6 +16,7 @@ export interface IPeripheral {
   readonly updatedAt?: Date;
 }
 
+@Service()
 export class Peripheral extends BaseModel<IPeripheral> {
   public id?: string;
   public name: string;

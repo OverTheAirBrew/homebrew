@@ -1,7 +1,9 @@
 import { AbstractValidator } from 'fluent-ts-validator';
+import { Service } from 'typedi';
 import { IHeater } from './models';
 
-class CreateHeaterValidator extends AbstractValidator<IHeater> {
+@Service()
+export class CreateHeaterValidator extends AbstractValidator<IHeater> {
   constructor() {
     super();
 
@@ -22,5 +24,3 @@ class CreateHeaterValidator extends AbstractValidator<IHeater> {
       .withFailureCode('GPIO_NUMBER_IS_NOT_IN_RANGE');
   }
 }
-
-export const createHeaterValidator = new CreateHeaterValidator();

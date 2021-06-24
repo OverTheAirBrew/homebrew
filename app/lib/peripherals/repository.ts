@@ -1,50 +1,57 @@
+import { BuildOptions, Model } from 'sequelize';
+import { Service } from 'typedi';
 import {
-  IPeripheral,
   Peripheral,
   PeripheralCommunicationType,
   PeripheralType,
 } from '../../orm/models/peripherals';
 import { PeripheralNotFoundError } from '../errors/peripheral-not-found';
 
-export async function createPeripheral(peripheral: {
-  name: string;
-  type: string;
-  communicationType: string;
-  gpio?: number;
-}): Promise<string> {
-  const createdPeripheral = await Peripheral.create({
-    ...peripheral,
-    communicationType:
-      peripheral.communicationType as PeripheralCommunicationType,
-    type: peripheral.type as PeripheralType,
-  });
-  return createdPeripheral.id;
-}
+export type RichModel = typeof Model & {
+  new (values?: Record<string, unknown>, options?: BuildOptions): Model;
+};
 
-export async function getPeripheralsOfType(type: PeripheralType) {
-  const peripherals = await Peripheral.findAll({
-    where: {
-      type,
-    },
-  });
+@Service()
+export class PeripheralsRepository {
+  constructor(private model: typeof Peripheral) {}
 
-  return peripherals.map((peripheral) => peripheral.toJSON());
-}
-
-export async function getPeripheralByTypeAndId(
-  type: PeripheralType,
-  id: string,
-) {
-  const peripheral = await Peripheral.findOne({
-    where: {
-      type,
-      id,
-    },
-  });
-
-  if (!peripheral) {
-    throw new PeripheralNotFoundError(type, id);
+  public async createPeripheral(peripheral: {
+    name: string;
+    type: string;
+    communicationType: string;
+    gpio?: number;
+  }) {
+    const createdPeripheral = await this.model.create({
+      ...peripheral,
+      communicationType:
+        peripheral.communicationType as PeripheralCommunicationType,
+      type: peripheral.type as PeripheralType,
+    });
+    return createdPeripheral.id;
   }
 
-  return peripheral.toJSON();
+  public async getPeripheralsOfType(type: PeripheralType) {
+    const peripherals = await Peripheral.findAll({
+      where: {
+        type,
+      },
+    });
+
+    return peripherals.map((peripheral) => peripheral.toJSON());
+  }
+
+  public async getPeripheralByTypeAndId(type: PeripheralType, id: string) {
+    const peripheral = await this.model.findOne({
+      where: {
+        type,
+        id,
+      },
+    });
+
+    if (!peripheral) {
+      throw new PeripheralNotFoundError(type, id);
+    }
+
+    return peripheral.toJSON();
+  }
 }
