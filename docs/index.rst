@@ -3,7 +3,6 @@ Welcome to OverTheAirBrew Homebrew
 
 .. toctree::
   :maxdepth: 2
-  :hidden:
   :caption: Introduction
 
   intro/big-picture
@@ -12,14 +11,12 @@ Welcome to OverTheAirBrew Homebrew
 
 .. toctree::
   :maxdepth: 2
-  :hidden:
   :caption: Api Docs
 
   api/heaters
 
 .. toctree::
   :maxdepth: 2
-  :hidden:
   :caption: Development
 
   development/plugins
