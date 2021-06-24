@@ -1,12 +1,9 @@
 Welcome to OverTheAirBrew Homebrew
-=================
-
-hello!!!
+==================================
 
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: Features
+   :caption: Api Docs
 
-   features/test
-   api/index
+   api/heaters
