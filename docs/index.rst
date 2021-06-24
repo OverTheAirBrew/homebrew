@@ -11,11 +11,11 @@ Welcome to OverTheAirBrew Homebrew
   intro/contributing
 
 .. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: Api Docs
+  :maxdepth: 2
+  :hidden:
+  :caption: Api Docs
 
-   api/heaters
+  api/heaters
 
 .. toctree::
   :maxdepth: 2
