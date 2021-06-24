@@ -16,3 +16,10 @@ Welcome to OverTheAirBrew Homebrew
    :caption: Api Docs
 
    api/heaters
+
+.. toctree::
+  :maxdepth: 2
+  :hidden:
+  :caption: Development
+
+  developent/plugins
