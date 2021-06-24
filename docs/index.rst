@@ -9,3 +9,4 @@ hello!!!
    :caption: Features
 
    features/test
+   api/index
