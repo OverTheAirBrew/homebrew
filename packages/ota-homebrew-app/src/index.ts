@@ -1,8 +1,8 @@
-// require('source-map-support/register');
+require('source-map-support/register');
 
 import { join } from 'path';
 
-import { OtaHomebrewApp } from '@overtheairbrew/homebrew/';
+import { OtaHomebrewApp } from '@overtheairbrew/homebrew';
 
 const app = new OtaHomebrewApp({
   port: 9000,
