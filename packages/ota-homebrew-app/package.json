@@ -19,5 +19,13 @@
   },
   "dependencies": {
     "@overtheairbrew/homebrew": "^0.2.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/overtheairbrew/homebrew.git",
+    "directory": "packages/ota-homebrew-app"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   }
 }
