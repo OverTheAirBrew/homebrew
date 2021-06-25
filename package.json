@@ -11,7 +11,8 @@
     "build": "lerna run build",
     "clean": "lerna clean --yes",
     "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish from-package"
+    "publish": "lerna publish from-package",
+    "link": "lerna link"
   },
   "repository": {
     "type": "git",
