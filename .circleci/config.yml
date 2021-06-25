@@ -21,14 +21,19 @@ aliases: [
     # Filter pull requests not in "master" or "next" (development code)
     &filter-default-branches {
       filters: { branches: { ignore: '/^master$|^next$/' } },
+      context: OVERTHEAIR_HOMEBREW,
     },
 
     # Filter pull requests in "master" only (production code).
-    &filter-release-branches-only { filters: { branches: { only: 'master' } } },
+    &filter-release-branches-only {
+      filters: { branches: { only: 'master' } },
+      context: OVERTHEAIR_HOMEBREW,
+    },
 
     # Filter pull requests in "next" only (pre-release code).
     &filter-prerelease-branches-only {
       filters: { branches: { only: 'next' } },
+      context: OVERTHEAIR_HOMEBREW,
     },
   ]
 
