@@ -3,11 +3,13 @@
     "target": "es6",
     "module": "commonjs",
     "sourceMap": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "compileOnSave": true,
   "include": ["**/*.ts"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "dist"],
   "atom": {
     "formatOnSave": true
   },
@@ -24,5 +26,8 @@
     "insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
     "placeOpenBraceOnNewLineForFunctions": false,
     "placeOpenBraceOnNewLineForControlBlocks": false
+  },
+  "paths": {
+    "@overtheairbrew/*": ["packages/*/src"]
   }
 }

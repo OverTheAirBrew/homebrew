@@ -153,3 +153,5 @@ typings
 **/*.js.map
 
 app/ota.db
+
+ **/dist

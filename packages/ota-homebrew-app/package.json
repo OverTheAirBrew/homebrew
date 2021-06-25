@@ -1,8 +1,11 @@
 {
-  "name": "homebrew-app",
-  "version": "1.0.0",
+  "name": "ota-homebrew-app",
+  "version": "0.2.3",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules'"
@@ -15,6 +18,6 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "sequelize-cli": "^6.2.0"
+    "@overtheairbrew/homebrew": "^0.0.0"
   }
 }
