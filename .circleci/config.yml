@@ -5,7 +5,11 @@ version: 2.1
 aliases: [
     # List of dependency paths that should be persisted to the
     # CircleCI workspace.
-    &dependency-paths ['node_modules', 'packages/ota-homebrew/node_modules'],
+    &dependency-paths [
+      'node_modules',
+      'packages/ota-homebrew/node_modules',
+      'packages/ota-homebrew-app/node_modules',
+    ],
 
     # List of build output paths that should be persisted to the
     # CircleCI workspace.
@@ -54,6 +58,7 @@ jobs:
   build:
     executor: default
     steps:
+      - checkout
       - *attach-workspace
       - run:
           name: Build modules
