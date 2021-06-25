@@ -13,23 +13,9 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^15.12.4",
-    "del-cli": "^4.0.0",
-    "typescript": "^4.3.4"
-  },
   "dependencies": {
     "@overtheairbrew/homebrew": "^0.4.2",
     "project-version": "^2.0.0",
     "source-map-support": "^0.5.19"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/overtheairbrew/homebrew.git",
-    "directory": "packages/ota-homebrew-app"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "gitHead": "7166ab8473e0bb15c44e99a53251538c5f6b0368"
+  }
 }

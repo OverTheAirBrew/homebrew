@@ -1,6 +1,7 @@
 {
-  "packages": ["packages/*", "app"],
+  "packages": ["packages/*"],
   "version": "0.4.2",
+
   "command": {
     "publish": {
       "conventionalCommits": true,

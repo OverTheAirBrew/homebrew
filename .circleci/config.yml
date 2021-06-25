@@ -1,81 +1,253 @@
 version: 2.1
-orbs:
-  github-release: h-matsuo/github-release@0.1.1
+
+# --- YAML Aliases ----------------------------------------------------------- #
+
+aliases: [
+    # List of dependency paths that should be persisted to the
+    # CircleCI workspace.
+    &dependency-paths [
+      'node_modules',
+      'packages/ota-homebrew/node_modules',
+      'packages/ota-homebrew-app/node_modules',
+    ],
+
+    # List of build output paths that should be persisted to the
+    # CircleCI workspace.
+    &build-output-paths ['packages/ota-homebrew/dist'],
+
+    &dependency-cache-key 'v1-dependency-cache-{{ checksum "package-lock.json" }}',
+
+    &workspace-root '/home/circleci/project',
+
+    &attach-workspace { attach_workspace: { at: *workspace-root } },
+  ]
+
+# --- Executor definitions --------------------------------------------------- #
+
+executors:
+  default:
+    docker:
+      - image: circleci/node:14
+
+# --- Job definitions -------------------------------------------------------- #
+
 jobs:
-  build:
-    working_directory: ~/overtheairbrew
-    docker:
-      - image: node:15
-    environment:
-      NODE_ENV: test
-      LOGGING_LEVEL: info
+  # Installs Node dependencies via npm, caches them, then persists
+  # to the workspace.
+  install-dependencies:
+    executor: default
     steps:
-      - setup_remote_docker
       - checkout
-      - run: echo 'export BUILD_NO=${CIRCLE_BUILD_NUM}.0.0' >> $BASH_ENV
+      - *attach-workspace
       - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          key: *dependency-cache-key
       - run:
-          name: Install Dependencies
-          command: |
-            npm ci
+          name: Install Module Dependencies
+          command: npm install --frozen-lockfile
+      - run:
+          name: Lerna Bootstrap
+          command: npm run bootstrap
       - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: Build
-          command: |
-            npm run build
-      - run:
-          name: Migrate Database
-          command: npm run migrate
-      - run:
-          name: Test
-          command: |
-            npm run test
-            npm run coverage
-      - run:
-          name: Prune Production
-          command: npm prune --production
+          paths: *dependency-paths
+          key: *dependency-cache-key
       - persist_to_workspace:
-          root: ~/overtheairbrew
-          paths:
-            - .
-  push_release:
-    working_directory: ~/overtheairbrew
-    docker:
-      - image: node:15
+          paths: *dependency-paths
+          root: *workspace-root
+
+  # Builds modules and persists the build output to the workspace.
+  build:
+    executor: default
     steps:
-      - attach_workspace:
-          at: ~/overtheairbrew
+      - checkout
+      - *attach-workspace
       - run:
-          name: Package File
-          command: |
-            curl -fSL -o ghr.tar.gz "https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_linux_amd64.tar.gz"
-            tar -xvzf ghr.tar.gz
-            mv ghr_v0.14.0_linux_amd64/ghr /usr/local/bin
-            chown root:root /usr/local/bin/ghr
+          name: Build modules
+          command: npm run build
+      - persist_to_workspace:
+          paths: *build-output-paths
+          root: *workspace-root
+
+  # Run unit/integration/e2e tests.
+  test:
+    executor: default
+    steps:
+      - checkout
+      - *attach-workspace
       - run:
-          name: deploy release
+          name: Run tests
+          command: npm run test
+
+  # Publish the packages to NPM. This should depend on the `build` job.
+  create-release:
+    executor: default
+    steps:
+      - checkout
+      - *attach-workspace
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - run:
+          name: Publish packages to NPM
+          command: npm run publish -- --yes
+
+  # Publish the packages as a pre-release versions to NPM. This should depend on
+  # the `build` job.
+  create-prerelease:
+    executor: default
+    steps:
+      - checkout
+      - *attach-workspace
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - run:
+          name: Publish pre-release packages to NPM
+          command: npm run publish -- --canary --yes
+
+  # Create a git tag for this release and push to the remote repository.
+  tag-release:
+    executor: default
+    steps:
+      - checkout
+      - *attach-workspace
+      - run:
+          name: Git tag the release with the `lerna.json` version number
           command: |
-            export PACKAGE_FILE="$(npm pack --ignore-scripts)";
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ./${PACKAGE_FILE}
+            PACKAGE_VERSION=$(node -pe "require('./lerna.json')['version']")
+            git tag v$PACKAGE_VERSION
+      - run:
+          name: Push git tag to the remote repository
+          command: |
+            PACKAGE_VERSION=$(node -pe "require('./lerna.json')['version']")
+            git push -q https://$GITHUB_REPO_TOKEN@github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git v$PACKAGE_VERSION
+
+  # Create release notes on GitHub using the `github-release-notes` package.
+  create-release-notes:
+    executor: default
+    steps:
+      - checkout
+      - *attach-workspace
+      - run:
+          name: Install github-release-notes package
+          command: npm install github-release-notes
+      - run:
+          name: Generate release notes and publish to GitHub
+          command: gren release --override --token $GITHUB_TOKEN
+
+  # Create release notes for a prerelease version on GitHub using the
+  # `github-release-notes` package.
+  create-prerelease-notes:
+    executor: default
+    steps:
+      - checkout
+      - *attach-workspace
+      - run:
+          name: Install github-release-notes package
+          command: npm add github-release-notes
+      - run:
+          name: Generate release notes and publish to GitHub
+          command: gren release --override --prerelease --token $GITHUB_REPO_TOKEN
+
+# --- Workflow definitions --------------------------------------------------- #
+
 workflows:
-  version: 2
-  build_release:
+  # Builds modules, and runs unit tests.
+  pull-request:
     jobs:
-      - build:
+      - install-dependencies:
           context: OVERTHEAIR_HOMEBREW
           filters:
-            tags:
-              only: /^v.*/
-      - push_release:
+            branches:
+              ignore: '/^master$|^next$/'
+
+      - build:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - install-dependencies
+
+      - test:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - install-dependencies
+
+  # Builds modules, runs unit tests, and
+  # publishes the built packages to NPM.
+  publish-to-npm:
+    jobs:
+      - install-dependencies:
+          context: OVERTHEAIR_HOMEBREW
+          filters:
+            branches:
+              only: 'master'
+
+      - build:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - install-dependencies
+
+      - test:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - install-dependencies
+
+        # Manual approval step as a final gatekeeper to prevent
+        # possible mistakes!
+      - confirm-release:
+          type: approval
           context: OVERTHEAIR_HOMEBREW
           requires:
             - build
+            - test
+
+      - create-release:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - confirm-release
+
+      - tag-release:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - confirm-release
+            - create-release
+
+      - create-release-notes:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - confirm-release
+            - tag-release
+
+  # Builds modules, runs unit tests, and
+  # publishes a pre-release version of the built package to NPM.
+  publish-prerelease-to-npm:
+    jobs:
+      - install-dependencies:
+          context: OVERTHEAIR_HOMEBREW
           filters:
-            tags:
-              only: /^v.*/
             branches:
-              ignore: /.*/
+              only: 'next'
+
+      - build:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - install-dependencies
+
+      - test:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - install-dependencies
+
+      - create-prerelease:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - build
+            - test
+
+      - tag-release:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - create-prerelease
+
+      - create-prerelease-notes:
+          context: OVERTHEAIR_HOMEBREW
+          requires:
+            - tag-release
