@@ -12,7 +12,9 @@
     "clean": "lerna clean --yes",
     "bootstrap": "lerna bootstrap",
     "publish": "lerna publish from-package",
-    "link": "lerna link"
+    "link": "lerna link",
+    "rn-prerelease": "gren release --override --prerelease --token $GITHUB_TOKEN",
+    "rn": "gren release --override --token $GITHUB_TOKEN"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,7 @@
   },
   "homepage": "https://github.com/overtheairbrew/homebrew#readme",
   "dependencies": {
+    "github-release-notes": "^0.17.3",
     "homebrew": "file:packages/ota-homebrew",
     "lerna": "^3.22.1"
   },

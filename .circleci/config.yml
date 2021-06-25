@@ -136,7 +136,7 @@ jobs:
           command: npm install github-release-notes
       - run:
           name: Generate release notes and publish to GitHub
-          command: gren release --override --token $GITHUB_TOKEN
+          command: npm run rn
 
   # Create release notes for a prerelease version on GitHub using the
   # `github-release-notes` package.
@@ -150,7 +150,7 @@ jobs:
           command: npm add github-release-notes
       - run:
           name: Generate release notes and publish to GitHub
-          command: gren release --override --prerelease --token $GITHUB_REPO_TOKEN
+          command: npm run rn-prerelease
 
 # --- Workflow definitions --------------------------------------------------- #
 
