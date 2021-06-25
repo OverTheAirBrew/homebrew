@@ -1,5 +1,5 @@
 {
-  "name": "@overtheairbrew/homebrew-app",
+  "name": "homebrew-app",
   "version": "0.4.0",
   "description": "",
   "main": "dist/index",

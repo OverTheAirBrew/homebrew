@@ -12,7 +12,8 @@
   "scripts": {
     "test": "lerna run test",
     "build": "lerna run build",
-    "clean": "lerna run clean"
+    "clean": "lerna run clean",
+    "publish-packages": "lerna publish --scope=@overtheairbrew/*"
   },
   "repository": {
     "type": "git",
