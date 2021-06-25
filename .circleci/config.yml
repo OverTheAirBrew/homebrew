@@ -83,9 +83,9 @@ jobs:
     steps:
       - checkout
       - *attach-workspace
-      # - run:
-      #     name: Authenticate with registry
-      #     command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run:
           name: Publish packages to NPM
           command: |
@@ -99,9 +99,9 @@ jobs:
     steps:
       - checkout
       - *attach-workspace
-      # - run:
-      #     name: Authenticate with registry
-      #     command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run:
           name: Publish pre-release packages to NPM
           command: |
