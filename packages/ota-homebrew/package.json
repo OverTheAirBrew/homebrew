@@ -54,7 +54,8 @@
   },
   "description": "",
   "devDependencies": {
-    "del-cli": "^4.0.0"
+    "del-cli": "^4.0.0",
+    "typescript": "^4.3.4"
   },
   "repository": {
     "type": "git",
