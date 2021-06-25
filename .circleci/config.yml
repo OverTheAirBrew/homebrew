@@ -83,12 +83,14 @@ jobs:
     steps:
       - checkout
       - *attach-workspace
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      # - run:
+      #     name: Authenticate with registry
+      #     command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run:
           name: Publish packages to NPM
-          command: npm run publish -- --yes
+          command: |
+            git update-index --assume-unchanged .npmrc
+            npm run publish -- --yes
 
   # Publish the packages as a pre-release versions to NPM. This should depend on
   # the `build` job.
@@ -97,12 +99,14 @@ jobs:
     steps:
       - checkout
       - *attach-workspace
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      # - run:
+      #     name: Authenticate with registry
+      #     command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run:
           name: Publish pre-release packages to NPM
-          command: npm run publish -- --canary --yes
+          command: |
+            git update-index --assume-unchanged .npmrc
+            npm run publish -- --canary --yes
 
   # Create a git tag for this release and push to the remote repository.
   tag-release:
