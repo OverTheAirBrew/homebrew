@@ -1,7 +1,7 @@
 {
-  "packages": ["packages/*", "app"],
+  "packages": ["packages/*"],
   "version": "0.4.2",
-  "useWorkspaces": true,
+
   "command": {
     "publish": {
       "conventionalCommits": true,
