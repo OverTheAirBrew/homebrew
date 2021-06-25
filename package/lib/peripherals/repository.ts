@@ -28,26 +28,20 @@ export class PeripheralsRepository extends BaseRepository<Peripheral> {
     return createdPeripheral.id;
   }
 
-  public async getPeripheralsOfType(type: PeripheralType) {
-    const peripherals = await this.model.findAll({
-      where: {
-        type,
-      },
-    });
-
+  public async getPeripherals() {
+    const peripherals = await this.model.findAll({});
     return peripherals.map((peripheral) => peripheral.toJSON());
   }
 
-  public async getPeripheralByTypeAndId(type: PeripheralType, id: string) {
+  public async getPeripheralByTypeAndId(id: string) {
     const peripheral = await this.model.findOne({
       where: {
-        type,
         id,
       },
     });
 
     if (!peripheral) {
-      throw new PeripheralNotFoundError(type, id);
+      throw new PeripheralNotFoundError(id);
     }
 
     return peripheral.toJSON();

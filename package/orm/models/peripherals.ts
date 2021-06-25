@@ -1,6 +1,11 @@
-import { Column, Table, DataType, PrimaryKey } from 'sequelize-typescript';
+import {
+  Column,
+  Table,
+  DataType,
+  PrimaryKey,
+  Default,
+} from 'sequelize-typescript';
 import { BaseModel } from '../base-model';
-import { sequelize } from '../connection';
 
 export type PeripheralCommunicationType = 'gpio';
 export type PeripheralType = 'heater';
@@ -17,9 +22,9 @@ export interface IPeripheral {
 
 @Table({ modelName: 'peripherals' })
 export default class Peripheral extends BaseModel<IPeripheral> {
+  @Default(DataType.UUIDV4)
   @PrimaryKey
   @Column(DataType.UUID)
-  // @Default(DataType.UUIDV4)
   id?: string;
 
   @Column(DataType.STRING) name: string;

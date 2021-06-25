@@ -1,0 +1,20 @@
+{
+  "name": "homebrew-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules'"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^15.12.4",
+    "del-cli": "^4.0.0",
+    "typescript": "^4.3.4"
+  },
+  "dependencies": {
+    "sequelize-cli": "^6.2.0"
+  }
+}

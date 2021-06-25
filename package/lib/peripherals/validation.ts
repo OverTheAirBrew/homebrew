@@ -1,9 +1,9 @@
 import { AbstractValidator } from 'fluent-ts-validator';
 import { Service } from 'typedi';
-import { IHeater } from './models';
+import { Peripheral } from '../models/peripheral';
 
 @Service()
-export class CreateHeaterValidator extends AbstractValidator<IHeater> {
+export class PeripheralsValidator extends AbstractValidator<Peripheral> {
   constructor() {
     super();
 

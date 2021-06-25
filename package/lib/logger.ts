@@ -12,7 +12,7 @@ interface ILoggingOptions {
   level: LogLevel;
 }
 
-type LogLevel = 'debug' | 'info' | 'warning' | 'error' | 'verbose';
+type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'verbose';
 
 export class Logger {
   private readonly _options: ILoggingOptions;
@@ -44,7 +44,7 @@ export class Logger {
     this._logger.info(message, ...meta);
   }
 
-  public warning(message: string, ...meta: any[]): void {
+  public warn(message: string, ...meta: any[]): void {
     this._logger.warn(message, ...meta);
   }
 
