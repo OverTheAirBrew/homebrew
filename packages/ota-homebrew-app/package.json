@@ -1,0 +1,31 @@
+{
+  "name": "ota-homebrew-app",
+  "version": "0.2.3",
+  "description": "",
+  "main": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules'"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^15.12.4",
+    "del-cli": "^4.0.0",
+    "typescript": "^4.3.4"
+  },
+  "dependencies": {
+    "@overtheairbrew/homebrew": "^0.2.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/overtheairbrew/homebrew.git",
+    "directory": "packages/ota-homebrew-app"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
+}
