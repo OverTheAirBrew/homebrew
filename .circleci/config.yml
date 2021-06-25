@@ -42,7 +42,7 @@ jobs:
           command: npm install --frozen-lockfile
       - run:
           name: Lerna Bootstrap
-          command: lerna bootstrap
+          command: npm run bootstrap
       - save_cache:
           paths: *dependency-paths
           key: *dependency-cache-key
@@ -58,7 +58,7 @@ jobs:
       - *attach-workspace
       - run:
           name: Build modules
-          command: lerna run build
+          command: npm run build
       - persist_to_workspace:
           paths: *build-output-paths
           root: *workspace-root
@@ -71,7 +71,7 @@ jobs:
       - *attach-workspace
       - run:
           name: Run tests
-          command: lerna run test
+          command: npm run test
 
   # Publish the packages to NPM. This should depend on the `build` job.
   create-release:
@@ -84,7 +84,7 @@ jobs:
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run:
           name: Publish packages to NPM
-          command: lerna publish from-package --yes
+          command: npm run publish -- --yes
 
   # Publish the packages as a pre-release versions to NPM. This should depend on
   # the `build` job.
@@ -98,7 +98,7 @@ jobs:
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run:
           name: Publish pre-release packages to NPM
-          command: lerna publish from-package --canary --yes
+          command: npm run publish -- --canary --yes
 
   # Create a git tag for this release and push to the remote repository.
   tag-release:

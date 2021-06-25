@@ -7,15 +7,13 @@
     "dist"
   ],
   "scripts": {
-    "test": "nyc --reporter=text-summary --reporter=lcov mocha 'test/**/*.spec.js' --exit",
+    "test1": "nyc --reporter=text-summary --reporter=lcov mocha 'test/**/*.spec.js' --exit",
+    "test": "",
     "coverage": "codecov",
     "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules'",
     "build": "tsc -p ./tsconfig.json",
     "watch": "tsc --watch",
-    "run-dev": "nodemon ./app/index.js",
-    "postversion": "git push --follow-tags",
-    "prepublishOnly": "git pull origin master",
-    "generatedocs": "snc"
+    "run-dev": "nodemon ./app/index.js"
   },
   "keywords": [],
   "author": "",
