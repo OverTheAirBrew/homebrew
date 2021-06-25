@@ -1,8 +1,5 @@
 {
-  "packages": [
-    "packages/*",
-    "app"
-  ],
+  "packages": ["packages/*", "app"],
   "version": "0.4.2",
   "command": {
     "publish": {
