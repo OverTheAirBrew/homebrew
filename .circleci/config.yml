@@ -42,7 +42,7 @@ jobs:
           command: npm install --frozen-lockfile
       - run:
           name: Lerna Bootstrap
-          command: npx lerna bootstrap
+          command: lerna bootstrap
       - save_cache:
           paths: *dependency-paths
           key: *dependency-cache-key
@@ -58,7 +58,7 @@ jobs:
       - *attach-workspace
       - run:
           name: Build modules
-          command: npx lerna run build
+          command: lerna run build
       - persist_to_workspace:
           paths: *build-output-paths
           root: *workspace-root
@@ -71,7 +71,7 @@ jobs:
       - *attach-workspace
       - run:
           name: Run tests
-          command: npx lerna run test
+          command: lerna run test
 
   # Publish the packages to NPM. This should depend on the `build` job.
   create-release:
@@ -84,7 +84,7 @@ jobs:
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run:
           name: Publish packages to NPM
-          command: npx lerna publish from-package --yes
+          command: lerna publish from-package --yes
 
   # Publish the packages as a pre-release versions to NPM. This should depend on
   # the `build` job.
@@ -98,7 +98,7 @@ jobs:
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run:
           name: Publish pre-release packages to NPM
-          command: npx lerna publish from-package --canary --yes
+          command: lerna publish from-package --canary --yes
 
   # Create a git tag for this release and push to the remote repository.
   tag-release:
@@ -128,7 +128,7 @@ jobs:
           command: npm install github-release-notes
       - run:
           name: Generate release notes and publish to GitHub
-          command: npx gren release --override --token $GITHUB_TOKEN
+          command: gren release --override --token $GITHUB_TOKEN
 
   # Create release notes for a prerelease version on GitHub using the
   # `github-release-notes` package.
@@ -142,7 +142,7 @@ jobs:
           command: npm add github-release-notes
       - run:
           name: Generate release notes and publish to GitHub
-          command: npx gren release --override --prerelease --token $GITHUB_REPO_TOKEN
+          command: gren release --override --prerelease --token $GITHUB_REPO_TOKEN
 
 # --- Workflow definitions --------------------------------------------------- #
 
