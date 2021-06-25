@@ -11,7 +11,6 @@ aliases: [
     # CircleCI workspace.
     &build-output-paths ['packages/ota-homebrew/dist'],
 
-    # Yarn lockfile cache key (update "vN" => "vN+1" to cache-bust).
     &dependency-cache-key 'v1-dependency-cache-{{ checksum "package-lock.json" }}',
 
     &workspace-root '/home/circleci/project',
@@ -24,12 +23,12 @@ aliases: [
 executors:
   default:
     docker:
-      - image: circleci/node:10-browsers
+      - image: circleci/node:14
 
 # --- Job definitions -------------------------------------------------------- #
 
 jobs:
-  # Installs Node dependencies via Yarn, caches them, then persists
+  # Installs Node dependencies via npm, caches them, then persists
   # to the workspace.
   install-dependencies:
     executor: default
@@ -40,7 +39,7 @@ jobs:
           key: *dependency-cache-key
       - run:
           name: Install Module Dependencies
-          command: yarn install --frozen-lockfile
+          command: npm install --frozen-lockfile
       - run:
           name: Lerna Bootstrap
           command: npx lerna bootstrap
@@ -126,10 +125,10 @@ jobs:
       - *attach-workspace
       - run:
           name: Install github-release-notes package
-          command: yarn add -D -W github-release-notes
+          command: npm install github-release-notes
       - run:
           name: Generate release notes and publish to GitHub
-          command: npx gren release --override --token $GITHUB_REPO_TOKEN
+          command: npx gren release --override --token $GITHUB_TOKEN
 
   # Create release notes for a prerelease version on GitHub using the
   # `github-release-notes` package.
@@ -140,7 +139,7 @@ jobs:
       - *attach-workspace
       - run:
           name: Install github-release-notes package
-          command: yarn add -D -W github-release-notes
+          command: npm add github-release-notes
       - run:
           name: Generate release notes and publish to GitHub
           command: npx gren release --override --prerelease --token $GITHUB_REPO_TOKEN
