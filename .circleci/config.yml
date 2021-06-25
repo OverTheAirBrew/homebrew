@@ -54,7 +54,6 @@ jobs:
   build:
     executor: default
     steps:
-      - checkout
       - *attach-workspace
       - run:
           name: Build modules
