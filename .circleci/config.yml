@@ -17,24 +17,6 @@ aliases: [
     &workspace-root '/home/circleci/project',
 
     &attach-workspace { attach_workspace: { at: *workspace-root } },
-
-    # Filter pull requests not in "master" or "next" (development code)
-    &filter-default-branches {
-      filters: { branches: { ignore: '/^master$|^next$/' } },
-      context: OVERTHEAIR_HOMEBREW,
-    },
-
-    # Filter pull requests in "master" only (production code).
-    &filter-release-branches-only {
-      filters: { branches: { only: 'master' } },
-      context: OVERTHEAIR_HOMEBREW,
-    },
-
-    # Filter pull requests in "next" only (pre-release code).
-    &filter-prerelease-branches-only {
-      filters: { branches: { only: 'next' } },
-      context: OVERTHEAIR_HOMEBREW,
-    },
   ]
 
 # --- Executor definitions --------------------------------------------------- #
@@ -169,13 +151,19 @@ workflows:
   # Builds modules, and runs unit tests.
   pull-request:
     jobs:
-      - install-dependencies: *filter-default-branches
+      - install-dependencies:
+          context: OVERTHEAIR_HOMEBREW
+          filter:
+            branches:
+              ignore: '/^master$|^next$/'
 
       - build:
+          context: OVERTHEAIR_HOMEBREW
           requires:
             - install-dependencies
 
       - test:
+          context: OVERTHEAIR_HOMEBREW
           requires:
             - install-dependencies
 
@@ -183,7 +171,11 @@ workflows:
   # publishes the built packages to NPM.
   publish-to-npm:
     jobs:
-      - install-dependencies: *filter-release-branches-only
+      - install-dependencies:
+          context: OVERTHEAIR_HOMEBREW
+          filters:
+            branches:
+              only: 'master'
 
       - build:
           context: OVERTHEAIR_HOMEBREW
@@ -225,7 +217,11 @@ workflows:
   # publishes a pre-release version of the built package to NPM.
   publish-prerelease-to-npm:
     jobs:
-      - install-dependencies: *filter-prerelease-branches-only
+      - install-dependencies:
+          context: OVERTHEAIR_HOMEBREW
+          filter:
+            branches:
+              only: 'next'
 
       - build:
           context: OVERTHEAIR_HOMEBREW
