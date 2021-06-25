@@ -1,8 +1,8 @@
 {
   "name": "@overtheairbrew/homebrew",
   "version": "0.4.2",
-  "main": "dist/application",
-  "types": "dist/application",
+  "main": "dist/application.js",
+  "types": "dist/application.d.ts",
   "files": [
     "dist"
   ],
