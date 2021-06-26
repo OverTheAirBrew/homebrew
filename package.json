@@ -14,7 +14,8 @@
     "publish": "lerna publish from-package",
     "link": "lerna link",
     "rn-prerelease": "gren release --override --prerelease --token $GITHUB_TOKEN",
-    "rn": "gren release --override --token $GITHUB_TOKEN"
+    "rn": "gren release --override --token $GITHUB_TOKEN",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
