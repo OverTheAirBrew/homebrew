@@ -11,7 +11,7 @@
     "build": "lerna run build",
     "clean": "lerna clean --yes",
     "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish from-package",
+    "version": "lerna version --conventional-commits",
     "link": "lerna link",
     "rn-prerelease": "gren release --override --prerelease --token $GITHUB_TOKEN",
     "rn": "gren release --override --token $GITHUB_TOKEN",
