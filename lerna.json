@@ -1,13 +1,17 @@
 {
-  "packages": ["packages/*"],
-  "version": "0.4.2",
-
+  "packages": [
+    "packages/*"
+  ],
+  "version": "0.4.3",
   "command": {
     "publish": {
       "conventionalCommits": true,
       "message": "chore(release): publish",
       "registry": "https://npm.pkg.github.com",
-      "allowBranch": ["master", "next"]
+      "allowBranch": [
+        "master",
+        "next"
+      ]
     }
   }
 }
