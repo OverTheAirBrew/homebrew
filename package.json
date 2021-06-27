@@ -1,19 +1,21 @@
 {
   "name": "@overtheairbrew/homebrew",
   "version": "0.5.4-rc.2",
-  "main": "src/application.js",
-  "types": "src/application.d.ts",
+  "main": "dist/application.js",
+  "types": "dist/application.d.ts",
   "files": [
-    "src"
+    "dist"
   ],
   "scripts": {
-    "test": "nyc --reporter=text-summary --reporter=lcov mocha 'test/**/*.spec.js' --exit",
+    "test": "nyc --reporter=text-summary --reporter=lcov mocha 'dist/test/**/*.spec.js' --exit",
     "coverage": "codecov",
-    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules'",
+    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules' '!comitlint.config.js'",
     "build": "tsc",
     "watch": "tsc --watch",
     "run-dev": "nodemon ./app/index.js",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "prepublish": "del 'dist/test'",
+    "prepack": "del 'dist/test'"
   },
   "keywords": [],
   "author": "",
@@ -71,5 +73,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }

@@ -5,7 +5,8 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "declaration": true
+    "declaration": true,
+    "outDir": "./dist"
   },
   "compileOnSave": true,
   "include": ["src/**/*.ts", "test/**/*.ts"],
