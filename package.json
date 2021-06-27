@@ -58,5 +58,8 @@
     "del-cli": "^4.0.0",
     "semantic-release": "^17.4.4",
     "typescript": "^4.3.4"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
