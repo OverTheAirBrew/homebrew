@@ -1,6 +1,6 @@
 {
   "name": "@overtheairbrew/homebrew",
-  "version": "0.4.3",
+  "version": "0.0.0-development",
   "main": "src/application.js",
   "types": "src/application.d.ts",
   "files": [
@@ -12,7 +12,8 @@
     "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules'",
     "build": "tsc",
     "watch": "tsc --watch",
-    "run-dev": "nodemon ./app/index.js"
+    "run-dev": "nodemon ./app/index.js",
+    "semantic-release": "semantic-release"
   },
   "keywords": [],
   "author": "",
@@ -46,13 +47,16 @@
   "description": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/overtheairbrew/homebrew.git",
+    "url": "https://github.com/overtheairbrew/homebrew.git",
     "directory": "packages/ota-homebrew-app"
   },
   "gitHead": "7166ab8473e0bb15c44e99a53251538c5f6b0368",
   "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
     "@types/node": "^14.17.4",
     "del-cli": "^4.0.0",
+    "semantic-release": "^17.4.4",
     "typescript": "^4.3.4"
   }
 }

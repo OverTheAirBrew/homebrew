@@ -1,64 +1,13 @@
 version: 2
 jobs:
-  build_release:
-    working_directory: /overtheairbrew
+  build:
     docker:
-      - image: node:14
-    environment:
-      NODE_ENV: production
-      HUSKY_SKIP_INSTALL: '1'
+      - image: 'circleci/node:14'
     steps:
-      - setup_remote_docker
       - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: install
-          command: |
-            npm ci --also=dev
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
+          command: npm install
       - run:
-          name: build node
-          command: |
-            npm run build
-      - run:
-          name: test
-          command: npm run test
-      - persist_to_workspace:
-          root: /overtheairbrew
-          paths:
-            - .
-  push_release:
-    working_directory: /overtheairbrew
-    docker:
-      - image: node:12
-    steps:
-      - attach_workspace:
-          at: /overtheairbrew
-      - run:
-          name: deploy release
-          command: |
-            npm prune --production
-            export PACKAGE_FILE="$(npm pack --ignore-scripts)";
-            npm publish $PACKAGE_FILE --access public
-workflows:
-  version: 2
-  build_release:
-    jobs:
-      - build_release:
-          context: OVERTHEAIR_HOMEBREW
-          filters:
-            tags:
-              only: /^v.*/
-      - push_release:
-          context: OVERTHEAIR_HOMEBREW
-          requires:
-            - build_release
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+          name: release
+          command: npm run semantic-release || true
