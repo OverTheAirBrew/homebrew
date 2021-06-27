@@ -5,11 +5,11 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "declaration": true
   },
   "compileOnSave": true,
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"],
   "atom": {
     "formatOnSave": true
   },
@@ -26,8 +26,5 @@
     "insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
     "placeOpenBraceOnNewLineForFunctions": false,
     "placeOpenBraceOnNewLineForControlBlocks": false
-  },
-  "paths": {
-    "@overtheairbrew/*": ["packages/*/src"]
   }
 }

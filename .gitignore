@@ -154,4 +154,4 @@ typings
 
 app/ota.db
 
- **/dist
+**/*.d.ts

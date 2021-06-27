@@ -3,8 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-<<<<<<< Updated upstream
-=======
 ## [0.4.3](https://github.com/overtheairbrew/homebrew/compare/v0.4.2...v0.4.3) (2021-06-26)
 
 **Note:** Version bump only for package @overtheairbrew/homebrew
@@ -13,7 +11,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
->>>>>>> Stashed changes
 ## [0.4.2](https://github.com/overtheairbrew/homebrew/compare/v0.4.1...v0.4.2) (2021-06-25)
 
 **Note:** Version bump only for package @overtheairbrew/homebrew
