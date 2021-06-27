@@ -1,6 +1,11 @@
 {
-  "name": "overtheair",
-  "private": true,
+  "name": "@overtheairbrew/homebrew",
+  "version": "0.5.4-rc.3",
+  "main": "dist/application.js",
+  "types": "dist/application.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
