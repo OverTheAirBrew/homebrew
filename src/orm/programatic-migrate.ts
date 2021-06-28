@@ -7,7 +7,7 @@ export class ProgramaticMigate {
 
   constructor(private connection: Sequelize, logger: Logger) {
     this.umzug = new Umzug({
-      migrations: { glob: '**/package/orm/migrations/*.js' },
+      migrations: { glob: '**/migrations/*.js' },
       context: this.connection.getQueryInterface(),
       storage: new SequelizeStorage({ sequelize: this.connection }),
       logger: {

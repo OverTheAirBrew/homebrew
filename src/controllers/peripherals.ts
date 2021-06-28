@@ -12,7 +12,7 @@ import { Service } from 'typedi';
 import { PeripheralDto } from '../lib/models/peripheral';
 import { IdResponse } from '../lib/models/id-response';
 
-import { PeripheralService } from '../lib/peripherals/index.ts';
+import { PeripheralService } from '../lib/peripherals';
 
 import { Peripheral } from '../lib/models/peripheral';
 

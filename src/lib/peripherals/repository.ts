@@ -6,11 +6,12 @@ import Peripheral, {
 import { PeripheralNotFoundError } from '../errors/peripheral-not-found';
 
 import { BaseRepository } from '../base-repository';
+import { SequelizeWrapper } from '../../orm/sequelize-wrapper';
 
 @Service()
 export class PeripheralsRepository extends BaseRepository<Peripheral> {
-  constructor() {
-    super(Peripheral);
+  constructor(wrapper: SequelizeWrapper) {
+    super(Peripheral, wrapper.sequelize);
   }
 
   public async createPeripheral(peripheral: {

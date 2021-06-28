@@ -18,10 +18,8 @@ import { serve, setup } from 'swagger-ui-express';
 import * as version from 'project-version';
 import { ProgramaticMigate } from './orm/programatic-migrate';
 
-import { Sequelize } from 'sequelize-typescript';
-import { BASE_CONFIG } from './orm/config';
-
 import { logger } from './lib/logger';
+import { SequelizeWrapper } from './orm/sequelize-wrapper';
 
 interface IOptions {
   port: number;
@@ -31,8 +29,6 @@ interface IOptions {
 }
 
 export class OtaHomebrewApp {
-  public static sequelize: Sequelize = undefined;
-
   private readonly baseControllerPath: string = join(
     __dirname,
     'controllers',
@@ -50,6 +46,8 @@ export class OtaHomebrewApp {
 
   constructor(private options: IOptions) {
     this.expressApp = express();
+
+    Container.set('databasePath', this.options.database.path);
 
     const ready = new Promise(async (resolve, reject) => {
       try {
@@ -98,13 +96,8 @@ export class OtaHomebrewApp {
   }
 
   private async runMigrations() {
-    OtaHomebrewApp.sequelize = new Sequelize({
-      ...BASE_CONFIG,
-      storage: this.options.database.path,
-      models: [join(__dirname, 'orm', 'models', '**/*.js')],
-    });
-
-    const migration = new ProgramaticMigate(OtaHomebrewApp.sequelize, logger);
+    const wrapper = Container.get(SequelizeWrapper);
+    const migration = new ProgramaticMigate(wrapper.sequelize as any, logger);
 
     await migration.up();
   }
