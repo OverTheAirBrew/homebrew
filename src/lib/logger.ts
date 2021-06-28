@@ -3,7 +3,6 @@ import {
   createLogger,
   format,
   transports,
-  level,
 } from 'winston';
 
 interface ILoggingOptions {
@@ -15,12 +14,9 @@ interface ILoggingOptions {
 type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'verbose';
 
 export class Logger {
-  private readonly _options: ILoggingOptions;
   private readonly _logger: WinstonLogger;
 
   constructor(options: ILoggingOptions) {
-    this._options = options;
-
     this._logger = createLogger({
       level: options.level,
       format: format.json(),

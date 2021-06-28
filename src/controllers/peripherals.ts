@@ -9,7 +9,7 @@ import {
 import { ResponseSchema } from 'routing-controllers-openapi';
 
 import { Service } from 'typedi';
-import { PeripheralDto, PeripheralType } from '../lib/models/peripheral';
+import { PeripheralDto } from '../lib/models/peripheral';
 import { IdResponse } from '../lib/models/id-response';
 
 import { PeripheralService } from '../lib/peripherals/index.ts';

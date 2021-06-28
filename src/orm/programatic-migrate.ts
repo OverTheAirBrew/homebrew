@@ -22,7 +22,7 @@ export class ProgramaticMigate {
   }
 
   public async up() {
-    const output = await this.umzug.up();
+    await this.umzug.up();
   }
 
   public async down() {

@@ -1,9 +1,5 @@
 import { ValidationError } from '../errors/validation-error';
-import {
-  Peripheral,
-  PeripheralDto,
-  PeripheralType,
-} from '../models/peripheral';
+import { Peripheral, PeripheralDto } from '../models/peripheral';
 import { PeripheralsValidator } from './validation';
 
 import { PeripheralsRepository } from './repository';
