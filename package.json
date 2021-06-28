@@ -1,6 +1,6 @@
 {
   "name": "@overtheairbrew/homebrew",
-  "version": "0.5.4-rc.5",
+  "version": "0.5.4-rc.6",
   "main": "dist/src/application.js",
   "types": "dist/src/application.d.ts",
   "files": [
