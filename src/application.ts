@@ -11,7 +11,8 @@ import * as express from 'express';
 import { Container } from 'typedi';
 import { json } from 'body-parser';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
-const { defaultMetadataSrotage } = require('class-transformer/cjs/storage');
+
+import { defaultMetadataSrotage } from 'class-transformer/cjs/storage';
 import { serve, setup } from 'swagger-ui-express';
 
 import * as version from 'project-version';

@@ -16,7 +16,9 @@ jobs:
           command: npm run test
       - run:
           name: release
-          command: npm run semantic-release || true
+          command: |
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+            npm run semantic-release || true
 
 workflows:
   version: 2
