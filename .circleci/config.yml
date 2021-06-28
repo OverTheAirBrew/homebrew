@@ -13,7 +13,9 @@ jobs:
           command: npm run build
       - run:
           name: test
-          command: npm run test
+          command: |
+            npm run test
+            npm run coverage
       - run:
           name: release
           command: |
