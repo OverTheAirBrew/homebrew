@@ -28,6 +28,8 @@ interface IOptions {
   };
 }
 
+const UI_PACKAGE = '@overtheairbrew/homebrew-ui';
+
 export class OtaHomebrewApp {
   private readonly baseControllerPath: string = join(
     __dirname,
@@ -57,6 +59,11 @@ export class OtaHomebrewApp {
         await this.loadAllServerControllers();
 
         await this.createDocs();
+
+        if (require.resolve(UI_PACKAGE)) {
+          const { initUi } = require(UI_PACKAGE);
+          initUi(this.expressApp);
+        }
 
         resolve(undefined);
       } catch (err) {
