@@ -9,7 +9,7 @@
   "scripts": {
     "test": "nyc --reporter=text-summary --reporter=lcov mocha 'dist/test/**/*.spec.js' --exit",
     "coverage": "codecov",
-    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules' '!comitlint.config.js'",
+    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules' '!commitlint.config.js'",
     "build": "tsc",
     "watch": "tsc --watch",
     "run-dev": "nodemon ./app/index.js",
