@@ -1,9 +1,16 @@
 import { join } from 'path';
+
 import {
   useExpressServer,
   useContainer,
   getMetadataArgsStorage,
 } from 'routing-controllers';
+
+import {
+  useContainer as cronUseContainer,
+  registerController,
+} from 'cron-typedi-decorators';
+
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import 'reflect-metadata';
 require('express-async-errors');
@@ -38,6 +45,8 @@ export class OtaHomebrewApp {
     '*.js',
   );
 
+  private readonly hooksPath: string = join(__dirname, 'hooks', '**', '*.js');
+
   public readonly expressApp: express.Express;
 
   private routingControllersOptions = {
@@ -54,6 +63,9 @@ export class OtaHomebrewApp {
     const ready = new Promise(async (resolve, reject) => {
       try {
         useContainer(Container);
+        cronUseContainer(Container);
+
+        registerController([this.hooksPath]);
 
         await this.runMigrations();
         await this.loadAllServerControllers();

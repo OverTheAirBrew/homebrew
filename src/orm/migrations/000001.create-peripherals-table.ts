@@ -20,9 +20,10 @@ async function up({ context: queryInterface }) {
       type: DataTypes.ENUM('gpio'),
       allowNull: false,
     },
-    gpio: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
+    config: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {},
     },
     createdAt: {
       type: DataTypes.DATE,

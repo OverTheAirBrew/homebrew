@@ -14,11 +14,11 @@ export class PeripheralsRepository extends BaseRepository<Peripheral> {
     super(Peripheral, wrapper.sequelize);
   }
 
-  public async createPeripheral(peripheral: {
+  public async createPeripheral<T>(peripheral: {
     name: string;
     type: string;
     communicationType: string;
-    gpio?: number;
+    config: T;
   }) {
     const createdPeripheral = await this.model.create({
       ...peripheral,

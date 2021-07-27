@@ -1,4 +1,11 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmptyObject,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export enum PeripheralType {
   'heater' = 'heater',
@@ -9,19 +16,29 @@ export enum PeripheralCommunicationType {
   'gpio' = 'gpio',
 }
 
+export class GpioConfig {
+  constructor(gpio: number) {
+    this.gpio = gpio;
+  }
+
+  @IsNumber()
+  @IsOptional()
+  gpio: number;
+}
+
 export class PeripheralDto {
   constructor(
     id: string,
     name: string,
     type: string,
     communicationType: string,
-    gpio: number,
+    config: GpioConfig,
   ) {
     this.id = id;
     this.name = name;
     this.type = type;
     this.communicationType = communicationType;
-    this.gpio = gpio;
+    this.config = config;
   }
 
   @IsString()
@@ -36,9 +53,9 @@ export class PeripheralDto {
   @IsString()
   communicationType: string;
 
-  @IsNumber()
+  @IsObject()
   @IsOptional()
-  gpio: number;
+  config: GpioConfig;
 }
 
 export class Peripheral {
@@ -51,7 +68,8 @@ export class Peripheral {
   @IsEnum(PeripheralCommunicationType)
   communicationType: string;
 
-  @IsNumber()
+  @IsObject()
+  @IsNotEmptyObject()
   @IsOptional()
-  gpio: number;
+  config: GpioConfig;
 }

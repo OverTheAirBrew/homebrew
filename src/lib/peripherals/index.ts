@@ -1,5 +1,10 @@
 import { ValidationError } from '../errors/validation-error';
-import { Peripheral, PeripheralDto } from '../models/peripheral';
+import {
+  GpioConfig,
+  Peripheral,
+  PeripheralCommunicationType,
+  PeripheralDto,
+} from '../models/peripheral';
 import { PeripheralsValidator } from './validation';
 
 import { PeripheralsRepository } from './repository';
@@ -21,7 +26,7 @@ export class PeripheralService {
         communicationType: request.communicationType,
         name: request.name,
         type: request.type,
-        gpio: request.gpio,
+        config: request.config,
       });
 
       return id;
@@ -41,12 +46,18 @@ export class PeripheralService {
   }
 
   private async mapPeripheral(peripheral: IPeripheral): Promise<PeripheralDto> {
+    let config: GpioConfig = undefined;
+
+    if (peripheral.communicationType === PeripheralCommunicationType.gpio) {
+      config = new GpioConfig(peripheral.config.gpio);
+    }
+
     return new PeripheralDto(
       peripheral.id,
       peripheral.name,
       peripheral.type.toString(),
       peripheral.communicationType.toString(),
-      peripheral.gpio,
+      config,
     );
   }
 }

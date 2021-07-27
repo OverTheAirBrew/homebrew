@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/src/application.ts",
+      "program": "${workspaceFolder}/dist/dev/index.js",
       "outFiles": ["${workspaceFolder}/**/*.js"],
       "envFile": "${workspaceFolder}/.env",
       "outputCapture": "std",

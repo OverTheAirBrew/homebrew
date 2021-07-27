@@ -15,7 +15,7 @@ export interface IPeripheral {
   name: string;
   type: PeripheralType;
   communicationType: PeripheralCommunicationType;
-  gpio?: number;
+  config?: any;
   readonly createdAt?: Date;
   readonly updatedAt?: Date;
 }
@@ -30,7 +30,7 @@ export default class Peripheral extends BaseModel<IPeripheral> {
   @Column(DataType.STRING) name: string;
   @Column(DataType.ENUM('heater')) type: PeripheralType;
   @Column(DataType.ENUM('gpio')) communicationType: PeripheralCommunicationType;
-  @Column(DataType.INTEGER) gpio?: number;
+  @Column(DataType.JSON) config: string;
   @Column(DataType.DATE) createdAt?: Date;
   @Column(DataType.DATE) updatedAt?: Date;
 }

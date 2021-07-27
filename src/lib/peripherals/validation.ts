@@ -16,11 +16,22 @@ export class PeripheralsValidator extends AbstractValidator<Peripheral> {
       .isIn(['gpio'])
       .withFailureCode('COMMUNICATION_TYPE_IS_INVALID');
 
+    this.validateIfAny((x) => x.config)
+      .isDefined()
+      .fulfills(new GpioConfigValidator())
+      .when((x) => x.communicationType === 'gpio')
+      .withFailureCode('GPIO_NUMBER_IS_NOT_IN_RANGE');
+  }
+}
+
+class GpioConfigValidator extends AbstractValidator<{ gpio: number }> {
+  constructor() {
+    super();
+
     this.validateIfNumber((x) => x.gpio)
       .isDefined()
       .isLessThan(20)
       .isGreaterThan(0)
-      .when((x) => x.communicationType === 'gpio')
       .withFailureCode('GPIO_NUMBER_IS_NOT_IN_RANGE');
   }
 }
