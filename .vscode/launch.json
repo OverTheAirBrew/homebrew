@@ -13,7 +13,8 @@
       "outFiles": ["${workspaceFolder}/**/*.js"],
       "envFile": "${workspaceFolder}/.env",
       "outputCapture": "std",
-      "runtimeVersion": "15",
+      // "runtimeVersion": "14",
+      "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v14.17.4/bin/node",
       "resolveSourceMapLocations": [
         "${workspaceFolder}/**",
         "!**/node_modules/**"

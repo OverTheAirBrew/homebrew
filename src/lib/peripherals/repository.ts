@@ -2,7 +2,7 @@ import { Service } from 'typedi';
 import Peripheral, {
   PeripheralCommunicationType,
   PeripheralType,
-} from '../../orm/models/peripherals';
+} from '../../orm/models/peripheral';
 import { PeripheralNotFoundError } from '../errors/peripheral-not-found';
 
 import { BaseRepository } from '../base-repository';

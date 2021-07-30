@@ -74,9 +74,10 @@ export class OtaHomebrewApp {
         useContainer(Container);
         cronUseContainer(Container);
 
+        await this.runMigrations();
+
         registerController([this.hooksPath]);
 
-        await this.runMigrations();
         await this.loadAllServerControllers();
 
         await this.createDocs();
@@ -126,6 +127,8 @@ export class OtaHomebrewApp {
   }
 
   private async runMigrations() {
+    logger.info('Running migrations');
+
     const wrapper = Container.get(SequelizeWrapper);
     const migration = new ProgramaticMigate(wrapper.sequelize as any, logger);
 

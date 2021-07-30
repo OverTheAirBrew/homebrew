@@ -8,7 +8,7 @@ import {
 import { PeripheralsValidator } from './validation';
 
 import { PeripheralsRepository } from './repository';
-import { IPeripheral } from '../../orm/models/peripherals';
+import { IPeripheral } from '../../orm/models/peripheral';
 import { Service } from 'typedi';
 
 @Service()
