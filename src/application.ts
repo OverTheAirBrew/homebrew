@@ -25,8 +25,12 @@ import { serve, setup } from 'swagger-ui-express';
 import * as version from 'project-version';
 import { ProgramaticMigate } from './orm/programatic-migrate';
 
-import { logger } from './lib/logger';
+import { Logger, logger } from './lib/logger';
 import { SequelizeWrapper } from './orm/sequelize-wrapper';
+
+import { createServer } from 'http';
+import { SocketIo } from './lib/socket';
+import * as cors from 'cors';
 
 interface IOptions {
   port: number;
@@ -57,8 +61,13 @@ export class OtaHomebrewApp {
 
   constructor(private options: IOptions) {
     this.expressApp = express();
+    this.expressApp.use(cors());
+
+    const httpServer = createServer(this.expressApp);
 
     Container.set('databasePath', this.options.database.path);
+    Container.set('http_instance', httpServer);
+    Container.set(Logger, logger);
 
     const ready = new Promise(async (resolve, reject) => {
       try {
@@ -77,6 +86,8 @@ export class OtaHomebrewApp {
           initUi(this.expressApp);
         }
 
+        Container.get(SocketIo);
+
         resolve(undefined);
       } catch (err) {
         reject(err);
@@ -85,7 +96,7 @@ export class OtaHomebrewApp {
 
     ready.then(() => {
       logger.info(`server listening on ${this.options.port}`);
-      this.expressApp.listen(this.options.port);
+      httpServer.listen(this.options.port);
     });
   }
 
