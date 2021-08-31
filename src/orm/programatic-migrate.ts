@@ -22,7 +22,8 @@ export class ProgramaticMigate {
   }
 
   public async up() {
-    await this.umzug.up();
+    const migratedFiles = await this.umzug.up();
+    return migratedFiles.map((file) => file.name);
   }
 
   public async down() {

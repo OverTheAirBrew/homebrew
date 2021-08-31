@@ -1,75 +1,41 @@
 import {
-  IsEnum,
   IsNotEmptyObject,
-  IsNumber,
   IsObject,
   IsOptional,
   IsString,
 } from 'class-validator';
 
-export enum PeripheralType {
-  'heater' = 'heater',
-  'pump' = 'pump',
-}
-
-export enum PeripheralCommunicationType {
-  'gpio' = 'gpio',
-}
-
-export class GpioConfig {
-  constructor(gpio: number) {
-    this.gpio = gpio;
-  }
-
-  @IsNumber()
-  @IsOptional()
-  gpio: number;
-}
-
 export class PeripheralDto {
-  constructor(
-    id: string,
-    name: string,
-    type: string,
-    communicationType: string,
-    config: GpioConfig,
-  ) {
+  constructor(id: string, name: string, type_id: string, config: any) {
     this.id = id;
     this.name = name;
-    this.type = type;
-    this.communicationType = communicationType;
+    this.type_id = type_id;
     this.config = config;
   }
 
   @IsString()
-  id: String;
+  id: string;
 
   @IsString()
   name: string;
 
   @IsString()
-  type: string;
-
-  @IsString()
-  communicationType: string;
+  type_id: string;
 
   @IsObject()
   @IsOptional()
-  config: GpioConfig;
+  config: any;
 }
 
 export class Peripheral {
   @IsString()
   name: string;
 
-  @IsEnum(PeripheralType)
-  type: PeripheralType;
-
-  @IsEnum(PeripheralCommunicationType)
-  communicationType: string;
+  @IsString()
+  type_id: string;
 
   @IsObject()
   @IsNotEmptyObject()
   @IsOptional()
-  config: GpioConfig;
+  config: any;
 }

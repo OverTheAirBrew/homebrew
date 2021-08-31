@@ -1,20 +1,16 @@
 import {
   Column,
-  Table,
   DataType,
-  PrimaryKey,
   Default,
+  PrimaryKey,
+  Table,
 } from 'sequelize-typescript';
 import { BaseModel } from '../base-model';
-
-export type PeripheralCommunicationType = 'gpio';
-export type PeripheralType = 'heater';
 
 export interface IPeripheral {
   id?: string;
   name: string;
-  type: PeripheralType;
-  communicationType: PeripheralCommunicationType;
+  type_id: string;
   config?: any;
   readonly createdAt?: Date;
   readonly updatedAt?: Date;
@@ -28,8 +24,10 @@ export default class Peripheral extends BaseModel<IPeripheral> {
   id?: string;
 
   @Column(DataType.STRING) name: string;
-  @Column(DataType.ENUM('heater')) type: PeripheralType;
-  @Column(DataType.ENUM('gpio')) communicationType: PeripheralCommunicationType;
+
+  @Column(DataType.STRING)
+  type_id: string;
+
   @Column(DataType.JSON) config: string;
   @Column(DataType.DATE) createdAt?: Date;
   @Column(DataType.DATE) updatedAt?: Date;

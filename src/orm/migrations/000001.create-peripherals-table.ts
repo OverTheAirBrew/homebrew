@@ -12,12 +12,8 @@ async function up({ context: queryInterface }) {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    type: {
-      type: DataTypes.ENUM('heater'),
-      allowNull: false,
-    },
-    communicationType: {
-      type: DataTypes.ENUM('gpio'),
+    type_id: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     config: {

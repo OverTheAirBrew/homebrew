@@ -1,5 +1,6 @@
-const TABLE_NAME = 'sensors';
 import { DataTypes } from 'sequelize';
+
+const TABLE_NAME = 'telemetries';
 
 async function up({ context: queryInterface }) {
   await queryInterface.createTable(TABLE_NAME, {
@@ -8,18 +9,14 @@ async function up({ context: queryInterface }) {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    name: {
-      type: DataTypes.STRING,
+    sensor_id: {
+      type: DataTypes.UUID,
       allowNull: false,
+      references: { model: 'sensors', key: 'id' },
     },
-    type_id: {
-      type: DataTypes.STRING,
+    reading: {
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
-    },
-    config: {
-      type: DataTypes.JSON,
-      allowNull: false,
-      defaultValue: {},
     },
     createdAt: {
       type: DataTypes.DATE,

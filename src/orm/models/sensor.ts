@@ -8,12 +8,10 @@ import {
 
 import { BaseModel } from '../base-model';
 
-export type SensorType = 'one-wire';
-
 export interface ISensor {
   id?: string;
   name: string;
-  type: SensorType;
+  type_id: string;
   config: any;
 
   readonly createdAt?: Date;
@@ -28,7 +26,10 @@ export default class Sensor extends BaseModel<ISensor> {
   id?: string;
 
   @Column(DataType.STRING) name: string;
-  @Column(DataType.ENUM('one-wire')) type: SensorType;
+
+  @Column(DataType.STRING)
+  type_id: string;
+
   @Column(DataType.JSON) config: any;
   @Column(DataType.DATE) createdAt?: Date;
   @Column(DataType.DATE) updatedAt?: Date;

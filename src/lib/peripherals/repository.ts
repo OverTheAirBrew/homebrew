@@ -1,12 +1,7 @@
 import { Service } from 'typedi';
-import Peripheral, {
-  PeripheralCommunicationType,
-  PeripheralType,
-} from '../../orm/models/peripheral';
-import { PeripheralNotFoundError } from '../errors/peripheral-not-found';
-
-import { BaseRepository } from '../base-repository';
+import Peripheral from '../../orm/models/peripheral';
 import { SequelizeWrapper } from '../../orm/sequelize-wrapper';
+import { BaseRepository } from '../base-repository';
 
 @Service()
 export class PeripheralsRepository extends BaseRepository<Peripheral> {
@@ -14,37 +9,23 @@ export class PeripheralsRepository extends BaseRepository<Peripheral> {
     super(Peripheral, wrapper.sequelize);
   }
 
-  public async createPeripheral<T>(peripheral: {
-    name: string;
-    type: string;
-    communicationType: string;
-    config: T;
-  }) {
-    const createdPeripheral = await this.model.create({
-      ...peripheral,
-      communicationType:
-        peripheral.communicationType as PeripheralCommunicationType,
-      type: peripheral.type as PeripheralType,
+  public async createPeripheral(name: string, type_id: string, config: {}) {
+    const peripheral = await this.model.create({
+      name,
+      type_id,
+      config,
     });
-    return createdPeripheral.id;
+
+    return peripheral.id;
   }
 
   public async getPeripherals() {
-    const peripherals = await this.model.findAll({});
+    const peripherals = await this.model.findAll({ where: {} });
     return peripherals.map((peripheral) => peripheral.toJSON());
   }
 
-  public async getPeripheralByTypeAndId(id: string) {
-    const peripheral = await this.model.findOne({
-      where: {
-        id,
-      },
-    });
-
-    if (!peripheral) {
-      throw new PeripheralNotFoundError(id);
-    }
-
+  public async getPeripheral(peripheral_id: string) {
+    const peripheral = await this.model.findByPk(peripheral_id);
     return peripheral.toJSON();
   }
 }

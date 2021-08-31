@@ -157,3 +157,5 @@ app/ota.db
 **/*.d.ts
 
 !commitlint.config.js
+
+.npmrc
