@@ -3,7 +3,8 @@ import { OtaHomebrewApp } from '../src/application';
 
 new OtaHomebrewApp({
   database: {
-    path: join(__dirname, 'database.db'),
+    dialect: 'sqlite',
+    storage: join(__dirname, 'database.db'),
   },
   port: 9000,
 });

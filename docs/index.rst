@@ -17,6 +17,6 @@ Welcome to OverTheAirBrew Homebrew
 
 .. toctree::
   :maxdepth: 2
-  :caption: Development
+  :caption: Plugins
 
-  development/plugins
+  plugins/sensor

@@ -12,17 +12,14 @@ async function up({ context: queryInterface }) {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    type: {
-      type: DataTypes.ENUM('heater'),
+    type_id: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    communicationType: {
-      type: DataTypes.ENUM('gpio'),
+    config: {
+      type: DataTypes.JSON,
       allowNull: false,
-    },
-    gpio: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
+      defaultValue: {},
     },
     createdAt: {
       type: DataTypes.DATE,

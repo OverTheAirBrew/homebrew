@@ -1,11 +1,11 @@
-import { SequelizeStorage, Umzug } from 'umzug';
+import { ILogger } from '@overtheairbrew/homebrew-plugin';
 import { Sequelize } from 'sequelize';
-import { Logger } from '../lib/logger';
+import { SequelizeStorage, Umzug } from 'umzug';
 
 export class ProgramaticMigate {
   private readonly umzug: Umzug;
 
-  constructor(private connection: Sequelize, logger: Logger) {
+  constructor(private connection: Sequelize, logger: ILogger) {
     this.umzug = new Umzug({
       migrations: { glob: '**/migrations/*.js' },
       context: this.connection.getQueryInterface(),
@@ -22,7 +22,8 @@ export class ProgramaticMigate {
   }
 
   public async up() {
-    await this.umzug.up();
+    const migratedFiles = await this.umzug.up();
+    return migratedFiles.map((file) => file.name);
   }
 
   public async down() {

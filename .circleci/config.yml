@@ -3,6 +3,12 @@ jobs:
   build:
     docker:
       - image: 'circleci/node:14'
+      - image: mysql:5.7
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          MYSQL_DATABASE: circle_test
+    environment:
+      DB_URL: mysql://root@127.0.0.1/circle_test
     steps:
       - checkout
       - run:
@@ -14,7 +20,7 @@ jobs:
       - run:
           name: test
           command: |
-            node ./dist/test/test-startup.js  
+            npm run test-migrate
 
             npm run test
             npm run coverage

@@ -1,52 +1,88 @@
-import { ValidationError } from '../errors/validation-error';
+import {
+  Actor as ActorType,
+  ActorToken,
+} from '@overtheairbrew/homebrew-plugin';
+import { InjectMany, Service } from 'typedi';
+import { IPeripheral } from '../../orm/models/peripheral';
+import { createValidationErrorWithConfigError } from '../errors/create-validation-error-with-config-error';
+import { PeripheralNotFoundError } from '../errors/peripheral-not-found';
+import { Logger } from '../logger';
 import { Peripheral, PeripheralDto } from '../models/peripheral';
-import { PeripheralsValidator } from './validation';
-
 import { PeripheralsRepository } from './repository';
-import { IPeripheral } from '../../orm/models/peripherals';
-import { Service } from 'typedi';
+import { PeripheralsValidator } from './validation';
 
 @Service()
 export class PeripheralService {
   constructor(
+    @InjectMany(ActorToken) private actors: ActorType[],
+    private logger: Logger,
     private validator: PeripheralsValidator,
     private repository: PeripheralsRepository,
   ) {}
 
-  public async createPeripheral(request: Peripheral) {
-    const validationResult = await this.validator.validateAsync(request);
+  private async getPeripheralImplementation(
+    type_id: string,
+    shouldThrow: boolean = false,
+  ) {
+    const implementation = this.actors.find((a) => a.actorName === type_id);
 
-    if (validationResult.isValid()) {
-      const id = await this.repository.createPeripheral({
-        communicationType: request.communicationType,
-        name: request.name,
-        type: request.type,
-        gpio: request.gpio,
-      });
+    if (!implementation) {
+      if (shouldThrow) {
+        throw new PeripheralNotFoundError(type_id);
+      }
+
+      this.logger.error(new PeripheralNotFoundError(type_id));
+      return null;
+    }
+
+    return implementation;
+  }
+
+  public async createPeripheral(peripheral: Peripheral) {
+    const peripheralImplementation = await this.getPeripheralImplementation(
+      peripheral.type_id,
+    );
+
+    const validationResult = await this.validator.validateAsync(peripheral);
+    const configValid = await peripheralImplementation.validate(
+      peripheral.config,
+    );
+
+    if (validationResult.isValid() && configValid) {
+      const id = await this.repository.createPeripheral(
+        peripheral.name,
+        peripheral.type_id,
+        peripheral.config,
+      );
 
       return id;
     }
 
-    throw new ValidationError(validationResult);
+    const error = await createValidationErrorWithConfigError(
+      validationResult.getFailures(),
+      configValid,
+      peripheral.config,
+    );
+
+    throw error;
   }
 
   public async getPeripherals() {
-    const heaters = await this.repository.getPeripherals();
-    return await Promise.all(heaters.map(this.mapPeripheral));
+    const peripherals = await this.repository.getPeripherals();
+    return await Promise.all(peripherals.map(this.mapPeripheral));
   }
 
-  public async getPeripheralById(id: string) {
-    const heater = await this.repository.getPeripheralByTypeAndId(id);
-    return await this.mapPeripheral(heater);
+  public async getPeripheralById(peripheral_id: string) {
+    const peripheral = await this.repository.getPeripheral(peripheral_id);
+    return await this.mapPeripheral(peripheral);
   }
 
   private async mapPeripheral(peripheral: IPeripheral): Promise<PeripheralDto> {
-    return new PeripheralDto(
-      peripheral.id,
-      peripheral.name,
-      peripheral.type.toString(),
-      peripheral.communicationType.toString(),
-      peripheral.gpio,
-    );
+    return {
+      id: peripheral.id,
+      name: peripheral.name,
+      type_id: peripheral.type_id,
+      config: peripheral.config,
+    };
   }
 }

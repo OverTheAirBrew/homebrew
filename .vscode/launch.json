@@ -9,15 +9,11 @@
       "request": "launch",
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/src/application.ts",
-      "outFiles": ["${workspaceFolder}/**/*.js"],
-      "envFile": "${workspaceFolder}/.env",
+      "program": "${workspaceFolder}/dist/dev/index.js",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
       "outputCapture": "std",
-      "runtimeVersion": "15",
-      "resolveSourceMapLocations": [
-        "${workspaceFolder}/**",
-        "!**/node_modules/**"
-      ]
+      "envFile": "${workspaceFolder}/.env",
+      "runtimeVersion": "16"
     }
   ]
 }

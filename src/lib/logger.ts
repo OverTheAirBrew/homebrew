@@ -1,7 +1,9 @@
+import { ILogger } from '@overtheairbrew/homebrew-plugin';
+import { Inject, Service } from 'typedi';
 import {
-  Logger as WinstonLogger,
   createLogger,
   format,
+  Logger as WinstonLogger,
   transports,
 } from 'winston';
 
@@ -11,12 +13,13 @@ interface ILoggingOptions {
   level: LogLevel;
 }
 
-type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'verbose';
+export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'verbose';
 
-export class Logger {
+@Service()
+export class Logger implements ILogger {
   private readonly _logger: WinstonLogger;
 
-  constructor(options: ILoggingOptions) {
+  constructor(@Inject('loggingOptions') options: ILoggingOptions) {
     this._logger = createLogger({
       level: options.level,
       format: format.json(),
