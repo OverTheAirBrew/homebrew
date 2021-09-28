@@ -15,7 +15,7 @@
     "prepare": "husky install",
     "run-dev": "nodemon ./app/index.js",
     "semantic-release": "semantic-release",
-    "test-migrate": "node ./test/integration-test/utils/migrate-database.js"
+    "test-migrate": "node ./dist/test/integration-test/utils/migrate-database.js"
   },
   "keywords": [],
   "author": "",
