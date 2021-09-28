@@ -1,17 +1,18 @@
 {
   "name": "@overtheairbrew/homebrew",
   "version": "0.6.0-next.2",
-  "main": "src/application.js",
+  "main": "dist/application.js",
   "files": [
-    "src"
+    "dist/src"
   ],
   "scripts": {
-    "test": "nyc --silent --no-clean mocha 'test/**/*.spec.js' --exit --bail",
+    "test": "nyc --silent --no-clean mocha 'dist/test/**/*.spec.js' --exit --bail",
     "posttest": "nyc --check-coverage=true report --reporter=lcov --reporter=text-summary --reporter=cobertura",
     "coverage": "codecov",
-    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules' '!commitlint.config.js'",
+    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules' '!commitlint.config.js' 'dist'",
     "build": "tsc",
     "watch": "tsc --watch",
+    "prepare": "husky install",
     "run-dev": "nodemon ./app/index.js",
     "semantic-release": "semantic-release",
     "test-migrate": "node ./test/integration-test/utils/migrate-database.js"
@@ -84,6 +85,7 @@
     "chai": "^4.3.4",
     "codecov": "^3.8.2",
     "del-cli": "^4.0.0",
+    "husky": "^7.0.2",
     "mocha": "^8.4.0",
     "mysql2": "^2.3.0",
     "nyc": "^15.1.0",
@@ -103,5 +105,8 @@
   },
   "peerDependencies": {
     "tslib": "^1.9.0"
+  },
+  "lint-staged": {
+    "*.ts": "prettier --write"
   }
 }

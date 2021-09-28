@@ -1,5 +1,5 @@
-import { ValidationError } from './validation-error';
 import { ValidationFailure, ValidationResult } from 'fluent-ts-validator';
+import { ValidationError } from './validation-error';
 
 export async function createValidationErrorWithConfigError(
   failures: ValidationFailure[],

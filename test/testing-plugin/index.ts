@@ -1,4 +1,6 @@
 import {
+  Actor,
+  ActorToken,
   IPackageConfig,
   Logic,
   LogicToken,
@@ -35,8 +37,23 @@ class TestLogic extends Logic {
   }
 }
 
+@Service({ id: ActorToken, multiple: true })
+class TestActor extends Actor {
+  constructor() {
+    super('test-actor', []);
+  }
+
+  async on(params: any): Promise<void> {
+    return;
+  }
+
+  async off(params: any): Promise<void> {
+    return;
+  }
+}
+
 const config: IPackageConfig = {
-  actors: [],
+  actors: [TestActor],
   logics: [TestLogic],
   sensors: [TestSensor],
 };

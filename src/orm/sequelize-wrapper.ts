@@ -14,7 +14,10 @@ interface MysqlDatabaseOptions {
   url: string;
 }
 
-export type DatabaseOptions = SqlLiteDatabaseOptions | MysqlDatabaseOptions;
+export type DatabaseOptions = { cwd?: string } & (
+  | SqlLiteDatabaseOptions
+  | MysqlDatabaseOptions
+);
 
 @Service()
 export class SequelizeWrapper {
@@ -25,7 +28,7 @@ export class SequelizeWrapper {
 
     this._internalSequelize = new Sequelize({
       ...config,
-      models: [join(__dirname, 'models', '*.js')],
+      models: [join(options.cwd || __dirname, 'models', '*.js')],
     });
   }
 

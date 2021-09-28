@@ -12,7 +12,7 @@ export class PeripheralTypesController {
   @Get('/peripheral-types')
   @HttpCode(200)
   @ResponseSchema(PeripheralTypeDto, { isArray: true })
-  async getSensorTypes(): Promise<PeripheralTypeDto[]> {
+  async getPeripheralTypes(): Promise<PeripheralTypeDto[]> {
     const peripheralTypes = await this.service.getPeripheralTypes();
     return peripheralTypes;
   }

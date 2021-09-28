@@ -8,7 +8,8 @@
     "declaration": true,
     "noUnusedLocals": true,
     "skipLibCheck": true,
-    "lib": ["es2017"]
+    "lib": ["es2017"],
+    "outDir": "dist"
   },
   "include": ["src/**/*.ts", "test/**/*.ts", "dev/**/*.ts"],
   "exclude": ["node_modules"]

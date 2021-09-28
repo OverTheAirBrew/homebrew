@@ -2,10 +2,15 @@
   "extends": "@istanbuljs/nyc-config-typescript",
   "all": true,
   "include": [
+    "dist/src/**/*",
     "src/**/*"
   ],
   "exclude": [
-    "**/*.spec.js"
+    "**/*.spec.js",
+    "**/*.d.ts",
+    "**/orm/**/*",
+    "**/workers/**/*",
+    "**/hooks/**/*"
   ],
   "sourcemap": true,
   "branches": 100,

@@ -1,6 +1,5 @@
 import { AbstractValidator } from 'fluent-ts-validator';
 import { Inject, Service } from 'typedi';
-
 import { Sensor } from '../models/sensor';
 
 @Service()
@@ -10,7 +9,6 @@ export class SensorValidator extends AbstractValidator<Sensor> {
 
     this.validateIfString((x) => x.name)
       .isDefined()
-      .isAlphanumeric()
       .withFailureCode('NAME_INVALID');
 
     this.validateIfString((x) => x.type_id)

@@ -26,6 +26,7 @@ import {
   useExpressServer,
 } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
+import 'source-map-support/register';
 import { EventEmitter } from 'stream';
 import { serve, setup } from 'swagger-ui-express';
 import { Container } from 'typedi';
