@@ -6,7 +6,7 @@ Promise.resolve()
   .then(async () => {
     const wrapper = new SequelizeWrapper({
       dialect: 'mysql',
-      url: 'mysql://root:@localhost/homebrew',
+      url: process.env.DB_URL || 'mysql://root:@localhost/homebrew',
     });
 
     const logger = new Logger({
