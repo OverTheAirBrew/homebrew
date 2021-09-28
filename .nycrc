@@ -1,17 +1,13 @@
 {
+  "extends": "@istanbuljs/nyc-config-typescript",
   "all": true,
   "include": [
-    "app/**"
+    "src/**/*"
   ],
   "exclude": [
-    "**/orm/**",
-    "**/*.spec.*",
-    "**/logger.*",
-    "**/load-server-controllers.*",
-    "**/index.*",
-    "**/errors/*.*"
+    "**/*.spec.js"
   ],
-  "check-coverage": false,
+  "sourcemap": true,
   "branches": 100,
   "functions": 100,
   "lines": 100,

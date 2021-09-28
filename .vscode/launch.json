@@ -10,15 +10,10 @@
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/dist/dev/index.js",
-      "outFiles": ["${workspaceFolder}/**/*.js"],
-      "envFile": "${workspaceFolder}/.env",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
       "outputCapture": "std",
-      // "runtimeVersion": "14",
-      "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v14.17.4/bin/node",
-      "resolveSourceMapLocations": [
-        "${workspaceFolder}/**",
-        "!**/node_modules/**"
-      ]
+      "envFile": "${workspaceFolder}/.env",
+      "runtimeVersion": "16"
     }
   ]
 }

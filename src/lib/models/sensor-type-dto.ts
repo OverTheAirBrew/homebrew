@@ -1,14 +1,9 @@
-import {
-  Property,
-  SelectBoxProperty,
-  StringProperty,
-} from '@overtheairbrew/homebrew-plugin/dist/properties';
 import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class SensorTypeDto {
-  constructor(id: string, properties: Property[]) {
+  constructor(id: string, properties: PropertyDto[]) {
     this.id = id;
-    this.properties = properties.map((prop) => new PropertyDto(prop));
+    this.properties = properties;
   }
 
   @IsString()
@@ -19,18 +14,10 @@ export class SensorTypeDto {
 }
 
 export class PropertyDto {
-  constructor(property: Property) {
-    this.type = property.type;
-    this.isRequired = property.required;
-    this.name = property.name;
-
-    if (property.type === 'select-box') {
-      this.selectBoxValues = (property as SelectBoxProperty<any>).values;
-    }
-
-    if (property.type === 'string') {
-      this.placeholder = (property as StringProperty).placeholder;
-    }
+  constructor(type: any, required: boolean, name: string) {
+    this.type = type;
+    this.isRequired = required;
+    this.name = name;
   }
 
   @IsString()

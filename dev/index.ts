@@ -1,12 +1,16 @@
-import { join } from 'path';
 import { OtaHomebrewApp } from '../src/application';
 
 Promise.resolve()
   .then(async () => {
     new OtaHomebrewApp({
       port: 9090,
+      // database: {
+      //   dialect: 'sqlite',
+      //   storage: join(__dirname, 'database.db'),
+      // },
       database: {
-        path: join(__dirname, 'database.db'),
+        dialect: 'mysql',
+        url: 'mysql://root:@localhost:3306/homebrew',
       },
     });
   })

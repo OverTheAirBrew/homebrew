@@ -6,14 +6,10 @@
     "emitDecoratorMetadata": true,
     "sourceMap": true,
     "declaration": true,
-    // "strictNullChecks": true,
     "noUnusedLocals": true,
     "skipLibCheck": true,
-    "pretty": true,
-    "outDir": "dist",
     "lib": ["es2017"]
   },
-  "compileOnSave": true,
   "include": ["src/**/*.ts", "test/**/*.ts", "dev/**/*.ts"],
   "exclude": ["node_modules"]
 }

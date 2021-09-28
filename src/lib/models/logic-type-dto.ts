@@ -1,11 +1,10 @@
-import { Property } from '@overtheairbrew/homebrew-plugin';
 import { IsArray, IsString } from 'class-validator';
 import { PropertyDto } from './sensor-type-dto';
 
 export class LogicTypeDto {
-  constructor(id: string, properties: Property[]) {
+  constructor(id: string, properties: PropertyDto[]) {
     this.id = id;
-    this.properties = properties.map((prop) => new PropertyDto(prop));
+    this.properties = properties;
   }
 
   @IsString()

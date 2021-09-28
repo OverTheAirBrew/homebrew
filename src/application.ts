@@ -1,99 +1,124 @@
-import { join } from 'path';
-
+import { IPackageConfig } from '@overtheairbrew/homebrew-plugin';
 import {
-  useExpressServer,
-  useContainer,
-  getMetadataArgsStorage,
-} from 'routing-controllers';
-
-import {
-  useContainer as cronUseContainer,
-  registerController,
-} from 'cron-typedi-decorators';
-
-import {
+  Queues,
   registerController as registerListeners,
   useContainer as useListenerContainer,
-  Queues,
-} from '@overtheairbrew/in-memory-queue';
-
-import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
-import 'reflect-metadata';
-require('express-async-errors');
-import * as express from 'express';
-import { Container } from 'typedi';
-import { json } from 'body-parser';
-import { routingControllersToSpec } from 'routing-controllers-openapi';
-
-import { defaultMetadataSrotage } from 'class-transformer/cjs/storage';
-import { serve, setup } from 'swagger-ui-express';
-
-import * as version from 'project-version';
-import { ProgramaticMigate } from './orm/programatic-migrate';
-
-import { Logger, logger } from './lib/logger';
-import { SequelizeWrapper } from './orm/sequelize-wrapper';
-
-import { createServer, Server } from 'http';
+} from '@overtheairbrew/node-typedi-in-memory-queue';
 import { SocketIo } from '@overtheairbrew/socket-io';
+import { json } from 'body-parser';
+import { defaultMetadataSrotage } from 'class-transformer/cjs/storage';
+import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import * as cors from 'cors';
-
+import {
+  registerController,
+  useContainer as cronUseContainer,
+} from 'cron-typedi-decorators';
+import * as express from 'express';
 // import { sync } from 'glob';
 import * as fg from 'fast-glob';
+import { createServer, Server } from 'http';
+import { join } from 'path';
+import * as version from 'project-version';
+import 'reflect-metadata';
+import {
+  getMetadataArgsStorage,
+  useContainer,
+  useExpressServer,
+} from 'routing-controllers';
+import { routingControllersToSpec } from 'routing-controllers-openapi';
+import { EventEmitter } from 'stream';
+import { serve, setup } from 'swagger-ui-express';
+import { Container } from 'typedi';
+import { OtaContainer } from './lib/container';
+import { logger } from './lib/logger';
+import { ProgramaticMigate } from './orm/programatic-migrate';
+import { DatabaseOptions, SequelizeWrapper } from './orm/sequelize-wrapper';
 
-import { IPackageConfig } from '@overtheairbrew/homebrew-plugin';
-import { SensorTypeService } from './lib/sensor-types';
+require('express-async-errors');
 
 interface IOptions {
   port: number;
-  database: {
-    path: string;
-  };
+  database: DatabaseOptions;
+  pluginPatterns?:
+    | string[]
+    | [
+        'node_modules/@overtheairbrew/homebrew-plugin-**',
+        'node_modules/ota-homebrew-plugin-**',
+      ];
+  cwd?: string;
 }
 
 const UI_PACKAGE = '@overtheairbrew/homebrew-ui';
 
-export class OtaHomebrewApp {
-  private readonly baseControllerPath: string = join(
-    __dirname,
-    'controllers',
-    '**',
-    '*.js',
-  );
+export class OtaHomebrewApp extends EventEmitter {
+  protected disableMigrations: boolean = false;
+  public isListening: boolean = false;
 
-  private readonly hooksPath: string = join(__dirname, 'hooks', '**', '*.js');
-  private readonly workersPath: string = join(
-    __dirname,
-    'workers',
-    '**',
-    '*.js',
-  );
+  private paths: { hooks: string; controllers: string; workers: string } = {
+    hooks: '',
+    controllers: '',
+    workers: '',
+  };
 
-  public readonly expressApp: express.Express;
+  protected readonly expressApp: express.Express;
 
-  private routingControllersOptions = {
-    controllers: [this.baseControllerPath],
-    routePrefix: '/server',
-    middleware: [json()],
+  private routingControllersOptions: {
+    controllers: string[];
+    routePrefix: string;
+    middleware: any[];
+  };
+
+  private pluginConfiguration: IPackageConfig = {
+    sensors: [],
+    actors: [],
+    logics: [],
   };
 
   constructor(private options: IOptions) {
+    super();
+
     this.expressApp = express();
     this.expressApp.use(cors());
+
+    this.paths['controllers'] = join(
+      this.options.cwd || __dirname,
+      'controllers',
+      '**',
+      '*.js',
+    );
+
+    this.paths['hooks'] = join(
+      this.options.cwd || __dirname,
+      'hooks',
+      '**',
+      '*.js',
+    );
+
+    this.paths['workers'] = join(
+      this.options.cwd || __dirname,
+      'workers',
+      '**',
+      '*.js',
+    );
+
+    this.routingControllersOptions = {
+      controllers: [this.paths['controllers']],
+      routePrefix: '/server',
+      middleware: [json()],
+    };
 
     const httpServer = createServer(this.expressApp);
     const queues = new Queues();
 
     const ready = new Promise(async (resolve, reject) => {
       try {
-        const pluginConfig = await this.loadPlugins();
+        await this.loadPlugins(this.options.pluginPatterns, this.options.cwd);
 
         await this.setupContainer(
           options,
           httpServer,
-          logger,
           queues,
-          pluginConfig,
+          this.pluginConfiguration,
         );
 
         useContainer(Container);
@@ -102,14 +127,8 @@ export class OtaHomebrewApp {
 
         await this.runMigrations();
 
-        const sensorTypesService = Container.get(SensorTypeService);
-        Container.set(
-          'sensorTypes',
-          await sensorTypesService.getSensorTypeIds(),
-        );
-
-        registerController([this.hooksPath]);
-        registerListeners([this.workersPath], queues);
+        registerController([this.paths['hooks']]);
+        registerListeners([this.paths['workers']], queues);
 
         await this.loadAllServerControllers();
 
@@ -131,65 +150,47 @@ export class OtaHomebrewApp {
     ready.then(() => {
       logger.info(`server listening on ${this.options.port}`);
       httpServer.listen(this.options.port);
+
+      this.emit('application-started');
+      this.isListening = true;
     });
   }
 
-  private async loadPlugins() {
-    const pluginConfiguration: IPackageConfig = {
-      sensors: [],
-      actors: [],
-      logics: [],
-    };
-
-    const plugins = await fg(
-      [
-        'node_modules/@overtheairbrew/homebrew-plugin-**',
-        'node_modules/ota-homebrew-plugin-**',
-      ],
-      {
-        onlyDirectories: true,
-      },
-    );
+  private async loadPlugins(patterns: string[], cwd: string) {
+    const plugins = await fg(patterns, {
+      onlyDirectories: true,
+      cwd,
+    });
 
     for (const plugin of plugins) {
       const pluginPath = plugin.replace('node_modules/', '');
       const pluginConfig: IPackageConfig = require(pluginPath).default;
 
-      pluginConfiguration.sensors = pluginConfiguration.sensors.concat(
-        pluginConfig.sensors || [],
-      );
+      this.pluginConfiguration.sensors =
+        this.pluginConfiguration.sensors.concat(pluginConfig.sensors || []);
 
-      pluginConfiguration.actors = pluginConfiguration.actors.concat(
+      this.pluginConfiguration.actors = this.pluginConfiguration.actors.concat(
         pluginConfig.actors || [],
       );
 
-      pluginConfiguration.logics = pluginConfiguration.logics.concat(
+      this.pluginConfiguration.logics = this.pluginConfiguration.logics.concat(
         pluginConfig.logics || [],
       );
     }
-
-    return pluginConfiguration;
   }
 
   private async setupContainer(
     options: IOptions,
     httpServer: Server,
-    logger: Logger,
     queues: Queues,
     pluginConfiguration: IPackageConfig,
   ) {
-    Container.set('socket.io_cors_origin', `*`);
-
-    Container.set('databasePath', options.database.path);
-    Container.set('http_instance', httpServer);
-    Container.set(Logger, logger);
-    Container.set(Queues, queues);
-
-    Container.import([
-      ...pluginConfiguration.sensors,
-      ...pluginConfiguration.actors,
-      ...pluginConfiguration.logics,
-    ]);
+    await OtaContainer.setupContainer(
+      httpServer,
+      options.database,
+      queues,
+      pluginConfiguration,
+    );
   }
 
   private async createDocs() {
@@ -218,6 +219,8 @@ export class OtaHomebrewApp {
   }
 
   private async runMigrations() {
+    if (this.disableMigrations) return;
+
     logger.info('Running migrations');
 
     const wrapper = Container.get(SequelizeWrapper);

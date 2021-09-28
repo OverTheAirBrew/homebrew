@@ -6,7 +6,7 @@ import { LogicTypeDto } from '../lib/models/logic-type-dto';
 
 @JsonController()
 @Service()
-export class PeripheralTypesController {
+export class LogicTypesController {
   constructor(private service: LogicTypeService) {}
 
   @Get('/logic-types')
