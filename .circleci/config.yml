@@ -6,7 +6,6 @@ jobs:
       - image: mysql:5.6
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
-          MYSQL_USER: root
           MYSQL_DATABASE: circle_test
     environment:
       DB_URL: mysql://root@127.0.0.1/circle_test
