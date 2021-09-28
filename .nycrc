@@ -12,7 +12,7 @@
     "**/workers/**/*",
     "**/hooks/**/*"
   ],
-  "sourcemap": true,
+  "sourcemap": false,
   "branches": 100,
   "functions": 100,
   "lines": 100,

@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "test": "nyc --silent --no-clean mocha 'dist/test/**/*.spec.js' --exit --bail",
-    "posttest": "nyc --check-coverage=true report --reporter=lcov --reporter=text-summary --reporter=cobertura",
+    "posttest": "nyc report --reporter=lcov --reporter=text-summary --reporter=cobertura",
     "coverage": "codecov",
     "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules' '!commitlint.config.js' 'dist'",
     "build": "tsc",
