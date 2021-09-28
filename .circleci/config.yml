@@ -9,6 +9,8 @@ jobs:
           MYSQL_DATABASE: circle_test
     environment:
       DB_URL: mysql://root@127.0.0.1/circle_test
+      HUSKY: '0'
+      CI: 'true'
     steps:
       - checkout
       - run:
