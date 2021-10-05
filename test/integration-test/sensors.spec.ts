@@ -6,14 +6,14 @@ import { cleanup } from './utils/cleanup';
 import { application, applicationReady } from './utils/test-application';
 
 describe('sensors', () => {
+  let sequelize: Sequelize;
+
+  before(async () => {
+    sequelize = await cleanup();
+    await applicationReady();
+  });
+
   describe('POST /sensors', () => {
-    let sequelize: Sequelize;
-
-    before(async () => {
-      sequelize = await cleanup();
-      await applicationReady();
-    });
-
     it('should save the sensor when its config is correct', async () => {
       const { status } = await request(application.server)
         .post('/server/sensors')

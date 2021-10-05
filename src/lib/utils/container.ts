@@ -6,10 +6,10 @@ import {
 import { Queues } from '@overtheairbrew/node-typedi-in-memory-queue';
 import { Server } from 'http';
 import Container from 'typedi';
-import { DatabaseOptions } from '../orm/sequelize-wrapper';
+import { DatabaseOptions } from '../../orm/sequelize-wrapper';
+import { SensorTypeService } from '../sensor-types';
 import { Logger } from './logger';
 import { MessagingManager } from './messaging-manager';
-import { SensorTypeService } from './sensor-types';
 
 export class OtaContainer {
   constructor() {}

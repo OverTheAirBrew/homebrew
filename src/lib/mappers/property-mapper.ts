@@ -16,8 +16,12 @@ export class PropertyTypeMapper {
     );
 
     if (property.type === 'select-box') {
-      const values = await (property as SelectBoxProperty<any>).getValues();
+      const castProp = property as SelectBoxProperty<any>;
+
+      const values = await castProp.getValues();
+
       prop.selectBoxValues = values;
+      prop.selectBoxDefaultValue = castProp.defaultValue;
     }
 
     if (property.type === 'string') {

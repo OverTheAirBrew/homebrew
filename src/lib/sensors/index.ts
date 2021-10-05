@@ -1,74 +1,33 @@
-import { InjectMany, Service } from 'typedi';
-import { SensorRepository } from './repository';
-import { Sensor } from '../models/sensor';
-
-import { SensorValidator } from './validation';
-import { ValidationError } from '../errors/validation-error';
 import {
-  SensorToken,
   Sensor as SensorType,
+  SensorToken,
 } from '@overtheairbrew/homebrew-plugin';
-import { ValidationFailure, ValidationResult } from 'fluent-ts-validator';
-import { SensorImplementationNotFoundError } from '../errors/sensor-implementation-not-found';
-import { TelemetryRepository } from '../telemetry/repoository';
-import { Logger } from '../logger';
+import { InjectMany, Service } from 'typedi';
+import { createValidationErrorWithConfigError } from '../errors/create-validation-error-with-config-error';
+import { Sensor } from '../models/sensor';
+import { SensorRepository } from './repository';
+import { SensorValidator } from './validation';
 
 @Service()
 export class SensorService {
   constructor(
     private sensorRepository: SensorRepository,
-    private telemetryRepository: TelemetryRepository,
     private validator: SensorValidator,
     @InjectMany(SensorToken) private sensors: SensorType[],
-    private logger: Logger,
   ) {}
 
-  private async getSensorImplementation(
-    type_id: string,
-    shouldThrow: boolean = true,
-  ): Promise<SensorType> {
+  private async getSensorImplementation(type_id: string): Promise<SensorType> {
     const implementation = this.sensors.find((si) => si.sensorType === type_id);
-
-    if (!implementation) {
-      if (shouldThrow) {
-        throw new SensorImplementationNotFoundError(type_id);
-      }
-
-      this.logger.error(new SensorImplementationNotFoundError(type_id));
-      return null;
-    }
-
     return implementation;
   }
 
-  public async sendDataForConfiguredSensors() {
-    const sensors = await this.sensorRepository.getSensors();
-
-    for (const sensor of sensors) {
-      const sensorImplementation = await this.getSensorImplementation(
-        sensor.type_id,
-        false,
-      );
-
-      if (!sensorImplementation) {
-        continue;
-      }
-
-      const value = await sensorImplementation.run({
-        sensor_id: sensor.id,
-        ...sensor.config,
-      });
-      if (!value) return;
-      await this.telemetryRepository.addTelemetryRecord(sensor.id, value);
-    }
-  }
-
   public async createSensor(sensor: Sensor) {
+    const validationResult = await this.validator.validateAsync(sensor);
+
     const sensorImplementation = await this.getSensorImplementation(
       sensor.type_id,
     );
 
-    const validationResult = await this.validator.validateAsync(sensor);
     const configValid = await sensorImplementation.validate(sensor.config);
 
     if (validationResult.isValid() && configValid) {
@@ -81,20 +40,12 @@ export class SensorService {
       return id;
     }
 
-    const newValidationResult = new ValidationResult();
-    newValidationResult.addFailures(validationResult.getFailures());
+    const error = await createValidationErrorWithConfigError(
+      validationResult.getFailures(),
+      configValid,
+      sensor.config,
+    );
 
-    if (!configValid) {
-      newValidationResult.addFailures([
-        new ValidationFailure(
-          '',
-          'config',
-          sensor.config,
-          'SENSOR_CONFIG_INVALID',
-        ),
-      ]);
-    }
-
-    throw new ValidationError(newValidationResult);
+    throw error;
   }
 }

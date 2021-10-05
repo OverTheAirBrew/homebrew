@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import Peripheral from '../../orm/models/peripheral';
 import { SequelizeWrapper } from '../../orm/sequelize-wrapper';
-import { BaseRepository } from '../base-repository';
+import { BaseRepository } from '../utils/base-repository';
 
 @Service()
 export class PeripheralsRepository extends BaseRepository<Peripheral> {

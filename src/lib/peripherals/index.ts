@@ -5,8 +5,6 @@ import {
 import { InjectMany, Service } from 'typedi';
 import { IPeripheral } from '../../orm/models/peripheral';
 import { createValidationErrorWithConfigError } from '../errors/create-validation-error-with-config-error';
-import { PeripheralNotFoundError } from '../errors/peripheral-not-found';
-import { Logger } from '../logger';
 import { Peripheral, PeripheralDto } from '../models/peripheral';
 import { PeripheralsRepository } from './repository';
 import { PeripheralsValidator } from './validation';
@@ -15,26 +13,12 @@ import { PeripheralsValidator } from './validation';
 export class PeripheralService {
   constructor(
     @InjectMany(ActorToken) private actors: ActorType[],
-    private logger: Logger,
     private validator: PeripheralsValidator,
     private repository: PeripheralsRepository,
   ) {}
 
-  private async getPeripheralImplementation(
-    type_id: string,
-    shouldThrow: boolean = false,
-  ) {
+  private async getPeripheralImplementation(type_id: string) {
     const implementation = this.actors.find((a) => a.actorName === type_id);
-
-    if (!implementation) {
-      if (shouldThrow) {
-        throw new PeripheralNotFoundError(type_id);
-      }
-
-      this.logger.error(new PeripheralNotFoundError(type_id));
-      return null;
-    }
-
     return implementation;
   }
 

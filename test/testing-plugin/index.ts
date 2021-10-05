@@ -10,7 +10,7 @@ import {
 import { Service } from 'typedi';
 
 @Service({ id: SensorToken, multiple: true })
-class TestSensor extends Sensor {
+export class TestSensor extends Sensor {
   constructor() {
     super('testing-sensor', []);
   }

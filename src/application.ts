@@ -4,7 +4,6 @@ import {
   registerController as registerListeners,
   useContainer as useListenerContainer,
 } from '@overtheairbrew/node-typedi-in-memory-queue';
-import { SocketIo } from '@overtheairbrew/socket-io';
 import { json } from 'body-parser';
 import { defaultMetadataSrotage } from 'class-transformer/cjs/storage';
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
@@ -19,6 +18,7 @@ import * as fg from 'fast-glob';
 import { createServer, Server } from 'http';
 import { join } from 'path';
 import * as version from 'project-version';
+import { fromCallback } from 'promise-cb';
 import 'reflect-metadata';
 import {
   getMetadataArgsStorage,
@@ -30,8 +30,8 @@ import 'source-map-support/register';
 import { EventEmitter } from 'stream';
 import { serve, setup } from 'swagger-ui-express';
 import { Container } from 'typedi';
-import { OtaContainer } from './lib/container';
-import { logger } from './lib/logger';
+import { OtaContainer } from './lib/utils/container';
+import { logger } from './lib/utils/logger';
 import { ProgramaticMigate } from './orm/programatic-migrate';
 import { DatabaseOptions, SequelizeWrapper } from './orm/sequelize-wrapper';
 
@@ -40,12 +40,7 @@ require('express-async-errors');
 interface IOptions {
   port: number;
   database: DatabaseOptions;
-  pluginPatterns?:
-    | string[]
-    | [
-        'node_modules/@overtheairbrew/homebrew-plugin-**',
-        'node_modules/ota-homebrew-plugin-**',
-      ];
+  pluginPatterns?: string[];
   cwd?: string;
 }
 
@@ -74,6 +69,8 @@ export class OtaHomebrewApp extends EventEmitter {
     actors: [],
     logics: [],
   };
+
+  private readonly httpServer: Server;
 
   constructor(private options: IOptions) {
     super();
@@ -108,57 +105,54 @@ export class OtaHomebrewApp extends EventEmitter {
       middleware: [json()],
     };
 
-    const httpServer = createServer(this.expressApp);
+    this.httpServer = createServer(this.expressApp);
+  }
+
+  public async start() {
+    if (this.isListening) return;
+
     const queues = new Queues();
 
-    const ready = new Promise(async (resolve, reject) => {
-      try {
-        await this.loadPlugins(this.options.pluginPatterns, this.options.cwd);
+    await this.loadPlugins(this.options.pluginPatterns, this.options.cwd);
 
-        await this.setupContainer(
-          options,
-          httpServer,
-          queues,
-          this.pluginConfiguration,
-        );
+    await this.setupContainer(
+      this.options,
+      this.httpServer,
+      queues,
+      this.pluginConfiguration,
+    );
 
-        useContainer(Container);
-        cronUseContainer(Container);
-        useListenerContainer(Container);
+    useContainer(Container);
+    cronUseContainer(Container);
+    useListenerContainer(Container);
+    await this.runMigrations();
+    registerController([this.paths['hooks']]);
+    registerListeners([this.paths['workers']], queues);
+    await this.loadAllServerControllers();
+    await this.createDocs();
 
-        await this.runMigrations();
+    if (require.resolve(UI_PACKAGE)) {
+      const { initUi } = require(UI_PACKAGE);
+      initUi(this.expressApp);
+    }
 
-        registerController([this.paths['hooks']]);
-        registerListeners([this.paths['workers']], queues);
-
-        await this.loadAllServerControllers();
-
-        await this.createDocs();
-
-        if (require.resolve(UI_PACKAGE)) {
-          const { initUi } = require(UI_PACKAGE);
-          initUi(this.expressApp);
-        }
-
-        Container.get(SocketIo);
-
-        resolve(undefined);
-      } catch (err) {
-        reject(err);
-      }
-    });
-
-    ready.then(() => {
-      logger.info(`server listening on ${this.options.port}`);
-      httpServer.listen(this.options.port);
-
-      this.emit('application-started');
-      this.isListening = true;
+    await fromCallback((cb) => {
+      this.httpServer.listen(this.options.port, () => {
+        this.isListening = true;
+        cb(undefined);
+      });
     });
   }
 
   private async loadPlugins(patterns: string[], cwd: string) {
-    const plugins = await fg(patterns, {
+    const pluginPatterns = patterns?.length
+      ? patterns
+      : [
+          'node_modules/@overtheairbrew/homebrew-plugin-**',
+          'node_modules/ota-homebrew-plugin-**',
+        ];
+
+    const plugins = await fg(pluginPatterns, {
       onlyDirectories: true,
       cwd,
     });
@@ -220,12 +214,15 @@ export class OtaHomebrewApp extends EventEmitter {
   }
 
   private async runMigrations() {
+    console.log('running migrations', this.disableMigrations);
     if (this.disableMigrations) return;
 
-    logger.info('Running migrations');
+    // logger.info('Running migrations');
 
     const wrapper = Container.get(SequelizeWrapper);
     const migration = new ProgramaticMigate(wrapper.sequelize as any, logger);
+
+    console.log('MIGRATTION', migration);
 
     const ranMigrations = await migration.up();
     logger.info('Migrations finished', ranMigrations);
