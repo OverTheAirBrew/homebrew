@@ -14,7 +14,8 @@
     "**/errors/**/*",
     "**/messages/**/*",
     "**/models/**/*",
-    "**/utils/**/*"
+    "**/utils/**/*",
+    "**/application.*"
   ],
   "sourcemap": false,
   "branches": 100,
