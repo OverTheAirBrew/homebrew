@@ -10,7 +10,12 @@
     "**/*.d.ts",
     "**/orm/**/*",
     "**/workers/**/*",
-    "**/hooks/**/*"
+    "**/hooks/**/*",
+    "**/errors/**/*",
+    "**/messages/**/*",
+    "**/models/**/*",
+    "**/utils/**/*",
+    "**/application.*"
   ],
   "sourcemap": false,
   "branches": 100,

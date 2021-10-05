@@ -35,5 +35,9 @@ export class PropertyDto {
 
   @IsOptional()
   @IsArray()
-  selectBoxValues: any[];
+  selectBoxValues: string[] | number[];
+
+  @IsOptional()
+  @IsString()
+  selectBoxDefaultValue: string | number;
 }

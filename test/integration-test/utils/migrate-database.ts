@@ -1,4 +1,4 @@
-import { Logger } from '../../../src/lib/logger';
+import { Logger } from '../../../src/lib/utils/logger';
 import { ProgramaticMigate } from '../../../src/orm/programatic-migrate';
 import { SequelizeWrapper } from '../../../src/orm/sequelize-wrapper';
 

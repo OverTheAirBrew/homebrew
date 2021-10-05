@@ -9,7 +9,7 @@
     "test": "nyc --silent --no-clean mocha 'dist/test/**/*.spec.js' --exit --bail",
     "posttest": "nyc report --reporter=lcov --reporter=text-summary --reporter=cobertura",
     "coverage": "codecov",
-    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules' '!commitlint.config.js' 'dist'",
+    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules' '!commitlint.config.js' 'dist' 'coverage' '.nyc_output'",
     "build": "tsc",
     "watch": "tsc --watch",
     "prepare": "husky install",
@@ -41,6 +41,7 @@
     "npm-keywords": "^1.0.4",
     "package-info": "^4.0.1",
     "project-version": "^2.0.0",
+    "promise-cb": "^0.1.4",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.9.0",
     "routing-controllers-openapi": "^3.0.0",
@@ -79,6 +80,7 @@
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.10.1",
     "@types/package-info": "^3.0.0",
+    "@types/sinon": "^10.0.4",
     "@types/supertest": "^2.0.11",
     "@types/swagger-ui-express": "^4.1.2",
     "@types/uuid": "^8.3.1",
@@ -94,6 +96,7 @@
     "sinon": "^11.1.1",
     "sqlite3": "^5.0.2",
     "supertest": "^6.1.6",
+    "ts-sinon": "^2.0.2",
     "typescript": "^4.3.4"
   },
   "publishConfig": {

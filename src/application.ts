@@ -30,8 +30,8 @@ import 'source-map-support/register';
 import { EventEmitter } from 'stream';
 import { serve, setup } from 'swagger-ui-express';
 import { Container } from 'typedi';
-import { OtaContainer } from './lib/container';
-import { logger } from './lib/logger';
+import { OtaContainer } from './lib/utils/container';
+import { logger } from './lib/utils/logger';
 import { ProgramaticMigate } from './orm/programatic-migrate';
 import { DatabaseOptions, SequelizeWrapper } from './orm/sequelize-wrapper';
 

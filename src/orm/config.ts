@@ -1,5 +1,5 @@
 import { SequelizeOptions } from 'sequelize-typescript';
-import { logger } from '../lib/logger';
+import { logger } from '../lib/utils/logger';
 
 export const BASE_CONFIG: Partial<SequelizeOptions> = {
   logging: (msg: string) => logger.debug(msg),

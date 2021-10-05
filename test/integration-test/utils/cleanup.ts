@@ -1,4 +1,5 @@
 import { join } from 'path';
+import Peripheral from '../../../src/orm/models/peripheral';
 import Sensor from '../../../src/orm/models/sensor';
 import { SequelizeWrapper } from '../../../src/orm/sequelize-wrapper';
 
@@ -9,7 +10,7 @@ export async function cleanup() {
     cwd: join(__dirname, '..', '..', '..', 'src', 'orm'),
   });
 
-  // await sequelize.getRepository(Peripheral).destroy({ where: {} });
+  await sequelize.getRepository(Peripheral).destroy({ where: {} });
   await sequelize.getRepository(Sensor).destroy({ where: {} });
 
   return sequelize;
