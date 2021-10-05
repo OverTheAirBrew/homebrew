@@ -9,7 +9,7 @@ describe('peripherals', () => {
   let sequelize: Sequelize;
 
   beforeEach(async () => {
-    sequelize = await cleanup();
+    ({ sequelize } = await cleanup());
     await applicationReady();
   });
 

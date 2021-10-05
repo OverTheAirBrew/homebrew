@@ -20,6 +20,17 @@ export class TestSensor extends Sensor {
   }
 }
 
+// @Service({ id: SensorToken, multiple: true })
+export class TestSensorNoTelemetry extends Sensor {
+  constructor() {
+    super('testing-sensor-no-telem', [], false);
+  }
+
+  async run(params: any): Promise<number> {
+    return 10;
+  }
+}
+
 @Service({ id: LogicToken, multiple: true })
 class TestLogic extends Logic {
   constructor() {

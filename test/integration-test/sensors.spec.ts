@@ -9,7 +9,7 @@ describe('sensors', () => {
   let sequelize: Sequelize;
 
   before(async () => {
-    sequelize = await cleanup();
+    ({ sequelize } = await cleanup());
     await applicationReady();
   });
 

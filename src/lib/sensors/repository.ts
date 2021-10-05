@@ -9,6 +9,11 @@ export class SensorRepository extends BaseRepository<Sensor> {
     super(Sensor, wrapper.sequelize);
   }
 
+  public async getAllSensors() {
+    const sensors = await this.model.findAll({ where: {} });
+    return sensors.map((sensor) => sensor.toJSON());
+  }
+
   public async createSensor(
     name: string,
     type_id: string,

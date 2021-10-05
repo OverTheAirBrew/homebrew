@@ -21,7 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@overtheairbrew/homebrew-plugin": "^1.1.8",
+    "@overtheairbrew/homebrew-plugin": "^1.1.9",
     "@overtheairbrew/node-typedi-in-memory-queue": "^1.0.0",
     "@overtheairbrew/socket-io": "^1.0.3",
     "axios": "^0.22.0",
