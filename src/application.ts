@@ -32,6 +32,7 @@ import { serve, setup } from 'swagger-ui-express';
 import { Container } from 'typedi';
 import { OtaContainer } from './lib/utils/container';
 import { logger } from './lib/utils/logger';
+import { setupLanguage } from './middleware/language';
 import { ProgramaticMigate } from './orm/programatic-migrate';
 import { DatabaseOptions, SequelizeWrapper } from './orm/sequelize-wrapper';
 
@@ -40,12 +41,7 @@ require('express-async-errors');
 interface IOptions {
   port: number;
   database: DatabaseOptions;
-  pluginPatterns?:
-    | string[]
-    | [
-        'node_modules/@overtheairbrew/homebrew-plugin-**',
-        'node_modules/ota-homebrew-plugin-**',
-      ];
+  pluginPatterns?: string[];
   cwd?: string;
 }
 
@@ -80,6 +76,7 @@ export class OtaHomebrewApp extends EventEmitter {
 
     this.expressApp = express();
     this.expressApp.use(cors());
+    this.expressApp.use(setupLanguage);
 
     this.paths['controllers'] = join(
       this.options.cwd || __dirname,
@@ -105,15 +102,20 @@ export class OtaHomebrewApp extends EventEmitter {
     this.routingControllersOptions = {
       controllers: [this.paths['controllers']],
       routePrefix: '/server',
-      middleware: [json()],
+      middleware: [setupLanguage, json()],
     };
 
     const httpServer = createServer(this.expressApp);
     const queues = new Queues();
 
+    const pluginPatterns = this.options.pluginPatterns || [
+      'node_modules/@overtheairbrew/homebrew-plugin-**',
+      'node_modules/ota-homebrew-plugin-**',
+    ];
+
     const ready = new Promise(async (resolve, reject) => {
       try {
-        await this.loadPlugins(this.options.pluginPatterns, this.options.cwd);
+        await this.loadPlugins(pluginPatterns, this.options.cwd);
 
         await this.setupContainer(
           options,

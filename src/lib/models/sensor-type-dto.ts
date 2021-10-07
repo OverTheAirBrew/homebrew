@@ -14,11 +14,15 @@ export class SensorTypeDto {
 }
 
 export class PropertyDto {
-  constructor(type: any, required: boolean, name: string) {
+  constructor(type: any, required: boolean, name: string, id: string) {
     this.type = type;
     this.isRequired = required;
     this.name = name;
+    this.id = id;
   }
+
+  @IsString()
+  id: string;
 
   @IsString()
   type: string;

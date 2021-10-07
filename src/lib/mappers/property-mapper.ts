@@ -3,15 +3,23 @@ import {
   SelectBoxProperty,
   StringProperty,
 } from '@overtheairbrew/homebrew-plugin';
-import { Service } from 'typedi';
+import { Container, Service } from 'typedi';
+import { LocaleService } from '../locale-service';
 import { PropertyDto } from '../models/sensor-type-dto';
 
 @Service()
 export class PropertyTypeMapper {
   public async map(property: Property) {
+    const localeService = Container.get(LocaleService);
+
+    const localizedPropertyName = await localeService.getTranslatedVersion(
+      property.name,
+    );
+
     const prop = new PropertyDto(
       property.type,
       property.required,
+      localizedPropertyName,
       property.name,
     );
 
