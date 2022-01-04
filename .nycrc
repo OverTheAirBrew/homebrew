@@ -11,11 +11,12 @@
     "**/orm/**/*",
     "**/workers/**/*",
     "**/hooks/**/*",
-    "**/errors/**/*",
-    "**/messages/**/*",
-    "**/models/**/*",
-    "**/utils/**/*",
-    "**/application.*"
+    "**/container.ts",
+    "**/index.ts",
+    "**/controllers/index.ts",
+    "**/hooks/index.ts",
+    "**/workers/index.ts",
+    "**/lib/socket-io.ts"
   ],
   "sourcemap": false,
   "branches": 100,
