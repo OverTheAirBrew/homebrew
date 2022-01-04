@@ -1,4 +1,4 @@
-require:
-  - ./dist/test/integration-test/utils/test-application.js
+# require:
+#   - ./dist/test/integration-test/utils/test-application.js
 timeout: 5000
 recursive: true
