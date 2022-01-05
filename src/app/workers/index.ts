@@ -4,6 +4,7 @@ import {
   useContainer,
 } from '@overtheairbrew/node-typedi-in-memory-queue';
 import { join } from 'path';
+import 'reflect-metadata';
 import Container from 'typedi';
 
 export async function startWorkers() {
