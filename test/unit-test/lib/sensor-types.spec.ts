@@ -6,7 +6,7 @@ import { SensorTypesService } from '../../../src/app/lib/sensor-types';
 
 class TestSensor extends Sensor {
   constructor() {
-    super('testing-sensor', [new StringProperty('test', 'test', true)]);
+    super('testing-sensor', [new StringProperty('test', true)]);
   }
 
   public async run(params: any): Promise<number> {

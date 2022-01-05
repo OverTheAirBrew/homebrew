@@ -15,13 +15,13 @@ describe('lib/property-mapper', () => {
 
   it('should map a string', async () => {
     const mappedString = await propertyMapper.map(
-      new StringProperty('test', 'test', true),
+      new StringProperty('test', true),
     );
 
     expect(mappedString).to.deep.eq({
       isRequired: true,
       name: 'test',
-      placeholder: 'test',
+      // placeholder: 'test',
       type: 'string',
     });
   });
@@ -40,7 +40,7 @@ describe('lib/property-mapper', () => {
 
   it('should map a select-box', async () => {
     const mappedString = await propertyMapper.map(
-      new SelectBoxProperty('test', 'test', true, () => ['testvalue']),
+      new SelectBoxProperty('test', true, () => ['testvalue']),
     );
 
     expect(mappedString).to.deep.eq({
@@ -48,7 +48,7 @@ describe('lib/property-mapper', () => {
       name: 'test',
       type: 'select-box',
       selectBoxValues: ['testvalue'],
-      selectBoxDefaultValue: 'test',
+      // selectBoxDefaultValue: 'test',
     });
   });
 });
