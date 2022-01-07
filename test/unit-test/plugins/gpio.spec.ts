@@ -21,10 +21,6 @@ describe('plugin/gpio', () => {
         return {
           writeSync: writeSyncStub,
         };
-        // console.log('CALLING FAKE');
-        // return sinon.stub().callsFake(() => {
-        //   writeSync: sinon.stub();
-        // });
       });
 
       gpioActor = new GpioActor();
