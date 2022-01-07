@@ -7,12 +7,13 @@ import { Server as SocketServer } from 'socket.io';
 import { Container, Service } from 'typedi';
 import { Logger } from './lib/logger';
 import { OtaSocketServer } from './lib/socket-io';
-import { OneWireSensor } from './plugins/one-wire';
+import { GpioActor } from './plugins/actor/gpio';
+import { OneWireSensor } from './plugins/sensors/one-wire';
 import {
   DS18B20Controller,
   IOneWireController,
   StreamController,
-} from './plugins/one-wire/controllers';
+} from './plugins/sensors/one-wire/controllers';
 
 export async function setupContainer() {
   Container.set('loggingOptions', {
@@ -52,6 +53,7 @@ export async function setupContainer() {
   }
 
   Container.import([OneWireSensor]);
+  Container.import([GpioActor]);
 }
 
 @Service()
