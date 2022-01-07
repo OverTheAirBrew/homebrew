@@ -6,13 +6,13 @@ import * as sinon from 'sinon';
 import { FileResult, fileSync, setGracefulCleanup } from 'tmp';
 import { stubConstructor } from 'ts-sinon';
 import Container from 'typedi';
-import { OneWireSensor } from '../../../src/app/plugins/one-wire';
+import { OneWireSensor } from '../../../src/app/plugins/sensors/one-wire';
 import {
   DS18B20Controller,
   IOneWireController,
   StreamController,
   Temperature,
-} from '../../../src/app/plugins/one-wire/controllers';
+} from '../../../src/app/plugins/sensors/one-wire/controllers';
 
 setGracefulCleanup();
 

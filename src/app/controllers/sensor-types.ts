@@ -9,7 +9,6 @@ export class SensorTypesController {
 
   @Get('/')
   @HttpCode(200)
-  // @ResponseSchema(SensorTypesResponse)
   async getSensorTypes() {
     return await this.sensorTypesService.getSensorTypes();
   }
