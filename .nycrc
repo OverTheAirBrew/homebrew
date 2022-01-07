@@ -12,7 +12,7 @@
     "**/workers/**/*",
     "**/hooks/**/*",
     "**/container.ts",
-    "**/index.ts",
+    "src/app/index.ts",
     "**/controllers/index.ts",
     "**/hooks/index.ts",
     "**/workers/index.ts",
