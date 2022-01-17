@@ -8,6 +8,7 @@ import { Container, Service } from 'typedi';
 import { Logger } from './lib/logger';
 import { OtaSocketServer } from './lib/socket-io';
 import { GpioActor } from './plugins/actor/gpio';
+import { PidLogic } from './plugins/logic/pid';
 import { OneWireSensor } from './plugins/sensors/one-wire';
 import {
   DS18B20Controller,
@@ -54,6 +55,7 @@ export async function setupContainer() {
 
   Container.import([OneWireSensor]);
   Container.import([GpioActor]);
+  Container.import([PidLogic]);
 }
 
 @Service()

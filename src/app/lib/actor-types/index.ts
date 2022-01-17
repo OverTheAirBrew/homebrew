@@ -1,6 +1,6 @@
 import { Actor } from '@overtheairbrew/homebrew-plugin';
 import { InjectMany, Service } from 'typedi';
-import { ActorTypeDto } from '../../models/dto/actor-dto';
+import { ActorTypeDto } from '../../models/dto/actor-type-dto';
 import { PropertyMapper } from '../property-mapper';
 
 @Service()
