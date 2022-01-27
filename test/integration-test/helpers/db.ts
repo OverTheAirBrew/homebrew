@@ -18,9 +18,9 @@ export async function clearDatabase() {
     telemetry: getRepository(Telemetry),
   };
 
+  await repositories['telemetry'].delete({});
   await repositories['sensor'].delete({});
   await repositories['actor'].delete({});
-  await repositories['telemetry'].delete({});
 
   return { repositories };
 }

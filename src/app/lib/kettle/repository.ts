@@ -5,7 +5,9 @@ import { Kettle } from '../../orm/models/kettle';
 
 @Service()
 export class KettleRepository {
-  constructor(@InjectRepository() private connection: Repository<Kettle>) {}
+  constructor(
+    @InjectRepository(Kettle) private connection: Repository<Kettle>,
+  ) {}
 
   async createKettle(name: string, sensor_id: string) {
     const savedKettle = await this.connection.save({
