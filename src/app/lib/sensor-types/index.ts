@@ -34,12 +34,7 @@ export class SensorTypesService {
   }
 
   public async validateConfig(type_id: string, config: any) {
-    const sensorType = this.sensors.find((s) => s.sensorName === type_id);
-
-    if (!sensorType) {
-      throw new Error('Invalid sensor type id');
-    }
-
+    const sensorType = await this.getRawSensorTypeById(type_id);
     return await sensorType.validate(config);
   }
 

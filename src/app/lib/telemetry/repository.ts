@@ -1,12 +1,16 @@
 import { Service } from 'typedi';
-import { EntityRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { InjectRepository } from 'typeorm-typedi-extensions';
 import { Telemetry } from '../../orm/models/telemetry';
 
 @Service()
-@EntityRepository(Telemetry)
-export class TelemetryRepository extends Repository<Telemetry> {
+export class TelemetryRepository {
+  constructor(
+    @InjectRepository(Telemetry) private connection: Repository<Telemetry>,
+  ) {}
+
   async saveTelemetryForSensorId(sensor_id: string, value: number) {
-    await this.insert({
+    await this.connection.insert({
       sensor_id,
       value,
     });

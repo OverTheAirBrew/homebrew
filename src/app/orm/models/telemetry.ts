@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -15,6 +16,7 @@ export class Telemetry {
 
   @Column()
   @OneToOne(() => Sensor)
+  @JoinColumn()
   sensor_id: string;
 
   @Column()
