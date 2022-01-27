@@ -24,12 +24,14 @@ describe('sensor-types', () => {
         type: 'one-wire',
         properties: [
           {
+            id: 'sensorAddress',
             isRequired: true,
             name: 'one-wire.sensorAddress',
             selectBoxValues: ['28-000004c8b8d3'],
             type: 'select-box',
           },
           {
+            id: 'offset',
             isRequired: false,
             name: 'one-wire.offset',
             type: 'number',

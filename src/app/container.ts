@@ -1,14 +1,14 @@
-import {
-  Contract,
-  ILogger,
-  IMessagingManager,
-} from '@overtheairbrew/homebrew-plugin';
+import { Queues } from '@overtheairbrew/node-typedi-in-memory-queue';
+import * as express from 'express';
+import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
-import { Container, Service } from 'typedi';
+import Container from 'typedi';
 import { Logger } from './lib/logger';
+import { MessagingManager } from './lib/messaging-manager';
+import { ILogger } from './lib/plugin/abstractions/logger';
+import { IMessagingManager } from './lib/plugin/abstractions/messaging-manager';
 import { OtaSocketServer } from './lib/socket-io';
-import { GpioActor } from './plugins/actor/gpio';
-import { OneWireSensor } from './plugins/sensors/one-wire';
+import { actors, sensors } from './plugins';
 import {
   DS18B20Controller,
   IOneWireController,
@@ -16,6 +16,9 @@ import {
 } from './plugins/sensors/one-wire/controllers';
 
 export async function setupContainer() {
+  const expressApp = express();
+  const httpApp = createServer(expressApp);
+
   Container.set('loggingOptions', {
     level: process.env.LOGGING_LEVEL || 'error',
     serviceName: 'homebrew',
@@ -24,16 +27,22 @@ export async function setupContainer() {
 
   Container.set(ILogger, Container.get(Logger));
 
-  const socketIoServer = new SocketServer({
-    path: '/socket.io',
+  const queues = new Queues();
+  Container.set(Queues, queues);
+
+  const socketServer = new SocketServer(httpApp, {
     cors: {
-      origin: '*',
+      credentials: true,
     },
   });
 
-  Container.set(OtaSocketServer, new OtaSocketServer(socketIoServer));
+  Container.set('expressApp', expressApp);
+  Container.set('httpApp', httpApp);
 
-  Container.set(IMessagingManager, new MessagingManager());
+  Container.set(
+    IMessagingManager,
+    new MessagingManager(queues, new OtaSocketServer(socketServer)),
+  );
 
   if (
     process.env.NODE_ENV === 'development' ||
@@ -52,13 +61,5 @@ export async function setupContainer() {
     Container.set(IOneWireController, new DS18B20Controller());
   }
 
-  Container.import([OneWireSensor]);
-  Container.import([GpioActor]);
-}
-
-@Service()
-class MessagingManager implements IMessagingManager {
-  sendMessage<Data>(message: Contract<Data>): (message: Data) => Promise<void> {
-    return;
-  }
+  Container.import([...actors, ...sensors]);
 }

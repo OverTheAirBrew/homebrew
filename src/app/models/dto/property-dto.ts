@@ -1,12 +1,14 @@
 import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class PropertyDto {
-  constructor(type: string, required: boolean, name: string) {
+  constructor(id: string, type: string, required: boolean, name: string) {
+    this.id = id;
     this.type = type;
     this.isRequired = required;
     this.name = name;
   }
 
+  @IsString() id: string;
   @IsString() type: string;
   @IsString() name: string;
 

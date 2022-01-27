@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as onOff from 'onoff';
 import * as sinon from 'sinon';
-import { GpioActor } from '../../../src/app/plugins/actor/gpio';
+import { GpioActor } from '../../../src/app/plugins/actors/gpio';
 
 describe('plugin/gpio', () => {
   afterEach(() => {
@@ -27,7 +27,7 @@ describe('plugin/gpio', () => {
     });
 
     it('should turn on the gpio when its requested', async () => {
-      await gpioActor.on({ gpio: 1 });
+      await gpioActor.on('1234', { gpio: 1 });
 
       expect(onOffStub.callCount).to.eq(1);
       expect(onOffStub.firstCall.args).to.deep.eq([1, 'out']);
@@ -37,7 +37,7 @@ describe('plugin/gpio', () => {
     });
 
     it('should turn off the gpio when its requested', async () => {
-      await gpioActor.off({ gpio: 1 });
+      await gpioActor.off('1234', { gpio: 1 });
 
       expect(onOffStub.callCount).to.eq(1);
       expect(onOffStub.firstCall.args).to.deep.eq([1, 'out']);

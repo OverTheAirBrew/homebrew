@@ -1,4 +1,3 @@
-import { ILogger } from '@overtheairbrew/homebrew-plugin';
 import { Inject, Service } from 'typedi';
 import {
   createLogger,
@@ -6,6 +5,7 @@ import {
   Logger as WinstonLogger,
   transports,
 } from 'winston';
+import { ILogger } from './plugin/abstractions/logger';
 
 interface ILoggingOptions {
   serviceName: string;

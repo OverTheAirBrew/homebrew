@@ -1,8 +1,8 @@
-import { ClassType } from '@overtheairbrew/homebrew-plugin/dist/class-type';
 import { sync } from 'fast-glob';
 import { existsSync, readFileSync } from 'fs';
 import { normalize } from 'path';
 import { Service } from 'typedi';
+import { ClassType } from '../../../lib/plugin/class-type';
 
 export interface IOneWireController {
   findDevices(hint?: string): Promise<string[]>;

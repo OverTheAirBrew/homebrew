@@ -1,7 +1,7 @@
 import { json } from 'body-parser';
 import * as cors from 'cors';
 import * as express from 'express';
-import { createServer } from 'http';
+import { createServer, Server } from 'http';
 import { join } from 'path';
 import 'reflect-metadata';
 import {
@@ -15,8 +15,16 @@ import { setupContainer } from '../container';
 const PORT = parseInt(process.env.PORT) || 9090;
 
 export async function startServer(testMode: boolean = false) {
-  const app = express();
-  const httpServer = createServer(app);
+  let app: express.Application;
+  let httpServer: Server;
+
+  if (testMode) {
+    app = express();
+    httpServer = createServer(app);
+  } else {
+    app = Container.get<express.Application>('expressApp');
+    httpServer = Container.get<Server>('httpApp');
+  }
 
   app.use(cors());
 
