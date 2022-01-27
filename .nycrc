@@ -16,7 +16,12 @@
     "**/controllers/index.ts",
     "**/hooks/index.ts",
     "**/workers/index.ts",
-    "**/lib/socket-io.ts"
+    "**/lib/socket-io.ts",
+    "**/lib/plugin/**/*",
+    "**/lib/socket-io/*.ts",
+    "**/plugins/sensors/index.ts",
+    "**/plugins/actors/index.ts",
+    "**/plugins/index.ts"
   ],
   "sourcemap": false,
   "branches": 100,

@@ -1,27 +1,25 @@
+import Container from 'typedi';
+import { SensorService } from '../../../lib/plugin';
+import { Sensor } from '../../../lib/plugin/abstractions/sensor';
 import {
   NumberProperty,
   SelectBoxProperty,
-  Sensor,
-} from '@overtheairbrew/homebrew-plugin';
-import Container, { Service } from 'typedi';
+} from '../../../lib/plugin/properties';
 import { IOneWireController } from './controllers';
 
 export interface IOneWireParams {
-  sensor_id: string;
   sensorAddress: string;
   offset: number;
 }
 
-@Service({ id: 'sensor', multiple: true })
-export class OneWireSensor extends Sensor {
+@SensorService()
+export class OneWireSensor extends Sensor<IOneWireParams> {
   private oneWireController: IOneWireController;
 
   constructor() {
     super('one-wire', [
-      new SelectBoxProperty('one-wire.sensorAddress', true, () =>
-        this.getSensors(),
-      ),
-      new NumberProperty('one-wire.offset', false),
+      new SelectBoxProperty('sensorAddress', true, () => this.getSensors()),
+      new NumberProperty('offset', false),
     ]);
 
     this.oneWireController = Container.get(IOneWireController);
@@ -37,7 +35,7 @@ export class OneWireSensor extends Sensor {
     return sensors;
   }
 
-  public async run(params: IOneWireParams) {
+  protected async process(params: IOneWireParams) {
     if (!(await this.deviceExists(params.sensorAddress))) return null;
 
     const temperatureReading = await this.oneWireController.getCurrentValue(

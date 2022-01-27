@@ -1,42 +1,42 @@
-import { Sensor, StringProperty } from '@overtheairbrew/homebrew-plugin';
-import { expect } from 'chai';
-import sinon, { StubbedInstance, stubConstructor } from 'ts-sinon';
-import { PropertyMapper } from '../../../src/app/lib/property-mapper';
-import { SensorTypesService } from '../../../src/app/lib/sensor-types';
+// import { Sensor, StringProperty } from '@overtheairbrew/homebrew-plugin';
+// import { expect } from 'chai';
+// import sinon, { StubbedInstance, stubConstructor } from 'ts-sinon';
+// import { PropertyMapper } from '../../../src/app/lib/property-mapper';
+// import { SensorTypesService } from '../../../src/app/lib/sensor-types';
 
-class TestSensor extends Sensor {
-  constructor() {
-    super('testing-sensor', [new StringProperty('test', true)]);
-  }
+// class TestSensor extends Sensor {
+//   constructor() {
+//     super('testing-sensor', [new StringProperty('test', true)]);
+//   }
 
-  public async run(params: any): Promise<number> {
-    return 1;
-  }
-}
+//   public async run(params: any): Promise<number> {
+//     return 1;
+//   }
+// }
 
-describe('lib/sensor-types', () => {
-  let sensorTypesService: SensorTypesService;
+// describe('lib/sensor-types', () => {
+//   let sensorTypesService: SensorTypesService;
 
-  let propertyMapper: StubbedInstance<PropertyMapper>;
+//   let propertyMapper: StubbedInstance<PropertyMapper>;
 
-  before(() => {
-    propertyMapper = stubConstructor(PropertyMapper);
-    propertyMapper.map.resolves({} as any);
+//   before(() => {
+//     propertyMapper = stubConstructor(PropertyMapper);
+//     propertyMapper.map.resolves({} as any);
 
-    sensorTypesService = new SensorTypesService(
-      [new TestSensor()],
-      propertyMapper,
-    );
-  });
+//     sensorTypesService = new SensorTypesService(
+//       [new TestSensor()],
+//       propertyMapper,
+//     );
+//   });
 
-  afterEach(() => {
-    sinon.restore();
-  });
+//   afterEach(() => {
+//     sinon.restore();
+//   });
 
-  describe('getSensorTypes', () => {
-    it('should map all the properties', async () => {
-      await sensorTypesService.getSensorTypes();
-      expect(propertyMapper.map.callCount).to.eq(1);
-    });
-  });
-});
+//   describe('getSensorTypes', () => {
+//     it('should map all the properties', async () => {
+//       await sensorTypesService.getSensorTypes();
+//       expect(propertyMapper.map.callCount).to.eq(1);
+//     });
+//   });
+// });

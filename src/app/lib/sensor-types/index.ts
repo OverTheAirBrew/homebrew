@@ -1,12 +1,13 @@
-import { Sensor } from '@overtheairbrew/homebrew-plugin';
 import { InjectMany, Service } from 'typedi';
 import { SensorTypeDto } from '../../models/dto/sensor-types-dto';
+import { SENSOR_TOKEN } from '../plugin';
+import { Sensor as SensorType } from '../plugin/abstractions/sensor';
 import { PropertyMapper } from '../property-mapper';
 
 @Service()
 export class SensorTypesService {
   constructor(
-    @InjectMany('sensor') private sensors: Sensor[],
+    @InjectMany(SENSOR_TOKEN) private sensors: SensorType<any>[],
     private propertyMapper: PropertyMapper,
   ) {}
 
@@ -16,11 +17,39 @@ export class SensorTypesService {
     );
   }
 
-  private async mapSensorType(sensor: Sensor) {
+  public async getRawSensorTypeById(id: string) {
+    const sensorType = this.sensors.find((s) => s.sensorName === id);
+
+    if (!sensorType) {
+      throw new Error('Invalid sensor type id');
+    }
+
+    return sensorType;
+  }
+
+  public async getSensorTypeById(id: string) {
+    const sensorType = await this.getRawSensorTypeById(id);
+
+    return this.mapSensorType(sensorType);
+  }
+
+  public async validateConfig(type_id: string, config: any) {
+    const sensorType = this.sensors.find((s) => s.sensorName === type_id);
+
+    if (!sensorType) {
+      throw new Error('Invalid sensor type id');
+    }
+
+    return await sensorType.validate(config);
+  }
+
+  private async mapSensorType(sensor: SensorType<any>) {
     const mappedProperties = await Promise.all(
-      sensor.properties.map((p) => this.propertyMapper.map(p)),
+      sensor.properties.map((p) =>
+        this.propertyMapper.map(sensor.sensorName, p),
+      ),
     );
 
-    return new SensorTypeDto(sensor.sensorType, mappedProperties);
+    return new SensorTypeDto(sensor.sensorName, mappedProperties);
   }
 }

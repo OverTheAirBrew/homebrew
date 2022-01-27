@@ -36,9 +36,8 @@ describe('plugin/one-wire', () => {
       });
 
       it('should apply a positive offset', async () => {
-        const value = await sensor.run({
+        const value = await sensor.run('1234', {
           sensorAddress: '28-000004c8b8d3',
-          sensor_id: '1234',
           offset: -10,
         });
 
@@ -46,9 +45,8 @@ describe('plugin/one-wire', () => {
       });
 
       it('should apply a positive offset', async () => {
-        const value = await sensor.run({
+        const value = await sensor.run('1234', {
           sensorAddress: '28-000004c8b8d3',
-          sensor_id: '1234',
           offset: 10,
         });
 
@@ -56,9 +54,8 @@ describe('plugin/one-wire', () => {
       });
 
       it('should return null when the device does not exist', async () => {
-        const value = await sensor.run({
+        const value = await sensor.run('1234', {
           sensorAddress: '28-000004c8b82d3',
-          sensor_id: '1234',
           offset: 0,
         });
 
@@ -66,9 +63,8 @@ describe('plugin/one-wire', () => {
       });
 
       it('should return the correct data', async () => {
-        const value = await sensor.run({
+        const value = await sensor.run('1234', {
           sensorAddress: '28-000004c8b8d3',
-          sensor_id: '1234',
           offset: 0,
         });
 

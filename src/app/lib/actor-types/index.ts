@@ -1,12 +1,13 @@
-import { Actor } from '@overtheairbrew/homebrew-plugin';
 import { InjectMany, Service } from 'typedi';
 import { ActorTypeDto } from '../../models/dto/actor-dto';
+import { ACTOR_TOKEN } from '../plugin';
+import { Actor } from '../plugin/abstractions/actor';
 import { PropertyMapper } from '../property-mapper';
 
 @Service()
 export class ActorTypesService {
   constructor(
-    @InjectMany('actor') private actors: Actor[],
+    @InjectMany(ACTOR_TOKEN) private actors: Actor<any>[],
     private propertyMapper: PropertyMapper,
   ) {}
 
@@ -16,9 +17,29 @@ export class ActorTypesService {
     );
   }
 
-  private async mapActorType(actor: Actor) {
+  public async getRawActorTypeById(id: string) {
+    const sensorType = this.actors.find((s) => s.actorName === id);
+
+    if (!sensorType) {
+      throw new Error('Invalid actor type id');
+    }
+
+    return sensorType;
+  }
+
+  public async getActorTypeById(id: string) {
+    const actorType = await this.getRawActorTypeById(id);
+    return this.mapActorType(actorType);
+  }
+
+  public async validateConfig(type_id: string, config: any) {
+    const actorType = await this.getRawActorTypeById(type_id);
+    return await actorType.validate(config);
+  }
+
+  private async mapActorType(actor: Actor<any>) {
     const mappedProperties = await Promise.all(
-      actor.properties.map((p) => this.propertyMapper.map(p)),
+      actor.properties.map((p) => this.propertyMapper.map(actor.actorName, p)),
     );
 
     return new ActorTypeDto(actor.actorName, mappedProperties);
