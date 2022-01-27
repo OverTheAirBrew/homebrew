@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import sinon, { StubbedInstance, stubConstructor } from 'ts-sinon';
-import { TelementryService } from '../../../../src/app/lib/telemetry';
+import { TelemetryService } from '../../../../src/app/lib/telemetry';
 import { TelemetryRepository } from '../../../../src/app/lib/telemetry/repository';
 
 describe('lib/telementry', () => {
-  let telemetryService: TelementryService;
+  let telemetryService: TelemetryService;
 
   let telemetryRepositoryStub: StubbedInstance<TelemetryRepository>;
 
@@ -12,7 +12,7 @@ describe('lib/telementry', () => {
     telemetryRepositoryStub = stubConstructor(TelemetryRepository);
     telemetryRepositoryStub.saveTelemetryForSensorId.resolves();
 
-    telemetryService = new TelementryService(telemetryRepositoryStub);
+    telemetryService = new TelemetryService(telemetryRepositoryStub);
   });
 
   afterEach(() => {

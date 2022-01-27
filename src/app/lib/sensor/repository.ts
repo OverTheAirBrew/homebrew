@@ -30,11 +30,6 @@ export class SensorRepository {
 
   async getSensorById(id: string) {
     const sensor = await this.connection.findOne({ where: { id } });
-
-    if (!sensor) {
-      throw new Error('sensor not found');
-    }
-
     return sensor;
   }
 }

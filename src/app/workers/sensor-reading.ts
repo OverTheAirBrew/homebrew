@@ -6,14 +6,14 @@ import { Service } from 'typedi';
 import { IMessagingManager } from '../lib/plugin/abstractions/messaging-manager';
 import { SensorReading } from '../lib/plugin/messages/events/sensor-reading';
 import { SensorReading as SocketSensorReading } from '../lib/plugin/messages/sockets/sensor-reading';
-import { TelementryService } from '../lib/telemetry';
+import { TelemetryService } from '../lib/telemetry';
 
 @InMemoryQueueController('sensor-reading')
 @Service()
 export class SensorReadingWorker {
   constructor(
     private messagingManager: IMessagingManager,
-    private telemetryService: TelementryService,
+    private telemetryService: TelemetryService,
   ) {}
 
   @Listener('sensor-reading-to-ui', SensorReading)

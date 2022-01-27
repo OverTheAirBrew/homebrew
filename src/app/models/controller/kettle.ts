@@ -3,9 +3,9 @@ import { IsOptional, IsString } from 'class-validator';
 export class Kettle {
   @IsString()
   @IsOptional()
-  name: string;
+  name?: string;
 
   @IsString()
   @IsOptional()
-  sensor_id: string;
+  sensor_id?: string;
 }
