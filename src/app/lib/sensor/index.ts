@@ -40,6 +40,24 @@ export class SensorService {
     await Promise.all(promises);
   }
 
+  async getSensorById(id: string) {
+    const sensor = await this.sensorRepository.getSensorById(id);
+
+    if (!sensor) {
+      throw new Error('sensor not found');
+    }
+
+    return await this.mapSensor(sensor);
+  }
+
+  private async mapSensor(sensor: Sensor) {
+    return {
+      name: sensor.name,
+      type_id: sensor.type_id,
+      config: JSON.parse(sensor.config),
+    };
+  }
+
   private async sendTempEventForSensor(sensor: Sensor) {
     try {
       const sensorType = await this.sensorTypesService.getRawSensorTypeById(

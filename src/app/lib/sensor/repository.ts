@@ -27,4 +27,9 @@ export class SensorRepository {
     const sensors = await this.connection.find({ where: {} });
     return sensors;
   }
+
+  async getSensorById(id: string) {
+    const sensor = await this.connection.findOne({ where: { id } });
+    return sensor;
+  }
 }

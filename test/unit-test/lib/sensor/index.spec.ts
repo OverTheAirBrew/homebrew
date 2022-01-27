@@ -120,4 +120,35 @@ describe('lib/sensor', () => {
       expect(logger.error.callCount).to.eq(1);
     });
   });
+
+  describe('getSensorById', () => {
+    it('should return a mapped sensor', async () => {
+      sensorRepository.getSensorById.resolves({
+        id: '12345678',
+        name: 'testing-sensor',
+        type_id: 'testing-type',
+        config: '{}',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      const sensor = await sensorService.getSensorById('12345678');
+      expect(sensor).to.deep.eq({
+        name: 'testing-sensor',
+        type_id: 'testing-type',
+        config: {},
+      });
+    });
+
+    it('should throw an error if the sensor is not found', async () => {
+      sensorRepository.getSensorById.resolves(undefined);
+
+      try {
+        await sensorService.getSensorById('12345678');
+        expect.fail('should not reach this point');
+      } catch (err) {
+        expect(err.message).to.eq('sensor not found');
+      }
+    });
+  });
 });

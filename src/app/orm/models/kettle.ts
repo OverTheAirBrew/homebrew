@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -18,11 +19,8 @@ export class Kettle {
 
   @Column()
   @OneToOne(() => Sensor)
+  @JoinColumn()
   sensor_id: string;
-
-  // @Column()
-  // @OneToOne(() => )
-  // heater_id: string;
 
   @CreateDateColumn()
   createdAt?: Date;

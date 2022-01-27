@@ -10,8 +10,8 @@ describe('actor', () => {
   let app: Application;
 
   before(async () => {
-    app = await startServer(true);
     await clearDatabase();
+    app = await startServer(true);
   });
 
   describe('POST /', () => {

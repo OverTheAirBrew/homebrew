@@ -1,17 +1,16 @@
 import Container from 'typedi';
-import { Repository } from 'typeorm';
-import { TelementryService } from '../../../src/app/lib/telemetry';
-import { clearDatabase } from '../helpers/db';
+import { TelemetryService } from '../../../src/app/lib/telemetry';
+import { clearDatabase, IDbRepositories } from '../helpers/db';
 
 describe('sensor-reading-worker', () => {
   describe('sensor-reading-to-ui', () => {
-    let telemetryService: TelementryService;
+    let telemetryService: TelemetryService;
 
-    let repositories: Record<string, Repository<any>>;
+    let repositories: IDbRepositories;
 
     beforeEach(async () => {
-      ({ repositories } = await clearDatabase());
-      telemetryService = Container.get(TelementryService);
+      repositories = await clearDatabase();
+      telemetryService = Container.get(TelemetryService);
     });
 
     it('should save the data to the database', async () => {
