@@ -1,13 +1,17 @@
 import Container from 'typedi';
 import { SensorReading } from '../messages/events/sensor-reading';
-import { Property, Validatable } from '../properties';
+import { Peripheral, PeripheralLocalizations, Property } from '../properties';
 import { IMessagingManager } from './messaging-manager';
 
-export abstract class Sensor<T> extends Validatable {
+export abstract class Sensor<T> extends Peripheral {
   private messagingManager: IMessagingManager;
 
-  constructor(public sensorName: string, public properties: Property[]) {
-    super(properties);
+  constructor(
+    sensorName: string,
+    public properties: Property[],
+    public localizations: PeripheralLocalizations,
+  ) {
+    super(`${sensorName}-sensor`, properties, localizations);
     this.messagingManager = Container.get(IMessagingManager);
   }
 

@@ -18,7 +18,7 @@ export class ActorTypesService {
   }
 
   public async getRawActorTypeById(id: string) {
-    const sensorType = this.actors.find((s) => s.actorName === id);
+    const sensorType = this.actors.find((s) => s.name === id);
 
     if (!sensorType) {
       throw new Error('Invalid actor type id');
@@ -39,9 +39,9 @@ export class ActorTypesService {
 
   private async mapActorType(actor: Actor<any>) {
     const mappedProperties = await Promise.all(
-      actor.properties.map((p) => this.propertyMapper.map(actor.actorName, p)),
+      actor.properties.map((p) => this.propertyMapper.map(actor.name, p)),
     );
 
-    return new ActorTypeDto(actor.actorName, mappedProperties);
+    return new ActorTypeDto(actor.name, mappedProperties);
   }
 }

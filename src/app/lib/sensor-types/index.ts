@@ -18,7 +18,7 @@ export class SensorTypesService {
   }
 
   public async getRawSensorTypeById(id: string) {
-    const sensorType = this.sensors.find((s) => s.sensorName === id);
+    const sensorType = this.sensors.find((s) => s.name === id);
 
     if (!sensorType) {
       throw new Error('Invalid sensor type id');
@@ -40,11 +40,9 @@ export class SensorTypesService {
 
   private async mapSensorType(sensor: SensorType<any>) {
     const mappedProperties = await Promise.all(
-      sensor.properties.map((p) =>
-        this.propertyMapper.map(sensor.sensorName, p),
-      ),
+      sensor.properties.map((p) => this.propertyMapper.map(sensor.name, p)),
     );
 
-    return new SensorTypeDto(sensor.sensorName, mappedProperties);
+    return new SensorTypeDto(sensor.name, mappedProperties);
   }
 }

@@ -1,14 +1,18 @@
 import Container, { Service } from 'typedi';
 import { ActorStateChanged } from '../messages/events/actor-state-changed';
-import { Property, Validatable } from '../properties';
+import { Peripheral, PeripheralLocalizations, Property } from '../properties';
 import { IMessagingManager } from './messaging-manager';
 
 @Service()
-export abstract class Actor<T> extends Validatable {
+export abstract class Actor<T> extends Peripheral {
   private messagingManager: IMessagingManager;
 
-  constructor(public actorName: string, public properties: Property[]) {
-    super(properties);
+  constructor(
+    actorName: string,
+    public properties: Property[],
+    public localizations: PeripheralLocalizations,
+  ) {
+    super(`${actorName}-actor`, properties, localizations);
     this.messagingManager = Container.get(IMessagingManager);
   }
 

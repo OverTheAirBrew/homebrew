@@ -12,7 +12,7 @@ export class PropertyMapper {
       property.id,
       property.type,
       property.required,
-      `${parent_id}.${property.id}`,
+      `${parent_id}:${property.id}`,
     );
 
     if (property.type === 'string') {
