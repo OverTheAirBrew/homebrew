@@ -1,14 +1,14 @@
 import Container, { Service } from 'typedi';
 import { ActorStateChanged } from '../messages/events/actor-state-changed';
-import { Property, Validatable } from '../properties';
+import { BaseType, Property } from '../properties';
 import { IMessagingManager } from './messaging-manager';
 
 @Service()
-export abstract class Actor<T> extends Validatable {
+export abstract class Actor<T> extends BaseType {
   private messagingManager: IMessagingManager;
 
   constructor(public actorName: string, public properties: Property[]) {
-    super(properties);
+    super(properties, { en: {}, fr: {} });
     this.messagingManager = Container.get(IMessagingManager);
   }
 

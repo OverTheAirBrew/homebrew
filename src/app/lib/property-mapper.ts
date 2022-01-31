@@ -4,6 +4,10 @@ import { Property, SelectBoxProperty } from './plugin/properties';
 
 @Service()
 export class PropertyMapper {
+  private async generatePropertyName(parent_id: string, name: string) {
+    return `${parent_id}.${name.toLowerCase().replace(/\s/g, '-')}`;
+  }
+
   public async map(
     parent_id: string,
     property: Property,
@@ -12,7 +16,7 @@ export class PropertyMapper {
       property.id,
       property.type,
       property.required,
-      `${parent_id}.${property.id}`,
+      await this.generatePropertyName(parent_id, property.id),
     );
 
     if (property.type === 'string') {
@@ -23,8 +27,24 @@ export class PropertyMapper {
     if (property.type === 'select-box') {
       const selectBoxProp = property as SelectBoxProperty<any>;
 
-      dto.selectBoxValues = await selectBoxProp.getValues();
-      // dto.selectBoxDefaultValue = selectBoxProp.defaultValue;
+      const values = await selectBoxProp.getValues();
+      const mappedValues = await Promise.all(
+        values.map(async (val) => {
+          if (typeof val === 'object') {
+            return {
+              key: val.key,
+              value: await this.generatePropertyName(parent_id, val.value),
+            };
+          }
+
+          return {
+            key: val,
+            value: val,
+          };
+        }),
+      );
+
+      dto.selectBoxValues = mappedValues;
     }
 
     return dto;

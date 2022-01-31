@@ -1,6 +1,8 @@
 import { Property } from './base-property';
 
-export class SelectBoxProperty<T extends string | number> extends Property {
+export class SelectBoxProperty<
+  T extends string | number | { key: string; value: string },
+> extends Property {
   constructor(
     public id: string,
     public required: boolean,

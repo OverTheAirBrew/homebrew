@@ -3,10 +3,12 @@ import * as express from 'express';
 import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
 import Container from 'typedi';
+import { HttpClient } from './lib/http-client';
 import { Logger } from './lib/logger';
 import { MessagingManager } from './lib/messaging-manager';
 import { ILogger } from './lib/plugin/abstractions/logger';
 import { IMessagingManager } from './lib/plugin/abstractions/messaging-manager';
+import { IHttpClient } from './lib/plugin/http-client';
 import { OtaSocketServer } from './lib/socket-io';
 import { actors, sensors } from './plugins';
 import {
@@ -38,6 +40,7 @@ export async function setupContainer() {
 
   Container.set('expressApp', expressApp);
   Container.set('httpApp', httpApp);
+  Container.set(IHttpClient, new HttpClient());
 
   Container.set(
     IMessagingManager,

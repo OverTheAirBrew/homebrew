@@ -21,7 +21,7 @@ export class PropertyDto {
 
   @IsOptional()
   @IsArray()
-  selectBoxValues?: string[] | number[];
+  selectBoxValues?: { key: string; value: string }[];
 
   @IsOptional()
   @IsString()

@@ -38,6 +38,16 @@ export class SensorTypesService {
     return await sensorType.validate(config);
   }
 
+  public async getTranslationsForSensor(id: string, locale: string) {
+    const sensorType = this.sensors.find((s) => s.sensorName === id);
+
+    if (!sensorType) {
+      return {};
+    }
+
+    return sensorType.localizations[locale];
+  }
+
   private async mapSensorType(sensor: SensorType<any>) {
     const mappedProperties = await Promise.all(
       sensor.properties.map((p) =>

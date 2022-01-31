@@ -12,15 +12,30 @@ export interface IOneWireParams {
   offset: number;
 }
 
+const localizations = {
+  en: {
+    'sensor-address': 'Sensor Address',
+    offset: 'Offset',
+  },
+  fr: {
+    'sensor-address': 'Adresse du capteur',
+    offset: 'Décalage',
+  },
+};
+
 @SensorService()
 export class OneWireSensor extends Sensor<IOneWireParams> {
   private oneWireController: IOneWireController;
 
   constructor() {
-    super('one-wire', [
-      new SelectBoxProperty('sensorAddress', true, () => this.getSensors()),
-      new NumberProperty('offset', false),
-    ]);
+    super(
+      'one-wire',
+      [
+        new SelectBoxProperty('sensor-address', true, () => this.getSensors()),
+        new NumberProperty('offset', false),
+      ],
+      localizations,
+    );
 
     this.oneWireController = Container.get(IOneWireController);
   }

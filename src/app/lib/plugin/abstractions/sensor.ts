@@ -1,13 +1,18 @@
 import Container from 'typedi';
 import { SensorReading } from '../messages/events/sensor-reading';
-import { Property, Validatable } from '../properties';
+import { BaseType, Property } from '../properties';
+import { ILocale } from './locale-type';
 import { IMessagingManager } from './messaging-manager';
 
-export abstract class Sensor<T> extends Validatable {
+export abstract class Sensor<T> extends BaseType {
   private messagingManager: IMessagingManager;
 
-  constructor(public sensorName: string, public properties: Property[]) {
-    super(properties);
+  constructor(
+    public sensorName: string,
+    public properties: Property[],
+    public localizations: Record<ILocale, Record<string, string>>,
+  ) {
+    super(properties, localizations);
     this.messagingManager = Container.get(IMessagingManager);
   }
 
