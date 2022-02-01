@@ -15,6 +15,11 @@ export class SensorService {
     private logger: ILogger,
   ) {}
 
+  async getAllSensors() {
+    const sensors = await this.sensorRepository.getAllSensors();
+    return Promise.all(sensors.map((sensor) => this.mapSensor(sensor)));
+  }
+
   async createNewSensor(sensor: ControllerSensor) {
     const errors = await this.validator.validateAsync(sensor);
 
@@ -52,6 +57,7 @@ export class SensorService {
 
   private async mapSensor(sensor: Sensor) {
     return {
+      id: sensor.id,
       name: sensor.name,
       type_id: sensor.type_id,
       config: JSON.parse(sensor.config),

@@ -5,6 +5,24 @@ import { Sensor } from '../plugin/abstractions/sensor';
 
 // const FALLBACK_LANGUAGE = 'en';
 
+const commonTranslations: Record<string, Record<string, any>> = {
+  en: {
+    interpolation: {
+      'is-required': '{{name}} is required',
+      'new-thing': 'Create a new {{type}}',
+      'update-thing': 'Update {{type}}',
+      'select-type-message': 'Please select a {{type}} to configure',
+    },
+    global: {
+      name: 'Name',
+    },
+    sensors: {
+      name: 'Sensor',
+      type: 'Sensor Type',
+    },
+  },
+};
+
 @Service()
 export class TranslationsService {
   constructor(
@@ -53,8 +71,9 @@ export class TranslationsService {
       }
     }
 
-    for (const locale of locales) {
-      translations[`${locale}/common`] = {};
+    for (const key of Object.keys(commonTranslations)) {
+      translations[`${key}/common`] = commonTranslations[key];
+      namespaces.push('common');
     }
 
     return {

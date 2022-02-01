@@ -12,6 +12,8 @@ import { useContainer as httpUseContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 import { setupContainer } from './container';
 import { startServer } from './controllers';
+import { IMessagingManager } from './lib/plugin/abstractions/messaging-manager';
+import { ServerBoot } from './lib/plugin/messages/sockets/server-boot';
 import { startDatabaseConnection } from './orm/config';
 
 (async () => {
@@ -29,4 +31,7 @@ import { startDatabaseConnection } from './orm/config';
     [join(__dirname, 'workers', '**', '*.js')],
     Container.get(Queues),
   );
+
+  const messagingManager = Container.get(IMessagingManager);
+  await messagingManager.sendMessageToFrontEnd(ServerBoot)({});
 })();

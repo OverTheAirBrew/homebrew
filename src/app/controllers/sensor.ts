@@ -5,6 +5,7 @@ import {
   JsonController,
   Param,
   Post,
+  Put,
 } from 'routing-controllers';
 import { Service } from 'typedi';
 import { SensorService } from '../lib/sensor';
@@ -24,5 +25,19 @@ export class SensorController {
   @Get('/:sensorId')
   async getSensorById(@Param('sensorId') sensorId: string) {
     return await this.service.getSensorById(sensorId);
+  }
+
+  @Get('/')
+  async getSensors() {
+    return await this.service.getAllSensors();
+  }
+
+  @Put('/:sensorId')
+  async updateSensor(
+    @Param('sensorId') sensorId: string,
+    @Body() sensor: Sensor,
+  ) {
+    console.log(sensor);
+    return {};
   }
 }
