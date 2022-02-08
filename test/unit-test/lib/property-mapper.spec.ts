@@ -22,7 +22,7 @@ describe('lib/property-mapper', () => {
     expect(mappedString).to.deep.eq({
       id: 'test',
       isRequired: true,
-      name: 'string.test',
+      name: 'string:test',
       type: 'string',
     });
   });
@@ -36,7 +36,7 @@ describe('lib/property-mapper', () => {
     expect(mappedString).to.deep.eq({
       id: 'test',
       isRequired: true,
-      name: 'number.test',
+      name: 'number:test',
       type: 'number',
     });
   });
@@ -50,7 +50,7 @@ describe('lib/property-mapper', () => {
     expect(mappedString).to.deep.eq({
       id: 'test',
       isRequired: true,
-      name: 'selectbox.test',
+      name: 'selectbox:test',
       type: 'select-box',
       selectBoxValues: ['testvalue'],
       // selectBoxDefaultValue: 'test',

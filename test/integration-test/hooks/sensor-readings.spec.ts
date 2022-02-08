@@ -12,6 +12,7 @@ describe('hooks/sensor-readings', () => {
 
   beforeEach(async () => {
     await clearDatabase();
+
     sendEventSpy = sinon.spy(MessagingManager.prototype, 'sendEvent');
   });
 
@@ -20,7 +21,7 @@ describe('hooks/sensor-readings', () => {
       const sensorRepository = getRepository(Sensor);
       await sensorRepository.save({
         name: 'testing',
-        type_id: 'one-wire',
+        type_id: 'one-wire-sensor',
         config: JSON.stringify({
           sensorAddress: '28-000004c8b8d3',
         }),

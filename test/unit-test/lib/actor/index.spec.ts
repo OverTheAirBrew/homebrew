@@ -26,6 +26,32 @@ describe('lib/actor', () => {
     sinon.restore();
   });
 
+  describe('getAllActors', () => {
+    it('should return a list of mapped actors', async () => {
+      actorRepository.getAllActors.resolves([
+        {
+          id: 'id',
+          name: 'name',
+          type_id: 'type_id',
+          config: JSON.stringify({ test: true }),
+        },
+      ] as any);
+
+      const actors = await actorService.getAllActors();
+
+      expect(actors).to.deep.eq([
+        {
+          id: 'id',
+          name: 'name',
+          type_id: 'type_id',
+          config: {
+            test: true,
+          },
+        },
+      ]);
+    });
+  });
+
   describe('createNewActor', () => {
     it('should save the actor when the data is valid', async () => {
       validator.validateAsync.resolves({});

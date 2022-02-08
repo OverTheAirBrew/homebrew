@@ -17,10 +17,19 @@ export class OneWireSensor extends Sensor<IOneWireParams> {
   private oneWireController: IOneWireController;
 
   constructor() {
-    super('one-wire', [
-      new SelectBoxProperty('sensorAddress', true, () => this.getSensors()),
-      new NumberProperty('offset', false),
-    ]);
+    super(
+      'one-wire',
+      [
+        new SelectBoxProperty('sensorAddress', true, () => this.getSensors()),
+        new NumberProperty('offset', false),
+      ],
+      {
+        en: {
+          sensorAddress: 'Sensor address',
+          offset: 'Offset',
+        },
+      },
+    );
 
     this.oneWireController = Container.get(IOneWireController);
   }

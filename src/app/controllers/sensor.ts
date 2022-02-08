@@ -25,4 +25,9 @@ export class SensorController {
   async getSensorById(@Param('sensorId') sensorId: string) {
     return await this.service.getSensorById(sensorId);
   }
+
+  @Get('/')
+  async getSensors() {
+    return await this.service.getAllSensors();
+  }
 }

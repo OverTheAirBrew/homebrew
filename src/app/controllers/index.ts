@@ -27,6 +27,7 @@ export async function startServer(testMode: boolean = false) {
   }
 
   app.use(cors());
+  app.use(json());
 
   if (testMode) {
     await setupContainer();

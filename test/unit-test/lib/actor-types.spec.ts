@@ -8,7 +8,7 @@ import { ActorTypeDto } from '../../../src/app/models/dto/actor-dto';
 
 class TestActor extends Actor<any> {
   constructor() {
-    super('testing-actor', [new StringProperty('test', true)]);
+    super('testing', [new StringProperty('test', true)], { en: {} });
   }
 
   protected async processOn() {}

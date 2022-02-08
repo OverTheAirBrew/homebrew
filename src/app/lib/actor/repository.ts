@@ -19,4 +19,9 @@ export class ActorRepository {
 
     return actor.id;
   }
+
+  async getAllActors() {
+    const actors = await this.connection.find({ where: {} });
+    return actors;
+  }
 }

@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import sinon, { StubbedInstance, stubConstructor } from 'ts-sinon';
-import { Logger } from '../../../../src/app/lib/logger';
+import { MessagingManager } from '../../../../src/app/lib/messaging-manager';
+import { IMessagingManager } from '../../../../src/app/lib/plugin/abstractions/messaging-manager';
+import { SensorReading } from '../../../../src/app/lib/plugin/messages/events/sensor-reading';
 import { SensorService } from '../../../../src/app/lib/sensor';
 import { SensorTypesService } from '../../../../src/app/lib/sensor-types';
 import { SensorRepository } from '../../../../src/app/lib/sensor/repository';
@@ -14,8 +16,7 @@ describe('lib/sensor', () => {
   let sensorRepository: StubbedInstance<SensorRepository>;
 
   let sensorTypeService: StubbedInstance<SensorTypesService>;
-
-  let logger: StubbedInstance<Logger>;
+  let measagingManager: StubbedInstance<IMessagingManager>;
 
   beforeEach(() => {
     mockDatabase();
@@ -26,24 +27,44 @@ describe('lib/sensor', () => {
 
     sensorTypeService = stubConstructor(SensorTypesService);
 
-    logger = stubConstructor(Logger, {
-      level: 'error',
-      node_env: 'testing',
-      serviceName: 'testing',
-    });
-
-    logger.error.returns();
+    measagingManager = stubConstructor(MessagingManager);
+    measagingManager.sendEvent.withArgs(SensorReading).returns(sinon.stub());
 
     sensorService = new SensorService(
       validator,
       sensorRepository,
       sensorTypeService,
-      logger,
+      measagingManager,
     );
   });
 
   afterEach(() => {
     sinon.restore();
+  });
+
+  describe('getAllSensors', () => {
+    it('should return mapped sensors', async () => {
+      sensorRepository.getAllSensors.resolves([
+        {
+          id: 'id',
+          name: 'name',
+          type_id: 'type_id',
+          config: JSON.stringify({ test: true }),
+        },
+      ]);
+
+      const sensors = await sensorService.getAllSensors();
+      expect(sensors).to.deep.eq([
+        {
+          id: 'id',
+          name: 'name',
+          type_id: 'type_id',
+          config: {
+            test: true,
+          },
+        },
+      ]);
+    });
   });
 
   describe('createNewSensor', () => {
@@ -79,6 +100,27 @@ describe('lib/sensor', () => {
   });
 
   describe('processLatestSensorReadings', () => {
+    it('should not send the event if there is no value', async () => {
+      sensorRepository.getAllSensors.resolves([
+        {
+          id: '1234',
+          name: 'testing',
+          type_id: 'testing',
+          config: JSON.stringify({ testing: true }),
+        },
+      ]);
+
+      const runstub = sinon.stub().resolves(undefined);
+
+      sensorTypeService.getRawSensorTypeById.withArgs('testing').resolves({
+        run: runstub,
+      } as any);
+
+      await sensorService.processLatestSensorReadings();
+
+      expect(measagingManager.sendEvent.callCount).to.eq(0);
+    });
+
     it('should run for each sensor', async () => {
       sensorRepository.getAllSensors.resolves([
         {
@@ -100,25 +142,6 @@ describe('lib/sensor', () => {
       expect(runstub.callCount).to.eq(1);
       expect(runstub.firstCall.args).to.deep.eq(['1234', { testing: true }]);
     });
-
-    it('should log if the sensortype is somehow invalid', async () => {
-      sensorRepository.getAllSensors.resolves([
-        {
-          id: '1234',
-          name: 'testing',
-          type_id: 'testing',
-          config: JSON.stringify({ testing: true }),
-        },
-      ]);
-
-      sensorTypeService.getRawSensorTypeById
-        .withArgs('testing')
-        .throws(new Error('invalid sensor type'));
-
-      await sensorService.processLatestSensorReadings();
-
-      expect(logger.error.callCount).to.eq(1);
-    });
   });
 
   describe('getSensorById', () => {
@@ -134,6 +157,7 @@ describe('lib/sensor', () => {
 
       const sensor = await sensorService.getSensorById('12345678');
       expect(sensor).to.deep.eq({
+        id: '12345678',
         name: 'testing-sensor',
         type_id: 'testing-type',
         config: {},

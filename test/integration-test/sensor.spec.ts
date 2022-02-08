@@ -10,7 +10,7 @@ describe('sensor', () => {
   let app: Application;
   let repositories: IDbRepositories;
 
-  before(async () => {
+  beforeEach(async () => {
     app = await startServer(true);
     repositories = await clearDatabase();
   });
@@ -21,7 +21,7 @@ describe('sensor', () => {
         .post('/sensors')
         .send({
           name: 'testing-sensor',
-          type_id: 'one-wire',
+          type_id: 'one-wire-sensor',
           config: {
             sensorAddress: '',
           },
@@ -58,12 +58,52 @@ describe('sensor', () => {
 
       expect(status).to.eq(200);
       expect(body).to.deep.eq({
+        id: sensor2.id,
         name: 'sensor2',
         type_id: 'sensor2-type',
         config: {
           hello: 'world',
         },
       });
+    });
+  });
+
+  describe('GET /', () => {
+    it('should return all sensors', async () => {
+      const [s1, s2] = await repositories.sensor.save([
+        {
+          name: 'sensor1',
+          type_id: 'sensor1-type',
+          config: '{"sensor1": true}',
+        },
+        {
+          name: 'sensor2',
+          type_id: 'sensor2-type',
+          config: '{"sensor2": true}',
+        },
+      ]);
+
+      const { status, body } = await request(app).get('/sensors').send({});
+
+      expect(status).to.eq(200);
+      expect(body).to.deep.eq([
+        {
+          id: s1.id,
+          name: 'sensor1',
+          type_id: 'sensor1-type',
+          config: {
+            sensor1: true,
+          },
+        },
+        {
+          id: s2.id,
+          name: 'sensor2',
+          type_id: 'sensor2-type',
+          config: {
+            sensor2: true,
+          },
+        },
+      ]);
     });
   });
 });
