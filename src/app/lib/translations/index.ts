@@ -12,6 +12,7 @@ const commonTranslations: Record<string, Record<string, any>> = {
       'new-thing': 'Create a new {{type}}',
       'update-thing': 'Update {{type}}',
       'select-type-message': 'Please select a {{type}} to configure',
+      list: '{{type}} list',
     },
     global: {
       name: 'Name',
@@ -19,6 +20,10 @@ const commonTranslations: Record<string, Record<string, any>> = {
     sensors: {
       name: 'Sensor',
       type: 'Sensor Type',
+    },
+    actors: {
+      name: 'Actor',
+      type: 'Actor Type',
     },
   },
 };
@@ -29,26 +34,6 @@ export class TranslationsService {
     @InjectMany(SENSOR_TOKEN) private sensorTypes: Sensor<any>[],
     @InjectMany(ACTOR_TOKEN) private actorTypes: Actor<any>[],
   ) {}
-
-  // async getTranslations(language: string, namespace: string) {
-  //   let localizations: PeripheralLocalizations;
-
-  //   if (namespace.includes('-sensor')) {
-  //     const sensorType = await this.sensorTypeService.getRawSensorTypeById(
-  //       namespace,
-  //     );
-  //     localizations = sensorType.localizations;
-  //   } else if (namespace.includes('-actor')) {
-  //     const actorType = await this.actorTypeService.getRawActorTypeById(
-  //       namespace,
-  //     );
-  //     localizations = actorType.localizations;
-  //   } else {
-  //     throw new Error(`Unknown namespace: ${namespace}`);
-  //   }
-
-  //   return localizations[language] || localizations[FALLBACK_LANGUAGE];
-  // }
 
   async generateTranslations() {
     const translations = {};
@@ -79,7 +64,7 @@ export class TranslationsService {
     return {
       translations,
       namespaces,
-      locales: new Set([...locales]),
+      locales: [...new Set([...locales])],
     };
   }
 }

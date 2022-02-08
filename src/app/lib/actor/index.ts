@@ -1,4 +1,5 @@
 import { Service } from 'typedi';
+import { Actor } from '../../orm/models/actor';
 import { ActorRepository } from './repository';
 import { ActorValidator } from './validator';
 
@@ -23,5 +24,19 @@ export class ActorService {
     }
 
     throw new Error('Invalid actor');
+  }
+
+  async getAllActors() {
+    const actors = await this.actorRepository.getAllActors();
+    return await Promise.all(actors.map((actor) => this.mapActor(actor)));
+  }
+
+  private async mapActor(actor: Actor) {
+    return {
+      id: actor.id,
+      name: actor.name,
+      type_id: actor.type_id,
+      config: JSON.parse(actor.config),
+    };
   }
 }

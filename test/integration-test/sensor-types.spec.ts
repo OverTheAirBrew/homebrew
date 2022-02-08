@@ -18,22 +18,22 @@ describe('sensor-types', () => {
 
       expect(body).to.have.lengthOf(1);
 
-      const oneWireType = body.find((b: any) => b.type === 'one-wire');
+      const oneWireType = body.find((b: any) => b.type === 'one-wire-sensor');
       expect(oneWireType).to.not.be.undefined;
       expect(oneWireType).to.deep.eq({
-        type: 'one-wire',
+        type: 'one-wire-sensor',
         properties: [
           {
             id: 'sensorAddress',
             isRequired: true,
-            name: 'one-wire.sensorAddress',
+            name: 'one-wire-sensor:sensorAddress',
             selectBoxValues: ['28-000004c8b8d3'],
             type: 'select-box',
           },
           {
             id: 'offset',
             isRequired: false,
-            name: 'one-wire.offset',
+            name: 'one-wire-sensor:offset',
             type: 'number',
           },
         ],

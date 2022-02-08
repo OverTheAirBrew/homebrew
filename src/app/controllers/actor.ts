@@ -1,4 +1,4 @@
-import { Body, HttpCode, JsonController, Post } from 'routing-controllers';
+import { Body, Get, HttpCode, JsonController, Post } from 'routing-controllers';
 import { Service } from 'typedi';
 import { ActorService } from '../lib/actor';
 
@@ -13,5 +13,10 @@ export class ActorController {
     @Body() actor: { name: string; type_id: string; config: any },
   ) {
     return await this.actorService.createNewActor(actor);
+  }
+
+  @Get('/')
+  async getActors() {
+    return await this.actorService.getAllActors();
   }
 }

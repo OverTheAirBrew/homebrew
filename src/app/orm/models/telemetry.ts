@@ -3,11 +3,9 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Sensor } from './sensor';
 
 @Entity()
 export class Telemetry {
@@ -15,8 +13,8 @@ export class Telemetry {
   id: string;
 
   @Column()
-  @OneToOne(() => Sensor)
-  @JoinColumn()
+  // @ManyToOne(() => Sensor)
+  @JoinColumn({ name: 'idSensor' })
   sensor_id: string;
 
   @Column()

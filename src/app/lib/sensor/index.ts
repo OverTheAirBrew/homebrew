@@ -1,7 +1,8 @@
 import { Service } from 'typedi';
 import { Sensor as ControllerSensor } from '../../models/controller/sensor';
 import { Sensor } from '../../orm/models/sensor';
-import { ILogger } from '../plugin/abstractions/logger';
+import { IMessagingManager } from '../plugin/abstractions/messaging-manager';
+import { SensorReading } from '../plugin/messages/events/sensor-reading';
 import { SensorTypesService } from '../sensor-types';
 import { SensorRepository } from './repository';
 import { SensorValidator } from './validator';
@@ -12,7 +13,7 @@ export class SensorService {
     private validator: SensorValidator,
     private sensorRepository: SensorRepository,
     private sensorTypesService: SensorTypesService,
-    private logger: ILogger,
+    private messagingManager: IMessagingManager,
   ) {}
 
   async getAllSensors() {
@@ -38,6 +39,8 @@ export class SensorService {
 
   async processLatestSensorReadings() {
     const sensors = await this.sensorRepository.getAllSensors();
+
+    console.log(sensors);
 
     const promises = sensors.map((sensor) =>
       this.sendTempEventForSensor(sensor),
@@ -65,15 +68,20 @@ export class SensorService {
   }
 
   private async sendTempEventForSensor(sensor: Sensor) {
-    try {
-      const sensorType = await this.sensorTypesService.getRawSensorTypeById(
-        sensor.type_id,
-      );
-      const config = JSON.parse(sensor.config);
+    const sensorType = await this.sensorTypesService.getRawSensorTypeById(
+      sensor.type_id,
+    );
+    const config = JSON.parse(sensor.config);
 
-      await sensorType.run(sensor.id, config);
-    } catch (err) {
-      this.logger.error(err);
+    const value = await sensorType.run(sensor.id, config);
+
+    console.log(sensor, value);
+
+    if (value) {
+      await this.messagingManager.sendEvent(SensorReading)({
+        sensor_id: sensor.id,
+        value,
+      });
     }
   }
 }
