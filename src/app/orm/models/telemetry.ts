@@ -3,19 +3,20 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Sensor } from './sensor';
 
 @Entity()
 export class Telemetry {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  // @ManyToOne(() => Sensor)
-  @JoinColumn({ name: 'idSensor' })
-  sensor_id: string;
+  @ManyToOne(() => Sensor)
+  @JoinColumn({ name: 'sensor_id' })
+  sensor: Sensor;
 
   @Column()
   value: number;

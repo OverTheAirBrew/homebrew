@@ -14,8 +14,8 @@ export class ActorValidator extends BaseValidator<{
     this.ruleFor('name').notNull().notEmpty();
 
     this.ruleFor('type_id').mustAsync(async (type_id) => {
-      const sensorType = await actorTypeService.getActorTypeById(type_id);
-      return !!sensorType;
+      const actorType = await actorTypeService.getActorTypeById(type_id);
+      return !!actorType;
     });
 
     this.ruleFor('config').mustAsync(async (config, { type_id }) => {

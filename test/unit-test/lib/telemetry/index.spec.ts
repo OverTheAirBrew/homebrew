@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import sinon, { StubbedInstance, stubConstructor } from 'ts-sinon';
+import { SensorRepository } from '../../../../src/app/lib/sensor/repository';
 import { TelemetryService } from '../../../../src/app/lib/telemetry';
 import { TelemetryRepository } from '../../../../src/app/lib/telemetry/repository';
 
@@ -12,7 +13,12 @@ describe('lib/telementry', () => {
     telemetryRepositoryStub = stubConstructor(TelemetryRepository);
     telemetryRepositoryStub.saveTelemetryForSensorId.resolves();
 
-    telemetryService = new TelemetryService(telemetryRepositoryStub);
+    const sensorRepositoryStub = stubConstructor(SensorRepository);
+
+    telemetryService = new TelemetryService(
+      telemetryRepositoryStub,
+      sensorRepositoryStub,
+    );
   });
 
   afterEach(() => {

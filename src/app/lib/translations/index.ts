@@ -25,6 +25,12 @@ const commonTranslations: Record<string, Record<string, any>> = {
       name: 'Actor',
       type: 'Actor Type',
     },
+    kettles: {
+      name: 'Kettle',
+    },
+    logics: {
+      type: 'Logic Type',
+    },
   },
 };
 

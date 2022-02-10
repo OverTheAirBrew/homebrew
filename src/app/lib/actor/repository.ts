@@ -24,4 +24,8 @@ export class ActorRepository {
     const actors = await this.connection.find({ where: {} });
     return actors;
   }
+
+  async getActorById(actor_id: string) {
+    return await this.connection.findOne(actor_id);
+  }
 }

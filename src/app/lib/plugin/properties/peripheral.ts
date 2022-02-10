@@ -12,7 +12,9 @@ export abstract class Peripheral {
 
   public async validate(params: any): Promise<boolean> {
     const validationResults = await Promise.all(
-      this.properties.map((prop) => prop.validateProperty(params[prop.id])),
+      this.properties.map(
+        async (prop) => await prop.validateProperty(params[prop.id]),
+      ),
     );
 
     return !validationResults.some((res) => !res);

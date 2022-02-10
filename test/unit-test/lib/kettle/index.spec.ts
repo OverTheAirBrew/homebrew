@@ -1,8 +1,10 @@
 import { expect } from 'chai';
 import sinon, { StubbedInstance, stubConstructor } from 'ts-sinon';
+import { ActorRepository } from '../../../../src/app/lib/actor/repository';
 import { KettleService } from '../../../../src/app/lib/kettle';
 import { KettleRepository } from '../../../../src/app/lib/kettle/repository';
 import { CreateKettleValidator } from '../../../../src/app/lib/kettle/validator';
+import { SensorRepository } from '../../../../src/app/lib/sensor/repository';
 
 describe('lib/kettle', () => {
   let kettleService: KettleService;
@@ -18,9 +20,15 @@ describe('lib/kettle', () => {
     kettleRepositoryStub = stubConstructor(KettleRepository);
     kettleRepositoryStub.createKettle.resolves('1234');
 
+    const sensorRepositoryStub = stubConstructor(SensorRepository);
+
+    const actorRepositoryStub = stubConstructor(ActorRepository);
+
     kettleService = new KettleService(
       createValidatorStub,
       kettleRepositoryStub,
+      sensorRepositoryStub,
+      actorRepositoryStub,
     );
   });
 

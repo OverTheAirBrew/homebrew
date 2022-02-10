@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import sinon, { StubbedInstance, stubConstructor } from 'ts-sinon';
+import { ActorRepository } from '../../../../src/app/lib/actor/repository';
 import { CreateKettleValidator } from '../../../../src/app/lib/kettle/validator';
 import { SensorRepository } from '../../../../src/app/lib/sensor/repository';
 
@@ -15,8 +16,12 @@ describe('lib/kettle/validator', () => {
 
     beforeEach(() => {
       sensorRepositoryStub = stubConstructor(SensorRepository);
+      const actorRepositoryStub = stubConstructor(ActorRepository);
 
-      validator = new CreateKettleValidator(sensorRepositoryStub);
+      validator = new CreateKettleValidator(
+        sensorRepositoryStub,
+        actorRepositoryStub,
+      );
     });
 
     it('should return valid if everything is valid', async () => {

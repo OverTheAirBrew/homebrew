@@ -40,8 +40,6 @@ export class SensorService {
   async processLatestSensorReadings() {
     const sensors = await this.sensorRepository.getAllSensors();
 
-    console.log(sensors);
-
     const promises = sensors.map((sensor) =>
       this.sendTempEventForSensor(sensor),
     );
@@ -74,8 +72,6 @@ export class SensorService {
     const config = JSON.parse(sensor.config);
 
     const value = await sensorType.run(sensor.id, config);
-
-    console.log(sensor, value);
 
     if (value) {
       await this.messagingManager.sendEvent(SensorReading)({
