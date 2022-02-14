@@ -1,5 +1,6 @@
 import { Service } from 'typedi';
 import { Actor } from '../../orm/models/actor';
+import { ValidationError } from '../errors/validation-error';
 import { ActorRepository } from './repository';
 import { ActorValidator } from './validator';
 
@@ -23,7 +24,7 @@ export class ActorService {
       return { id };
     }
 
-    throw new Error('Invalid actor');
+    throw new ValidationError(errors);
   }
 
   async getAllActors() {

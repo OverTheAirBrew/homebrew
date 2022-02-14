@@ -8,7 +8,7 @@ import { MessagingManager } from './lib/messaging-manager';
 import { ILogger } from './lib/plugin/abstractions/logger';
 import { IMessagingManager } from './lib/plugin/abstractions/messaging-manager';
 import { OtaSocketServer } from './lib/socket-io';
-import { actors, sensors } from './plugins';
+import { actors, logics, sensors } from './plugins';
 import {
   DS18B20Controller,
   IOneWireController,
@@ -61,5 +61,5 @@ export async function setupContainer() {
     Container.set(IOneWireController, new DS18B20Controller());
   }
 
-  Container.import([...actors, ...sensors]);
+  Container.import([...actors, ...sensors, ...logics]);
 }

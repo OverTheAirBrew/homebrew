@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { TranslationsService } from '../../../../src/app/lib/translations';
 import { GpioActor } from '../../../../src/app/plugins/actors/gpio';
+import { PidLogic } from '../../../../src/app/plugins/logic/pid';
 import { OneWireSensor } from '../../../../src/app/plugins/sensors/one-wire';
 
 describe('lib/translations', () => {
@@ -10,6 +11,7 @@ describe('lib/translations', () => {
     translationsService = new TranslationsService(
       [new OneWireSensor()],
       [new GpioActor()],
+      [new PidLogic()],
     );
   });
 
@@ -25,6 +27,7 @@ describe('lib/translations', () => {
       expect(translationsResponse.translations).to.not.be.undefined;
       expect(translationsResponse.namespaces).to.deep.eq([
         'one-wire-sensor',
+        'pid-logic',
         'gpio-actor',
         'common',
       ]);

@@ -1,7 +1,9 @@
 import { InjectMany, Service } from 'typedi';
-import { ACTOR_TOKEN, SENSOR_TOKEN } from '../plugin';
+import { ACTOR_TOKEN, LOGIC_TOKEN, SENSOR_TOKEN } from '../plugin';
 import { Actor } from '../plugin/abstractions/actor';
+import { Logic } from '../plugin/abstractions/logic';
 import { Sensor } from '../plugin/abstractions/sensor';
+import { Peripheral } from '../plugin/properties';
 
 // const FALLBACK_LANGUAGE = 'en';
 
@@ -25,6 +27,15 @@ const commonTranslations: Record<string, Record<string, any>> = {
       name: 'Actor',
       type: 'Actor Type',
     },
+    kettles: {
+      name: 'Kettle',
+    },
+    logics: {
+      type: 'Logic Type',
+    },
+    heaters: {
+      name: 'Heater',
+    },
   },
 };
 
@@ -33,6 +44,7 @@ export class TranslationsService {
   constructor(
     @InjectMany(SENSOR_TOKEN) private sensorTypes: Sensor<any>[],
     @InjectMany(ACTOR_TOKEN) private actorTypes: Actor<any>[],
+    @InjectMany(LOGIC_TOKEN) private logicTypes: Logic<any>[],
   ) {}
 
   async generateTranslations() {
@@ -40,19 +52,17 @@ export class TranslationsService {
     const namespaces = [];
     const locales = [];
 
-    for (const st of this.sensorTypes) {
-      for (const key of Object.keys(st.localizations)) {
-        translations[`${key}/${st.name}`] = st.localizations[key];
-        locales.push(key);
-        namespaces.push(`${st.name}`);
-      }
-    }
+    const types: Peripheral[] = [
+      ...this.sensorTypes,
+      ...this.logicTypes,
+      ...this.actorTypes,
+    ];
 
-    for (const at of this.actorTypes) {
-      for (const key of Object.keys(at.localizations)) {
-        translations[`${key}/${at.name}`] = at.localizations[key];
+    for (const type of types) {
+      for (const key of Object.keys(type.localizations)) {
+        translations[`${key}/${type.name}`] = type.localizations[key];
         locales.push(key);
-        namespaces.push(`${at.name}`);
+        namespaces.push(`${type.name}`);
       }
     }
 

@@ -1,11 +1,7 @@
-import { IsOptional, IsString } from 'class-validator';
-
 export class Kettle {
-  @IsString()
-  @IsOptional()
-  name?: string;
-
-  @IsString()
-  @IsOptional()
+  name: string;
   sensor_id?: string;
+  heater_id?: string;
+  logicType_id?: string;
+  config?: any;
 }

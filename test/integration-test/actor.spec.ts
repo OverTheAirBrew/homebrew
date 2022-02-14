@@ -24,7 +24,7 @@ describe('actor', () => {
           name: 'testing-actor',
           type_id: 'gpio-actor',
           config: {
-            gpioNumber: '1',
+            gpioNumber: 1,
           },
         });
 

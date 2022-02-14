@@ -20,8 +20,6 @@ describe('sensor-reading-worker', () => {
         config: '{}',
       });
 
-      console.log(sensor);
-
       await telemetryService.saveTelemetryForSensorId(sensor.id, 1);
     });
   });

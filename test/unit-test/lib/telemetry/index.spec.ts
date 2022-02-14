@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import sinon, { StubbedInstance, stubConstructor } from 'ts-sinon';
+import { SensorRepository } from '../../../../src/app/lib/sensor/repository';
 import { TelemetryService } from '../../../../src/app/lib/telemetry';
 import { TelemetryRepository } from '../../../../src/app/lib/telemetry/repository';
 
@@ -12,7 +13,15 @@ describe('lib/telementry', () => {
     telemetryRepositoryStub = stubConstructor(TelemetryRepository);
     telemetryRepositoryStub.saveTelemetryForSensorId.resolves();
 
-    telemetryService = new TelemetryService(telemetryRepositoryStub);
+    const sensorRepositoryStub = stubConstructor(SensorRepository);
+    sensorRepositoryStub.getSensorById.withArgs('1234').resolves({
+      id: '1234',
+    } as any);
+
+    telemetryService = new TelemetryService(
+      telemetryRepositoryStub,
+      sensorRepositoryStub,
+    );
   });
 
   afterEach(() => {
@@ -35,7 +44,7 @@ describe('lib/telementry', () => {
       );
       expect(
         telemetryRepositoryStub.saveTelemetryForSensorId.firstCall.args,
-      ).to.deep.eq(['1234', 1]);
+      ).to.deep.eq([{ id: '1234' }, 1]);
     });
   });
 });
