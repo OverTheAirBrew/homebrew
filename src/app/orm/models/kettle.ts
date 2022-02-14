@@ -13,7 +13,7 @@ import { Sensor } from './sensor';
 @Entity()
 export class Kettle {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id?: string;
 
   @Column()
   name: string;

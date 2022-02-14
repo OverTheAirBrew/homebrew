@@ -11,6 +11,7 @@ export class CreateKettleValidator extends BaseValidator<Kettle> {
   constructor(
     sensorRepository: SensorRepository,
     actorRepository: ActorRepository,
+    logicTypeService: LogicTypesService,
   ) {
     super();
 
@@ -39,6 +40,18 @@ export class CreateKettleValidator extends BaseValidator<Kettle> {
         }
       })
       .when((kettle) => !!kettle.heater_id);
+
+    this.ruleFor('logicType_id')
+      .mustAsync(async (logicType_id) => {
+        return !!(await logicTypeService.getLogicTypeById(logicType_id));
+      })
+      .when((kettle) => !!kettle.logicType_id);
+
+    this.ruleFor('config')
+      .mustAsync(async (config, { logicType_id }) => {
+        return await logicTypeService.validateConfig(logicType_id, config);
+      })
+      .when((kettle) => !!kettle.logicType_id);
   }
 }
 
@@ -88,6 +101,7 @@ export class KettleValidator extends BaseValidator<Kettle> {
 
     this.ruleFor('config')
       .mustAsync(async (config, { logicType_id }) => {
+        console.log('VERIFYING CONFIG');
         return await logicTypeService.validateConfig(logicType_id, config);
       })
       .when((kettle) => !!kettle.logicType_id);

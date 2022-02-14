@@ -172,6 +172,7 @@ describe('lib/kettle/validator', () => {
 
     let sensorRepositoryStub: StubbedInstance<SensorRepository>;
     let actorRepositoryStub: StubbedInstance<ActorRepository>;
+    let logicTypeService: StubbedInstance<LogicTypesService>;
 
     beforeEach(() => {
       sensorRepositoryStub = stubConstructor(SensorRepository);
@@ -180,6 +181,7 @@ describe('lib/kettle/validator', () => {
       validator = new CreateKettleValidator(
         sensorRepositoryStub,
         actorRepositoryStub,
+        logicTypeService,
       );
     });
 

@@ -1,5 +1,6 @@
 import { InjectMany, Service } from 'typedi';
 import { LogicTypeDto } from '../../models/dto/logic-types-dto';
+import { InvalidLogicTypeError } from '../errors/invalid-logic-type';
 import { LOGIC_TOKEN } from '../plugin';
 import { Logic as LogicType } from '../plugin/abstractions/logic';
 import { PropertyMapper } from '../property-mapper';
@@ -21,7 +22,7 @@ export class LogicTypesService {
     const logicType = this.logics.find((s) => s.name === id);
 
     if (!logicType) {
-      throw new Error('Invalid actor type id');
+      throw new InvalidLogicTypeError(id);
     }
 
     return logicType;
