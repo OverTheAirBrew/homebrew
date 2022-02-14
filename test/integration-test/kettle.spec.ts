@@ -35,4 +35,40 @@ describe('kettle', () => {
       expect(refetchedKettle).to.have.lengthOf(1);
     });
   });
+
+  describe('PUT /:id', () => {
+    it('should update the kettle', async () => {
+      const [{ id }] = await repositories.kettle.save([
+        {
+          name: 'testing-actor',
+        },
+        {
+          name: 'testing-actor-2',
+        },
+      ]);
+
+      const { status, body } = await request(app).put(`/kettles/${id}`).send({
+        name: 'updated-name',
+      });
+
+      console.log(body);
+
+      expect(status).to.eq(204);
+
+      const refetchedActor = await repositories.kettle.findOne({
+        where: { id },
+      });
+
+      expect(refetchedActor).to.not.be.undefined;
+      expect(refetchedActor.name).to.eq('updated-name');
+    });
+  });
+
+  describe('GET /', () => {
+    it('should return kettles', async () => {
+      const kettle = {
+        name: 'testing-kettle',
+      };
+    });
+  });
 });

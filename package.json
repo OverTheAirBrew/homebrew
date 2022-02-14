@@ -6,7 +6,7 @@
     "dist/src"
   ],
   "scripts": {
-    "test": "NODE_ENV=test nyc --silent --no-clean mocha 'dist/test/**/*.spec.js' --exit --bail",
+    "test": "DATABASE_CONNECTION_STRING=./database.sqlite NODE_ENV=test nyc --silent --no-clean mocha 'dist/test/**/*.spec.js' --exit --bail",
     "posttest": "nyc report --reporter=lcov --reporter=text-summary --reporter=cobertura",
     "coverage": "codecov",
     "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules' '!commitlint.config.js' 'dist' 'coverage' '.nyc_output'",

@@ -2,6 +2,7 @@ import { Service } from 'typedi';
 import { Kettle as ControllerKettle } from '../../models/controller/kettle';
 import { Kettle } from '../../orm/models/kettle';
 import { ActorRepository } from '../actor/repository';
+import { ValidationError } from '../errors/validation-error';
 import { SensorRepository } from '../sensor/repository';
 import { KettleRepository } from './repository';
 import { CreateKettleValidator, UpdateKettleValidator } from './validator';
@@ -74,7 +75,7 @@ export class KettleService {
       return {};
     }
 
-    throw new Error('Invalid kettle config');
+    throw new ValidationError(errors);
   }
 
   async mapKettle(kettle: Kettle) {

@@ -88,7 +88,7 @@ export class KettleValidator extends BaseValidator<Kettle> {
 
     this.ruleFor('config')
       .mustAsync(async (config, { logicType_id }) => {
-        return !!(await logicTypeService.validateConfig(logicType_id, config));
+        return await logicTypeService.validateConfig(logicType_id, config);
       })
       .when((kettle) => !!kettle.logicType_id);
   }

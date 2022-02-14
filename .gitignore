@@ -159,3 +159,5 @@ app/ota.db
 !commitlint.config.js
 
 .npmrc
+
+*.sqlite

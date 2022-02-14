@@ -39,7 +39,8 @@ export class KettleRepository {
   }
 
   async getKettleById(id: string) {
-    const kettle = this.connection.findOne(id);
+    const kettle = await this.connection.findOne({ where: { id } });
+
     return kettle;
   }
 
