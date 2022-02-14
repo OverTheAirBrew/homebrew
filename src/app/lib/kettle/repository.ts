@@ -31,10 +31,20 @@ export class KettleRepository {
   async getAllKettles() {
     const query = this.connection
       .createQueryBuilder('kettle')
-      .innerJoinAndSelect('kettle.sensor', 'sensor')
-      .innerJoinAndSelect('kettle.heater', 'heater');
+      .leftJoinAndSelect('kettle.sensor', 'sensor')
+      .leftJoinAndSelect('kettle.heater', 'heater');
 
     const kettles = await query.getMany();
     return kettles;
+  }
+
+  async getKettleById(id: string) {
+    const kettle = this.connection.findOne(id);
+    return kettle;
+  }
+
+  async updateKettle(kettle: Kettle) {
+    const savedKettle = await this.connection.save(kettle);
+    return savedKettle;
   }
 }

@@ -1,12 +1,92 @@
 import { expect } from 'chai';
 import sinon, { StubbedInstance, stubConstructor } from 'ts-sinon';
 import { ActorRepository } from '../../../../src/app/lib/actor/repository';
-import { CreateKettleValidator } from '../../../../src/app/lib/kettle/validator';
+import { KettleRepository } from '../../../../src/app/lib/kettle/repository';
+import {
+  CreateKettleValidator,
+  KettleValidator,
+  UpdateKettleValidator,
+} from '../../../../src/app/lib/kettle/validator';
 import { SensorRepository } from '../../../../src/app/lib/sensor/repository';
+import { mockDatabase } from '../../utils/mock-database';
 
 describe('lib/kettle/validator', () => {
   afterEach(() => {
     sinon.restore();
+  });
+
+  describe.only('updateKettleValidator', () => {
+    let validator: UpdateKettleValidator;
+
+    let kettleRepositoryStub: StubbedInstance<KettleRepository>;
+    let sensorRepositoryStub: StubbedInstance<SensorRepository>;
+    let actorRepositoryStub: StubbedInstance<ActorRepository>;
+
+    beforeEach(() => {
+      mockDatabase();
+
+      kettleRepositoryStub = stubConstructor(KettleRepository);
+      kettleRepositoryStub.getKettleById.withArgs('known_kettle').resolves({
+        id: 'known_kettle',
+      } as any);
+
+      sensorRepositoryStub = stubConstructor(SensorRepository);
+      sensorRepositoryStub.getSensorById.withArgs('known_sensor').resolves({
+        id: 'known_sensor',
+      } as any);
+
+      actorRepositoryStub = stubConstructor(ActorRepository);
+      actorRepositoryStub.getActorById.withArgs('known_actor').resolves({
+        id: 'known_actor',
+      } as any);
+
+      const kettleValidator = new KettleValidator(
+        sensorRepositoryStub,
+        actorRepositoryStub,
+      );
+
+      validator = new UpdateKettleValidator(
+        kettleRepositoryStub,
+        kettleValidator,
+      );
+    });
+
+    it('should return an error if the kettle does not exist', async () => {
+      const response = await validator.validateAsync({
+        kettle_id: 'unknown_kettle',
+        kettle: {
+          name: undefined,
+        },
+      });
+
+      expect(response).to.have.key('kettle_id');
+    });
+
+    it('should return an error if the sensor does not exist', async () => {
+      const response = await validator.validateAsync({
+        kettle_id: 'known_kettle',
+        kettle: {
+          name: undefined,
+          sensor_id: 'unknown_sensor',
+        },
+      });
+
+      expect(response).to.have.key('kettle');
+      expect(response.kettle).to.have.key('sensor_id');
+    });
+
+    it('should return an error if the heater is invalid', async () => {
+      const response = await validator.validateAsync({
+        kettle_id: 'known_kettle',
+        kettle: {
+          name: undefined,
+          heater_id: 'unknown_actor',
+        },
+      });
+
+      expect(response).to.have.key('kettle');
+      expect(response.kettle).to.have.key('heater_id');
+    });
   });
 
   describe('createKettleValidator', () => {

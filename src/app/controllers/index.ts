@@ -38,6 +38,7 @@ export async function startServer(testMode: boolean = false) {
   const routerControllers: RoutingControllersOptions = {
     controllers: [join(__dirname, '**', '*.js')],
     middlewares: [json()],
+    validation: false,
   };
 
   useExpressServer(app, routerControllers);

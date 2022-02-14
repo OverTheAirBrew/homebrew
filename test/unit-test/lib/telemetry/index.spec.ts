@@ -14,6 +14,9 @@ describe('lib/telementry', () => {
     telemetryRepositoryStub.saveTelemetryForSensorId.resolves();
 
     const sensorRepositoryStub = stubConstructor(SensorRepository);
+    sensorRepositoryStub.getSensorById.withArgs('1234').resolves({
+      id: '1234',
+    } as any);
 
     telemetryService = new TelemetryService(
       telemetryRepositoryStub,
@@ -41,7 +44,7 @@ describe('lib/telementry', () => {
       );
       expect(
         telemetryRepositoryStub.saveTelemetryForSensorId.firstCall.args,
-      ).to.deep.eq(['1234', 1]);
+      ).to.deep.eq([{ id: '1234' }, 1]);
     });
   });
 });

@@ -26,17 +26,20 @@ export class Kettle {
   @JoinColumn({ name: 'heater_id' })
   heater?: Actor;
 
-  @Column()
-  logicType_id: string;
+  @Column({
+    nullable: true,
+  })
+  logicType_id?: string;
 
   @Column({
     type: 'text',
+    nullable: true,
   })
-  config: string;
+  config?: string;
 
   @CreateDateColumn()
   createdAt?: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
 }

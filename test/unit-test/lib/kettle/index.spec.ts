@@ -3,7 +3,10 @@ import sinon, { StubbedInstance, stubConstructor } from 'ts-sinon';
 import { ActorRepository } from '../../../../src/app/lib/actor/repository';
 import { KettleService } from '../../../../src/app/lib/kettle';
 import { KettleRepository } from '../../../../src/app/lib/kettle/repository';
-import { CreateKettleValidator } from '../../../../src/app/lib/kettle/validator';
+import {
+  CreateKettleValidator,
+  UpdateKettleValidator,
+} from '../../../../src/app/lib/kettle/validator';
 import { SensorRepository } from '../../../../src/app/lib/sensor/repository';
 
 describe('lib/kettle', () => {
@@ -17,6 +20,8 @@ describe('lib/kettle', () => {
     createValidatorStub.validateAsync.resolves({});
     createValidatorStub.isValid.resolves(true);
 
+    const updateKettleStub = stubConstructor(UpdateKettleValidator);
+
     kettleRepositoryStub = stubConstructor(KettleRepository);
     kettleRepositoryStub.createKettle.resolves('1234');
 
@@ -26,6 +31,7 @@ describe('lib/kettle', () => {
 
     kettleService = new KettleService(
       createValidatorStub,
+      updateKettleStub,
       kettleRepositoryStub,
       sensorRepositoryStub,
       actorRepositoryStub,
@@ -41,6 +47,9 @@ describe('lib/kettle', () => {
       const { id } = await kettleService.createKettle({
         name: 'test',
         sensor_id: '1234',
+        heater_id: '1234',
+        logicType_id: '1234',
+        config: {},
       });
 
       expect(id).to.eq('1234');
@@ -54,6 +63,9 @@ describe('lib/kettle', () => {
         await kettleService.createKettle({
           name: 'test',
           sensor_id: '1234',
+          heater_id: '1234',
+          logicType_id: '1234',
+          config: {},
         });
         expect.fail('should have thrown');
       } catch (err) {

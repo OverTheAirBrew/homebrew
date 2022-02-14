@@ -79,7 +79,8 @@ describe('lib/actor', () => {
         });
         expect.fail('should not reach this point');
       } catch (err) {
-        expect(err.message).to.eq('Invalid actor');
+        expect(err.message).to.eq('One or more validation errors occurred');
+        expect(err).to.haveOwnProperty('failures');
       }
     });
   });
