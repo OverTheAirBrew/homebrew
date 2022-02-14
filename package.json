@@ -22,7 +22,7 @@
   "dependencies": {
     "@overtheairbrew/node-typedi-in-memory-queue": "^1.0.0",
     "@overtheairbrew/socket-io": "^1.0.3",
-    "axios": "^0.25.0",
+    "axios": "^0.26.0",
     "body-parser": "^1.19.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
