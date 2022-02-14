@@ -21,6 +21,7 @@
     "**/lib/socket-io/*.ts",
     "**/plugins/sensors/index.ts",
     "**/plugins/actors/index.ts",
+    "**/plugins/logic/index.ts",
     "**/plugins/index.ts",
     "**/lib/base-validator.ts",
     "**/errors/*.ts"
