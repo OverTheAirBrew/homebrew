@@ -27,9 +27,6 @@ jobs:
             npm run test
             npm run coverage
       - run:
-          name: Prune
-          command: npm prune --production
-      - run:
           name: release
           command: |
             echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
