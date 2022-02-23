@@ -10,6 +10,15 @@
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     "@semantic-release/npm",
+    [
+      "@codedependant/semantic-release-docker",
+      {
+        "dockerTags": ["latest", "'{{version}}'"],
+        "dockerImage": "overtheairbrew/homebrew-testing",
+        "dockerFile": "Dockerfile",
+        "dockerRegistry": "ghcr.io"
+      }
+    ],
     "@semantic-release/github",
     "@semantic-release/git"
   ]
