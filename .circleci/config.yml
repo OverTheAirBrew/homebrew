@@ -3,12 +3,14 @@ jobs:
   build:
     docker:
       - image: 'circleci/node:16'
+        environment:
+          DOCKER_REGISTRY_USER: sharpn
+          DOCKER REGISTRY_PASSWORD: $GITHUB_PKG_AUTH_TOKEN
       - image: mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
           MYSQL_DATABASE: circle_test
-          DOCKER_REGISTRY_USER: sharpn
-          DOCKER REGISTRY_PASSWORD: $GITHUB_PKG_AUTH_TOKEN
+          
     environment:
       DB_URL: mysql://root@127.0.0.1/circle_test
       HUSKY: '0'
