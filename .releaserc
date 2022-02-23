@@ -13,8 +13,8 @@
     [
       "@codedependant/semantic-release-docker",
       {
-        "dockerTags": ["latest", "'{{version}}'"],
-        "dockerImage": "overtheairbrew/homebrew-testing",
+        "dockerTags": ["{{major}}-latest"],
+        "dockerImage": "homebrew-testing",
         "dockerFile": "Dockerfile",
         "dockerRegistry": "ghcr.io"
       }
