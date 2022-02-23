@@ -1,25 +1,3 @@
 {
-  "branches": [
-    "master",
-    {
-      "name": "next",
-      "prerelease": true
-    }
-  ],
-  "plugins": [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    "@semantic-release/npm",
-    [
-      "@codedependant/semantic-release-docker",
-      {
-        "dockerTags": ["{{major}}-latest"],
-        "dockerImage": "homebrew-testing",
-        "dockerFile": "Dockerfile",
-        "dockerRegistry": "ghcr.io"
-      }
-    ],
-    "@semantic-release/github",
-    "@semantic-release/git"
-  ]
+  
 }
