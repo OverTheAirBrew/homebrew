@@ -9,13 +9,13 @@ jobs:
       - image: mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
-          MYSQL_DATABASE: circle_test
-          
+          MYSQL_DATABASE: circle_test       
     environment:
       DB_URL: mysql://root@127.0.0.1/circle_test
       HUSKY: '0'
       CI: 'true'
     steps:
+      - setup_remote_docker
       - checkout
       - run:
           name: install
