@@ -34,6 +34,7 @@ export class SensorTypesService {
   }
 
   public async validateConfig(type_id: string, config: any) {
+    const a = 1;
     const sensorType = await this.getRawSensorTypeById(type_id);
     return await sensorType.validate(config);
   }

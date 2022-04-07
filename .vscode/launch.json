@@ -5,15 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-node",
+      "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/dist/src/app/index.js",
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-      "outputCapture": "std",
+      "name": "Debug Nest Framework",
+      "args": [
+          "${workspaceFolder}/src/main.ts"
+      ],
+      "runtimeArgs": [
+          "--nolazy",
+          "-r",
+          "ts-node/register",
+          "-r",
+          "tsconfig-paths/register"
+      ],
+      "sourceMaps": true,
       "envFile": "${workspaceFolder}/.env",
-      "runtimeVersion": "16"
-    }
+      "cwd": "${workspaceRoot}",
+      "console": "integratedTerminal",
+      "protocol": "inspector"
+  }
   ]
 }

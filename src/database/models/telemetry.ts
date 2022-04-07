@@ -1,44 +1,39 @@
 import {
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
   Default,
-  HasMany,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
-import { Telemetry } from './telemetry';
+import Sensor from './sensor';
 
 @Table({
-  modelName: 'sensors',
+  modelName: 'telemetries',
 })
-export class Sensor extends Model {
+export class Telemetry extends Model {
   @Default(DataType.UUIDV4)
   @PrimaryKey
   @Column(DataType.UUID)
   id?: string;
 
   @Column
-  name: string;
+  @ForeignKey(() => Sensor)
+  sensor_id: string;
+
+  @BelongsTo(() => Sensor)
+  sensor: Sensor;
 
   @Column
-  type_id: string;
-
-  @Column({
-    type: 'TEXT',
-  })
-  config: string;
+  reading: number;
 
   @CreatedAt
   createdAt?: Date;
 
   @UpdatedAt
   updatedAt?: Date;
-
-  @HasMany(() => Telemetry)
-  telemetries: Telemetry;
 }
-
-export default Sensor;

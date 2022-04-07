@@ -1,6 +1,11 @@
 import { homedir } from 'os';
 import { join } from 'path';
 import { Sequelize } from 'sequelize-typescript';
+import Actor from './models/actor';
+import Sensor from './models/sensor';
+import { Telemetry } from './models/telemetry';
+
+import { SequelizeStorage, Umzug } from 'umzug';
 
 export const databaseProviders = [
   {
@@ -9,13 +14,28 @@ export const databaseProviders = [
       const sequelize = new Sequelize({
         dialect: 'sqlite',
         storage: join(homedir(), 'ota.homebrew.db'),
-        models: [join(__dirname, 'models', '*.js')],
-        logging: false,
+        models: [Actor, Sensor, Telemetry],
+        // logging: false,
       });
-      await sequelize.sync({
-        alter: true,
-      });
+
+      await migrateDatabase(sequelize);
+
       return sequelize;
     },
   },
 ];
+
+async function migrateDatabase(sequelize: Sequelize) {
+  const umzug = new Umzug({
+    context: sequelize.getQueryInterface(),
+    storage: new SequelizeStorage({
+      sequelize,
+    }),
+    migrations: {
+      glob: '**/migrations/*.js',
+    },
+    logger: console,
+  });
+
+  await umzug.up();
+}

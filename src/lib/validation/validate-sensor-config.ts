@@ -5,7 +5,6 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { SensorTypesService } from '../../app/sensor-types/service';
-import { SensorDto } from '../../models/dto/sensor.dto';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
@@ -19,11 +18,11 @@ export class ValidSensorConfig implements ValidatorConstraintInterface {
 
     try {
       const valid = await this.sensorTypesService.validateConfig(
-        (args.object as SensorDto).type_id,
+        args.object['type_id'],
         text,
       );
       return valid;
-    } catch {
+    } catch (err) {
       return false;
     }
   }

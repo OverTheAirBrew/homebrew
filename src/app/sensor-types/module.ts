@@ -7,5 +7,6 @@ import { SensorTypesService } from './service';
   imports: [],
   providers: [SensorTypesService, PropertyMapper],
   controllers: [SensorTypesController],
+  exports: [SensorTypesService],
 })
 export class SensorTypesModule {}
