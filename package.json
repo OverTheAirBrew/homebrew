@@ -6,7 +6,7 @@
     "dist"
   ],
   "scripts": {
-    "prebuild": "rimraf dist",
+    "prebuild": "rimraf dist coverage",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -19,6 +19,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e:cov": "jest --config ./test/jest-e2e.json --coverage",
     "coverage": "codecov",
     "prepare": "husky install",
     "semantic-release": "semantic-release"
@@ -103,5 +104,30 @@
   },
   "lint-staged": {
     "*.ts": "prettier --write"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/database/*",
+      "<rootDir>/lib/plugin/*",
+      "module.ts", 
+      "controller.ts",
+      "models/*",
+      "main.ts"
+    ]
   }
 }

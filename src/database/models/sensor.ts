@@ -27,7 +27,7 @@ export class Sensor extends Model {
   type_id: string;
 
   @Column({
-    type: 'TEXT',
+    type: DataType.JSON,
   })
   config: string;
 
@@ -40,5 +40,3 @@ export class Sensor extends Model {
   @HasMany(() => Telemetry)
   telemetries: Telemetry;
 }
-
-export default Sensor;

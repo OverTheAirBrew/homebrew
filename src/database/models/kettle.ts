@@ -1,18 +1,22 @@
 import {
+  AllowNull,
   Column,
   CreatedAt,
   DataType,
   Default,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { Actor } from './actor';
+import { Sensor } from './sensor';
 
 @Table({
-  modelName: 'actors',
+  modelName: 'kettles',
 })
-export class Actor extends Model {
+export class Kettle extends Model {
   @Default(DataType.UUIDV4)
   @PrimaryKey
   @Column(DataType.UUID)
@@ -21,13 +25,25 @@ export class Actor extends Model {
   @Column
   name: string;
 
+  @AllowNull
+  @ForeignKey(() => Sensor)
   @Column
-  type_id: string;
+  sensor_id?: string;
 
+  @AllowNull
+  @ForeignKey(() => Actor)
+  @Column
+  heater_id?: string;
+
+  @AllowNull
+  @Column
+  logicType_id?: string;
+
+  @AllowNull
   @Column({
     type: DataType.JSON,
   })
-  config: string;
+  config?: string;
 
   @CreatedAt
   createdAt?: Date;

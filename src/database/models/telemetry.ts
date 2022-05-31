@@ -10,7 +10,7 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
-import Sensor from './sensor';
+import { Sensor } from './sensor';
 
 @Table({
   modelName: 'telemetries',

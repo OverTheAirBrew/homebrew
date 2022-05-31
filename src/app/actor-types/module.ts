@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PropertyMapper } from 'src/lib/property-mapper';
+import { PropertyMapper } from '../../lib/property-mapper';
 import { ActorTypesController } from './controller';
 import { ActorTypesService } from './service';
 

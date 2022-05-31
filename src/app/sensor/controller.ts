@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { IdResponseDto } from '../../models/dto/id-response.dto';
 import { SensorDto } from '../../models/dto/sensor.dto';
@@ -22,13 +22,13 @@ export class SensorController {
     );
   }
 
-  // @Get('/:sensorId')
-  // async getSensorById(@Param('sensorId') sensorId: string) {
-  //   return await this.service.getSensorById(sensorId);
-  // }
+  @Get('/:sensorId')
+  async getSensorById(@Param('sensorId') sensorId: string) {
+    return await this.service.getSensorById(sensorId);
+  }
 
-  // @Get('/')
-  // async getSensors() {
-  //   return await this.service.getAllSensors();
-  // }
+  @Get('/')
+  async getSensors() {
+    return await this.service.getSensors();
+  }
 }

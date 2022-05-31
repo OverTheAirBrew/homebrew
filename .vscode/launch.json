@@ -7,6 +7,7 @@
     {
       "type": "node",
       "request": "launch",
+      "runtimeVersion": "14.18.1",
       "name": "Debug Nest Framework",
       "args": [
           "${workspaceFolder}/src/main.ts"

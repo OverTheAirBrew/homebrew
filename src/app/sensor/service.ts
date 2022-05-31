@@ -9,12 +9,10 @@ export class SensorService {
   constructor(@Inject(SensorRepository) private repository: typeof Sensor) {}
 
   public async createSensor(name: string, type_id?: string, config?: string) {
-    const configString = JSON.stringify(config) || undefined;
-
     const createdSensor = await this.repository.create({
       name,
       type_id,
-      config: configString,
+      config,
     });
 
     return new IdResponseDto(createdSensor.id);
@@ -31,5 +29,19 @@ export class SensorService {
         sensor.config,
       );
     });
+  }
+
+  public async getSensorById(id: string) {
+    const sensor = await this.repository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!sensor) {
+      throw new Error('Sensor not found');
+    }
+
+    return new SensorDto(sensor.id, sensor.name, sensor.type_id, sensor.config);
   }
 }

@@ -1,8 +1,13 @@
 import { Property } from '.';
+import { AdditionalValidation } from './base-property';
 
 export class NumberProperty extends Property {
-  constructor(public id: string, public required: boolean) {
-    super('number');
+  constructor(
+    public id: string,
+    public required: boolean,
+    additionalValidation?: AdditionalValidation,
+  ) {
+    super('number', additionalValidation);
   }
 
   public async validateProperty(param: any) {
@@ -12,7 +17,10 @@ export class NumberProperty extends Property {
 
     if (!param) return true;
 
-    const parsedValue = parseInt(param);
-    return !!parsedValue;
+    const isInteger = Number.isInteger(param);
+
+    if (!isInteger) return false;
+
+    return await this.runAdditionalValidation(param);
   }
 }

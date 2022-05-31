@@ -1,8 +1,12 @@
-import { Property } from './base-property';
+import { AdditionalValidation, Property } from './base-property';
 
 export class StringProperty extends Property {
-  constructor(public id: string, public required: boolean) {
-    super('string');
+  constructor(
+    public id: string,
+    public required: boolean,
+    additionalValidation?: AdditionalValidation,
+  ) {
+    super('string', additionalValidation);
   }
 
   public async validateProperty(param: string | undefined) {
@@ -10,6 +14,6 @@ export class StringProperty extends Property {
       return false;
     }
 
-    return true;
+    return await this.runAdditionalValidation(param);
   }
 }

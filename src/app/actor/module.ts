@@ -20,5 +20,6 @@ import { ActorService } from './service';
     },
   ],
   controllers: [ActorController],
+  exports: [ActorService],
 })
 export class ActorModule {}

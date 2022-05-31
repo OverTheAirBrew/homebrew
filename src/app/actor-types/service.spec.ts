@@ -1,24 +1,24 @@
 import { Test } from '@nestjs/testing';
-import { InvalidActorTypeError } from '../lib/errors/invalid-sensor-type';
-import { Actor, IActor } from '../lib/plugin/abstractions/actor';
-import { NumberProperty } from '../lib/plugin/properties';
-import { PropertyMapper } from '../lib/property-mapper';
-import { ActorTypeDto } from '../models/dto/actor-type.dto';
+import { IActors } from '../../lib/constants';
+import { InvalidActorTypeError } from '../../lib/errors/invalid-sensor-type';
+import { Actor } from '../../lib/plugin/abstractions/actor';
+import { NumberProperty } from '../../lib/plugin/properties';
+import { PropertyMapper } from '../../lib/property-mapper';
+import { ActorTypeDto } from '../../models/dto/actor-type.dto';
 import { ActorTypesService } from './service';
 
-class TestingActorType extends Actor<any> implements IActor<any> {
+class TestingActorType extends Actor<any> {
   constructor() {
     super('testing', [new NumberProperty('number', true)], {
       en: {},
     });
   }
 
-  async processOn(params: any): Promise<void> {
-    return;
+  protected processOn(params: any): Promise<void> {
+    throw new Error('Method not implemented.');
   }
-
-  protected async processOff(params: any): Promise<void> {
-    return;
+  protected processOff(params: any): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 }
 
@@ -32,7 +32,7 @@ describe('actor-types-service', () => {
         ActorTypesService,
         TestingActorType,
         {
-          provide: 'IActors',
+          provide: IActors,
           useFactory: (...actors: any) => {
             return actors;
           },
