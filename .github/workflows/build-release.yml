@@ -25,7 +25,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run build
-      - run: npm run test
+      - run: npm run test:cov
+        env:
+          DB_URL: mysql://root@127.0.0.1/test_database
+      - run: npm run test:e2e:cov
         env:
           DB_URL: mysql://root@127.0.0.1/test_database
       - run: npm run coverage
