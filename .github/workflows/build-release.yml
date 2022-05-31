@@ -32,7 +32,9 @@ jobs:
       - run: npm run test:e2e:cov
         env:
           DB_URL: mysql://root@127.0.0.1/test_database
-      - run: npm run coverage
+      - uses: codecov/codecov-action@v2
+        with:
+          fail_ci_if_error: true # optional (default = false)
       - run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
