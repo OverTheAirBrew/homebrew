@@ -8,25 +8,27 @@ import { Telemetry } from './models/telemetry';
 import { SequelizeStorage, Umzug } from 'umzug';
 import { Kettle } from './models/kettle';
 
+export const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: join(homedir(), 'ota.homebrew.db'),
+  models: [Actor, Sensor, Telemetry, Kettle],
+  // logging: false,
+});
+
 export const databaseProviders = [
   {
     provide: 'SEQUELIZE',
     useFactory: async () => {
-      const sequelize = new Sequelize({
-        dialect: 'sqlite',
-        storage: join(homedir(), 'ota.homebrew.db'),
-        models: [Actor, Sensor, Telemetry, Kettle],
-        // logging: false,
-      });
-
-      await migrateDatabase(sequelize);
+      if (process.env.CI !== 'true') {
+        await migrateDatabase(sequelize);
+      }
 
       return sequelize;
     },
   },
 ];
 
-async function migrateDatabase(sequelize: Sequelize) {
+export async function migrateDatabase(sequelize: Sequelize) {
   const umzug = new Umzug({
     context: sequelize.getQueryInterface(),
     storage: new SequelizeStorage({
