@@ -12,7 +12,7 @@ export const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: join(homedir(), 'ota.homebrew.db'),
   models: [Actor, Sensor, Telemetry, Kettle],
-  // logging: false,
+  logging: false,
 });
 
 export const databaseProviders = [
