@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Actor } from '../../database/models/actor';
 import { ActorRepository } from '../../lib/constants';
+import { ActorDoesNotExistError } from '../../lib/errors/actor-does-not-exist-error';
 import { ActorDto } from '../../models/dto/actor.dto';
 import { IdResponseDto } from '../../models/dto/id-response.dto';
 
@@ -31,7 +32,7 @@ export class ActorService {
     const actor = await this.repository.findByPk(id);
 
     if (!actor) {
-      throw new Error('Actor not found');
+      throw new ActorDoesNotExistError(id);
     }
 
     return new ActorDto(
