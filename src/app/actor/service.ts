@@ -3,7 +3,6 @@ import { Actor } from '../../database/models/actor';
 import { ActorRepository } from '../../lib/constants';
 import { ActorDoesNotExistError } from '../../lib/errors/actor-does-not-exist-error';
 import { ActorDto } from '../../models/dto/actor.dto';
-import { IdResponseDto } from '../../models/dto/id-response.dto';
 
 @Injectable()
 export class ActorService {
@@ -16,11 +15,11 @@ export class ActorService {
       config,
     });
 
-    return new IdResponseDto(createdActor.id);
+    return createdActor.id;
   }
 
   public async getAllActors() {
-    const actors = await this.repository.findAll();
+    const actors = await this.repository.findAll({ where: {} });
 
     return actors.map((actor) => {
       const parsedConfig = JSON.parse(actor.config);

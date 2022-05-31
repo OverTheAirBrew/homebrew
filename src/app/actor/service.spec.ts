@@ -4,7 +4,6 @@ import { v4 as uuid } from 'uuid';
 import { Actor } from '../../database/models/actor';
 import { ActorRepository } from '../../lib/constants';
 import { ActorDoesNotExistError } from '../../lib/errors/actor-does-not-exist-error';
-import { IdResponseDto } from '../../models/dto/id-response.dto';
 import { ActorService } from './service';
 
 describe('actor-service', () => {
@@ -96,9 +95,7 @@ describe('actor-service', () => {
       const response = await service.createActor('testingname', 'atype', '{}');
 
       expect(repository.create).toHaveBeenCalled();
-      expect(response).toBeInstanceOf(IdResponseDto);
-
-      expect(response.id).toBe(returnId);
+      expect(response).toBe(returnId);
     });
   });
 });

@@ -6,7 +6,7 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ActorDto } from '../../models/dto/actor.dto';
 import { IdResponseDto } from '../../models/dto/id-response.dto';
 import { ActorService } from './service';
@@ -18,7 +18,7 @@ export class ActorController {
 
   @Post('/')
   @HttpCode(HttpStatus.CREATED)
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     type: IdResponseDto,
   })
   async createActor(@Body() actor: ActorDto) {
@@ -28,9 +28,7 @@ export class ActorController {
       actor.config,
     );
 
-    return {
-      id: actor_id,
-    };
+    return new IdResponseDto(actor_id);
   }
 
   @Get('/')
