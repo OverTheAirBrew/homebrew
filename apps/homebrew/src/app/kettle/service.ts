@@ -37,7 +37,7 @@ export class KettleService {
         kettle.sensor_id,
         kettle.heater_id,
         kettle.logicType_id,
-        JSON.parse(kettle.config || '{}'),
+        kettle.config,
       );
     });
   }
