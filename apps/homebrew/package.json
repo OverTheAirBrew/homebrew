@@ -11,7 +11,6 @@
 	"scripts": {
 		"prebuild": "rimraf dist coverage",
 		"build": "nest build",
-		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
 		"start:debug": "nest start --debug --watch",
@@ -36,6 +35,7 @@
 		"@nestjs/schedule": "^2.0.1",
 		"@nestjs/swagger": "^5.2.1",
 		"@nestjs/websockets": "^8.4.4",
+    "@ota-internal/one-wire-sensor":"^1.0.0",
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.13.2",
 		"onoff": "^6.0.3",

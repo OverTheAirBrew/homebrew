@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "overtheair",
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
@@ -7,7 +7,7 @@
     "test": "lerna run test:cov",
     "e2e": "lerna run test:e2e:cov",
     "migrate": "lerna run migrate",
-    "release": "lerna exec --concurrency 1 -- semantic-release -e semantic-release-monorepo",
+    "release": "lerna exec --concurrency 1 --scope @overtheairbrew/* -- semantic-release -e semantic-release-monorepo",
     "postinstall": "lerna bootstrap",
     "prepare": "husky install"
   },

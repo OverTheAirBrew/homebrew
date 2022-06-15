@@ -4,7 +4,8 @@ import {
   NumberProperty,
   SelectBoxProperty,
 } from '../../../lib/plugin/properties';
-import { IOneWireController } from './controllers';
+
+import { IOneWireController } from '@ota-internal/one-wire-sensor';
 
 export interface IOneWireParams {
   sensorAddress: string;
