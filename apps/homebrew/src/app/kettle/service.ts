@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Kettle } from '../../database/models/kettle';
 import { KettleRepository } from '../../lib/constants';
+import { KettleNotFoundError } from '../../lib/errors/kettle-not-found-error';
 import { nullIfEmpty } from '../../lib/utils';
 import { KettleDto } from '../../models/dto/kettle.dto';
 
@@ -44,8 +45,8 @@ export class KettleService {
   async updateKettle(id: string, kettle: KettleDto) {
     const currentKettle = await this.repository.findByPk(id);
 
-    if (!kettle) {
-      throw new Error('Kettle not found');
+    if (!currentKettle) {
+      throw new KettleNotFoundError(id);
     }
 
     currentKettle.update({
