@@ -28,10 +28,10 @@ jobs:
           npm run bootstrap
       - run: npm run build
       - run: npm run migrate
-      - run: npm run test:cov
+      - run: npm run test
         env:
           DB_URL: mysql://root@127.0.0.1/test_database
-      - run: npm run test:e2e:cov
+      - run: npm run e2e
         env:
           DB_URL: mysql://root@127.0.0.1/test_database
       - uses: codecov/codecov-action@v2
