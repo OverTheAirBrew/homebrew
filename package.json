@@ -22,7 +22,7 @@
     "test:e2e:cov": "jest --config ./test/jest-e2e.json --coverage",
     "test:all:cov": "npm run test:cov && npm run test:e2e:cov",
     "coverage": "codecov",
-    "prepare": "husky install",
+    "prepare": "is-ci || husky install",
     "migrate": "node ./dist/migrate.js",
     "semantic-release": "semantic-release"
   },
@@ -83,6 +83,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.2",
+    "is-ci": "^3.0.1",
     "jest": "^27.2.5",
     "jest-when": "^3.5.1",
     "lint-staged": "^12.1.5",
