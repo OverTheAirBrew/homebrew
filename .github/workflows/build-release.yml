@@ -37,6 +37,9 @@ jobs:
       - uses: codecov/codecov-action@v2
         with:
           fail_ci_if_error: true # optional (default = false)
+          files: ./apps/homebrew/coverage/coverage-final.json,./apps/homebrew/coverage-e2e/coverage-final.json
+          flags: homebrew
+          name: homebrew
       - run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
