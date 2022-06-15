@@ -162,3 +162,5 @@ app/ota.db
 .npmrc
 
 *.sqlite
+
+coverage-e2e
