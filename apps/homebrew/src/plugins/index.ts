@@ -1,17 +1,17 @@
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IActor } from 'src/lib/plugin/abstractions/actor';
-import { ILogic } from 'src/lib/plugin/abstractions/logic';
-import { ISensor } from 'src/lib/plugin/abstractions/sensor';
-import { ClassType } from 'src/lib/plugin/class-type';
 import { IActors, ILogics, ISensors } from '../lib/constants';
+import { IActor } from '../lib/plugin/abstractions/actor';
+import { ILogic } from '../lib/plugin/abstractions/logic';
+import { ISensor } from '../lib/plugin/abstractions/sensor';
+import { ClassType } from '../lib/plugin/class-type';
 import { actors } from './actors';
 import { logics } from './logic';
 import { sensors } from './sensors';
 import {
   DS18B20Controller,
   IOneWireController,
-  StreamController,
+  StreamController
 } from './sensors/one-wire/controllers';
 
 export { actors } from './actors';

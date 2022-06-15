@@ -23,7 +23,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
+      - run: |
+          npm ci
+          npm run bootstrap
       - run: npm run build
       - run: npm run migrate
       - run: npm run test:cov
@@ -35,10 +37,8 @@ jobs:
       - uses: codecov/codecov-action@v2
         with:
           fail_ci_if_error: true # optional (default = false)
-      - run: npm run semantic-release
+      - run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          HUSKY: '0'
-          CI: 'true'
-       
+          
