@@ -13,6 +13,13 @@ module.exports = {
     '@semantic-release/release-notes-generator',
     '@semantic-release/npm',
     '@semantic-release/github',
-    '@semantic-release/git',
+    [
+      '@semantic-release/git',
+      {
+        assets: ['dist/**/*.{js}'],
+        message:
+          'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
+      },
+    ],
   ],
 };
