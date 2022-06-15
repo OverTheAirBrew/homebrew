@@ -1,0 +1,26 @@
+{
+  "name": "@ota-internal/shared",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Nick Sharp <nick.sharp.87@gmail.com>",
+  "homepage": "https://github.com/overtheairbrew/homebrew#readme",
+  "license": "ISC",
+  "private": true,
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/overtheairbrew/homebrew.git"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist coverage",
+    "build": "tsc",
+    "test": "",
+    "migrate": ""
+  },
+  "bugs": {
+    "url": "https://github.com/overtheairbrew/homebrew/issues"
+  }
+}

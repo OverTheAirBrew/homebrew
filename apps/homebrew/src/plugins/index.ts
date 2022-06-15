@@ -1,5 +1,10 @@
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import {
+  DS18B20Controller,
+  IOneWireController,
+  StreamController,
+} from '@ota-internal/one-wire-sensor';
 import { IActors, ILogics, ISensors } from '../lib/constants';
 import { IActor } from '../lib/plugin/abstractions/actor';
 import { ILogic } from '../lib/plugin/abstractions/logic';
@@ -8,11 +13,6 @@ import { ClassType } from '../lib/plugin/class-type';
 import { actors } from './actors';
 import { logics } from './logic';
 import { sensors } from './sensors';
-import {
-  DS18B20Controller,
-  IOneWireController,
-  StreamController
-} from './sensors/one-wire/controllers';
 
 export { actors } from './actors';
 export { logics } from './logic';
