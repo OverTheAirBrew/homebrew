@@ -9,7 +9,7 @@
 	"author": "",
 	"license": "ISC",
 	"scripts": {
-		"prebuild": "rimraf dist coverage coverage-e2e",
+		"prebuild": "rimraf dist coverage coverage-e2e src/**/*.{js,map}",
 		"build": "nest build",
 		"start": "nest start",
 		"start:dev": "nest start --watch",

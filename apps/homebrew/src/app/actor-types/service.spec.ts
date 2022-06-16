@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { IActors } from '../../lib/constants';
-import { InvalidActorTypeError } from '../../lib/errors/invalid-sensor-type';
+import { InvalidActorTypeError } from '../../lib/errors/invalid-actor-type';
 import { Actor } from '../../lib/plugin/abstractions/actor';
 import { NumberProperty } from '../../lib/plugin/properties';
 import { PropertyMapper } from '../../lib/property-mapper';
