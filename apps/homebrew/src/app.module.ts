@@ -15,24 +15,30 @@ import { PluginsModule } from './plugins';
 import { SocketGateway } from './socket-gateway/gateway';
 import { WorkersModule } from './workers/workers.module';
 
+const cronImports = [ScheduleModule.forRoot(), CronModule];
+const workerImports = [EventEmitterModule.forRoot(), WorkersModule];
+
+const sharedImports = [
+  ConfigModule.forRoot(),
+  PluginsModule.register(),
+  ActorTypesModule,
+  ActorModule,
+  SensorTypesModule,
+  LogicTypesModule,
+  KettleModule,
+  SensorModule,
+  SocketGateway,
+  TelemetryModule,
+
+  TranslationsModule,
+];
+
+const allImports = [
+  ...new Set([...cronImports, ...workerImports, ...sharedImports]),
+];
+
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    PluginsModule.register(),
-    ScheduleModule.forRoot(),
-    EventEmitterModule.forRoot(),
-    ActorTypesModule,
-    ActorModule,
-    SensorTypesModule,
-    LogicTypesModule,
-    KettleModule,
-    SensorModule,
-    SocketGateway,
-    TelemetryModule,
-    WorkersModule,
-    CronModule,
-    TranslationsModule,
-  ],
+  imports: [...allImports],
   controllers: [],
   providers: [],
 })
