@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ILogics } from '../../lib/constants';
+import { InvalidLogicTypeError } from '../../lib/errors/invalid-logic-type';
 import { ILogic } from '../../lib/plugin/abstractions/logic';
 import { PropertyMapper } from '../../lib/property-mapper';
 import { LogicTypeDto } from '../../models/dto/logic-type.dto';
@@ -21,7 +22,7 @@ export class LogicTypesService {
     const logicType = this.logicTypes.find((s) => s.name === id);
 
     if (!logicType) {
-      throw new Error('invalid logic type');
+      throw new InvalidLogicTypeError(id);
     }
 
     return logicType;

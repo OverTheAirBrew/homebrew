@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IActors } from '../../lib/constants';
-import { InvalidActorTypeError } from '../../lib/errors/invalid-sensor-type';
+import { InvalidActorTypeError } from '../../lib/errors/invalid-actor-type';
 import { IActor } from '../../lib/plugin/abstractions/actor';
 import { PropertyMapper } from '../../lib/property-mapper';
 import { ActorTypeDto } from '../../models/dto/actor-type.dto';
