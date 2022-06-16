@@ -3,6 +3,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { TEST_MODULES } from './test-modules';
 
+jest.useFakeTimers();
+jest.retryTimes(3);
+
 describe('Actor Types (e2e)', () => {
   let app: INestApplication;
 

@@ -2,8 +2,11 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { Actor } from '../src/database/models/actor';
-import { ActorRepository } from '../src/lib/constants';
+import { cleanup } from './cleanup';
 import { TEST_MODULES } from './test-modules';
+
+jest.useFakeTimers();
+jest.retryTimes(3);
 
 describe('Actors (e2e)', () => {
   let app: INestApplication;
@@ -18,11 +21,8 @@ describe('Actors (e2e)', () => {
     app = moduleFixtures.createNestApplication();
     await app.init();
 
-    repository = moduleFixtures.get(ActorRepository);
-  });
-
-  afterEach(async () => {
-    await repository.destroy({ where: {} });
+    const { actors } = await cleanup(moduleFixtures);
+    repository = actors;
   });
 
   it('GET /', async () => {
