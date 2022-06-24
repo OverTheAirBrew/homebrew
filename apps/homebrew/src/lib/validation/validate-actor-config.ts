@@ -4,8 +4,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { ActorTypesService } from '../../app/actor-types/service';
 import { ActorDto } from '../../models/dto/actor.dto';
+import { ActorTypesService } from '../services/actor-types/service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
@@ -29,6 +29,6 @@ export class ValidActorConfig implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `${args.property} is not valid for the actor type`;
+    return `The config is invalid for the actor type`;
   }
 }

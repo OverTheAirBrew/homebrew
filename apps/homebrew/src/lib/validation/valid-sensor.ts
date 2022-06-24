@@ -4,7 +4,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { SensorService } from '../../app/sensor/service';
+import { SensorService } from '../services/sensor/service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()

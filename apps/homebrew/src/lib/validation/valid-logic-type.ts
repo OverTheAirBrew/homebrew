@@ -4,14 +4,14 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { LogicTypesService } from '../../app/logic-types/service';
+import { LogicTypesService } from '../services/logic-types/service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
 export class ValidLogicType implements ValidatorConstraintInterface {
   constructor(private logicTypesService: LogicTypesService) {}
 
-  public async validate(text: string, args: ValidationArguments) {
+  public async validate(text: string) {
     if (!text) return true;
 
     try {

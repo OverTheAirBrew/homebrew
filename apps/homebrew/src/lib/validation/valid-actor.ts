@@ -4,7 +4,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { ActorService } from '../../app/actor/service';
+import { ActorService } from '../services/actor/service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()

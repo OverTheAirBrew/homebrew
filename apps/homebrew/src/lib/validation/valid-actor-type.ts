@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import {
-  registerDecorator,
   ValidationArguments,
-  ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { ActorTypesService } from '../../app/actor-types/service';
+import { ActorTypesService } from '../services/actor-types/service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
@@ -18,7 +16,6 @@ export class ValidActorType implements ValidatorConstraintInterface {
       await this.actorTypeService.getRawActorTypeById(text);
       return true;
     } catch (err) {
-      console.log(err);
       return false;
     }
   }
@@ -26,16 +23,4 @@ export class ValidActorType implements ValidatorConstraintInterface {
   defaultMessage(args: ValidationArguments) {
     return `${args.property} is not a valid actor type`;
   }
-}
-
-export function IsValidActorType(options?: ValidationOptions) {
-  return (o: object, propertyName: string) => {
-    registerDecorator({
-      target: o.constructor,
-      propertyName,
-      options,
-      validator: ValidActorType,
-      async: true,
-    });
-  };
 }
