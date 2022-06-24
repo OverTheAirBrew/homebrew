@@ -113,7 +113,9 @@
       "plugins/actors/index.ts",
       "plugins/sensors/index.ts",
       "plugins/logic/index.ts",
-      "plugins/index.ts"
+      "plugins/index.ts",
+      "app.module.ts",
+      "main.ts"
 		]
 	}
 }
