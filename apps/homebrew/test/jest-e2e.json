@@ -7,22 +7,7 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "coverageDirectory": "./coverage-e2e",
-  "coveragePathIgnorePatterns": [
-    "<rootDir>/database/*",
-    "<rootDir>/lib/plugin/*",
-    "module.ts",
-    "controller.ts",
-    "models/*",
-    "main.ts",
-    "migrate.ts",
-    "cron/*",
-    "workers/*",
-    "socket-gateway/*",
-    "plugins/actors/index.ts",
-    "plugins/sensors/index.ts",
-    "plugins/logic/index.ts",
-    "plugins/index.ts",
-    "app.module.ts",
-    "main.ts"
+  "collectCoverageFrom": [
+    "src/app/*.(t|j)s"
   ]
 }
