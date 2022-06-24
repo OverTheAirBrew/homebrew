@@ -15,6 +15,16 @@ import { PluginsModule } from './plugins';
 import { SocketGateway } from './socket-gateway/gateway';
 import { SensorReadingWorkerService } from './workers/sensor-reading';
 
+export const controllersList = [
+  ActorTypesController,
+  ActorController,
+  KettleController,
+  LogicTypesController,
+  SensorTypesController,
+  SensorController,
+  TranslationsController,
+];
+
 @Module({
   imports: [
     ConfigModule.forRoot(),

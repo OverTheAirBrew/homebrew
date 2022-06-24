@@ -13,9 +13,7 @@ describe('Kettles (e2e)', () => {
   let repositories: IRepositories;
 
   beforeEach(async () => {
-    let moduleFixtures = await Test.createTestingModule({
-      imports: [...TEST_MODULES],
-    }).compile();
+    let moduleFixtures = await Test.createTestingModule(TEST_MODULES).compile();
 
     app = moduleFixtures.createNestApplication();
     await app.init();

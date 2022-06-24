@@ -10,9 +10,9 @@ describe('Sensor Types (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-    const moduleFixtures = await Test.createTestingModule({
-      imports: [...TEST_MODULES],
-    }).compile();
+    const moduleFixtures = await Test.createTestingModule(
+      TEST_MODULES,
+    ).compile();
 
     app = moduleFixtures.createNestApplication();
     await app.init();
