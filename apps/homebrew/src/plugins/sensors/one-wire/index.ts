@@ -36,7 +36,6 @@ export class OneWireSensor extends Sensor<IOneWireParams> {
   }
 
   private async getSensors() {
-    const a = 1;
     const sensors = await this.oneWireController.findDevices();
     return sensors;
   }
