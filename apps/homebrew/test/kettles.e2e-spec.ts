@@ -13,9 +13,7 @@ describe('Kettles (e2e)', () => {
   let repositories: IRepositories;
 
   beforeEach(async () => {
-    let moduleFixtures = await Test.createTestingModule({
-      imports: [...TEST_MODULES],
-    }).compile();
+    let moduleFixtures = await Test.createTestingModule(TEST_MODULES).compile();
 
     app = moduleFixtures.createNestApplication();
     await app.init();
@@ -105,5 +103,43 @@ describe('Kettles (e2e)', () => {
         name: 'testing-kettle',
       },
     ]);
+  });
+
+  it('PUT /', async () => {
+    const [{ id: actorId }, { id: sensorId }] = await Promise.all([
+      repositories.actors.create({
+        name: 'testingactor',
+        type_id: 'gpio',
+        config: {
+          gpioNumber: 1,
+        },
+      }),
+      repositories.sensors.create({
+        name: 'testingsensor',
+        type_id: 'one-wire',
+        config: {
+          sensorAddress: '1234',
+        },
+      }),
+    ]);
+
+    const { id: kettleId } = await repositories.kettles.create({
+      name: 'testing-kettle',
+      sensor_id: sensorId,
+      heater_id: actorId,
+    });
+
+    const { status, body } = await request(app.getHttpServer())
+      .put(`/kettles/${kettleId}`)
+      .send({
+        name: 'testing-kettle-updated',
+        sensor_id: sensorId,
+        heater_id: actorId,
+      });
+
+    expect(status).toBe(200);
+
+    const kettle = await repositories.kettles.findByPk(kettleId);
+    expect(kettle.name).toBe('testing-kettle-updated');
   });
 });

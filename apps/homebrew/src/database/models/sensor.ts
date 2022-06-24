@@ -29,7 +29,7 @@ export class Sensor extends Model {
   @Column({
     type: DataType.JSON,
   })
-  config: string;
+  config: any;
 
   @CreatedAt
   createdAt?: Date;

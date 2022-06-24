@@ -4,7 +4,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { LogicTypesService } from '../../app/logic-types/service';
+import { LogicTypesService } from '../services/logic-types/service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
@@ -28,6 +28,6 @@ export class ValidLogicConfig implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `${args.property} is not valid for the logic type`;
+    return `Config is not valid for the logic type`;
   }
 }

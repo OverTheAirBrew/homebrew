@@ -10,9 +10,9 @@ describe('Actor Types (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-    const moduleFixtures: TestingModule = await Test.createTestingModule({
-      imports: [...TEST_MODULES],
-    }).compile();
+    const moduleFixtures: TestingModule = await Test.createTestingModule(
+      TEST_MODULES,
+    ).compile();
 
     app = moduleFixtures.createNestApplication();
     await app.init();

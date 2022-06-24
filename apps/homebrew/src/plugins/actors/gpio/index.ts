@@ -1,3 +1,5 @@
+import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Gpio } from 'onoff';
 import { Actor, IActor } from '../../../lib/plugin/abstractions/actor';
 import { SelectBoxProperty } from '../../../lib/plugin/properties';
@@ -6,11 +8,12 @@ interface IGpioActorParams {
   gpio: number;
 }
 
+@Injectable()
 export class GpioActor
   extends Actor<IGpioActorParams>
   implements IActor<IGpioActorParams>
 {
-  constructor() {
+  constructor(eventEmitter: EventEmitter2) {
     super(
       'gpio',
       [
@@ -24,6 +27,7 @@ export class GpioActor
           gpioNumber: 'GPIO number',
         },
       },
+      eventEmitter,
     );
   }
 

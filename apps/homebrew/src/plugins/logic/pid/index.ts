@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { Logic } from '../../../lib/plugin/abstractions/logic';
 import { NumberProperty } from '../../../lib/plugin/properties';
 
@@ -7,6 +8,7 @@ export interface IPidLogicParams {
   d: number;
 }
 
+@Injectable()
 export class PidLogic extends Logic<IPidLogicParams> {
   constructor() {
     super(

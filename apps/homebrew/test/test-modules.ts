@@ -1,25 +1,20 @@
+import { ModuleMetadata } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ActorTypesModule } from '../src/app/actor-types/module';
-import { ActorModule } from '../src/app/actor/module';
-import { KettleModule } from '../src/app/kettle/module';
-import { LogicTypesModule } from '../src/app/logic-types/module';
-import { SensorTypesModule } from '../src/app/sensor-types/module';
-import { SensorModule } from '../src/app/sensor/module';
-import { TelemetryModule } from '../src/app/telemetry/module';
-import { TranslationsModule } from '../src/app/translations/module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { controllersList } from '../src/app.module';
+import { DatabaseModule } from '../src/database/module';
+import { ServicesModule } from '../src/lib/services/module';
 import { PluginsModule } from '../src/plugins';
 import { SocketGateway } from '../src/socket-gateway/gateway';
 
-export const TEST_MODULES = [
-  ConfigModule.forRoot(),
-  PluginsModule.register(),
-  ActorTypesModule,
-  ActorModule,
-  SensorTypesModule,
-  LogicTypesModule,
-  KettleModule,
-  SensorModule,
-  SocketGateway,
-  TelemetryModule,
-  TranslationsModule,
-];
+export const TEST_MODULES: ModuleMetadata = {
+  imports: [
+    ConfigModule.forRoot(),
+    PluginsModule.register(),
+    EventEmitterModule.forRoot(),
+    DatabaseModule,
+    SocketGateway,
+    ServicesModule,
+  ],
+  controllers: [...controllersList],
+};

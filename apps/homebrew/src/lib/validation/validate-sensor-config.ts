@@ -4,7 +4,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { SensorTypesService } from '../../app/sensor-types/service';
+import { SensorTypesService } from '../services/sensor-types/service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
@@ -28,6 +28,6 @@ export class ValidSensorConfig implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `${args.property} is not valid for the sensor type`;
+    return `Config is not valid for the sensor type`;
   }
 }
