@@ -62,8 +62,8 @@ describe('kettle-service', () => {
 
   describe('createKettle', () => {
     it('should create and return the id of the kettle', async () => {
-      const kettleId = await service.createKettle('name');
-      expect(kettleId).toBe(createdKettleId);
+      const id = await service.createKettle('name');
+      expect(id).toBe(createdKettleId);
 
       expect(createKettleStub.mock.calls).toHaveLength(1);
       expect(createKettleStub.mock.calls[0][0]).toStrictEqual({
@@ -76,8 +76,7 @@ describe('kettle-service', () => {
     });
 
     it('should pass the sensor_id to the create call', async () => {
-      const kettleId = await service.createKettle('name', 'sensor_id');
-      expect(kettleId).toBe(createdKettleId);
+      await service.createKettle('name', 'sensor_id');
 
       expect(createKettleStub.mock.calls).toHaveLength(1);
       expect(createKettleStub.mock.calls[0][0]).toStrictEqual({
@@ -90,12 +89,7 @@ describe('kettle-service', () => {
     });
 
     it('should pass the heater_id to the create call', async () => {
-      const kettleId = await service.createKettle(
-        'name',
-        undefined,
-        'heater_id',
-      );
-      expect(kettleId).toBe(createdKettleId);
+      await service.createKettle('name', undefined, 'heater_id');
 
       expect(createKettleStub.mock.calls).toHaveLength(1);
       expect(createKettleStub.mock.calls[0][0]).toStrictEqual({
@@ -108,13 +102,7 @@ describe('kettle-service', () => {
     });
 
     it('should pass the logicType_id to the create call', async () => {
-      const kettleId = await service.createKettle(
-        'name',
-        undefined,
-        undefined,
-        'logicType_id',
-      );
-      expect(kettleId).toBe(createdKettleId);
+      await service.createKettle('name', undefined, undefined, 'logicType_id');
 
       expect(createKettleStub.mock.calls).toHaveLength(1);
       expect(createKettleStub.mock.calls[0][0]).toStrictEqual({
@@ -126,15 +114,8 @@ describe('kettle-service', () => {
       });
     });
 
-    it('should pass the logicType_id to the create call', async () => {
-      const kettleId = await service.createKettle(
-        'name',
-        undefined,
-        undefined,
-        undefined,
-        {},
-      );
-      expect(kettleId).toBe(createdKettleId);
+    it('should pass the config to the create call', async () => {
+      await service.createKettle('name', undefined, undefined, undefined, {});
 
       expect(createKettleStub.mock.calls).toHaveLength(1);
       expect(createKettleStub.mock.calls[0][0]).toStrictEqual({

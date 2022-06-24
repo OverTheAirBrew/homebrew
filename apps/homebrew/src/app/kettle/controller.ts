@@ -27,9 +27,7 @@ export class KettleController {
       kettle.config,
     );
 
-    return {
-      id: kettle_id,
-    };
+    return new IdResponseDto(kettle_id);
   }
 
   @Get('/')

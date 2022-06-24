@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { IdResponseDto } from '../../models/dto/id-response.dto';
 import { SensorDto } from '../../models/dto/sensor.dto';
 import { SensorService } from './service';
@@ -11,15 +11,17 @@ export class SensorController {
 
   @Post('/')
   @HttpCode(201)
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     type: IdResponseDto,
   })
   async createSensor(@Body() sensor: SensorDto) {
-    return await this.service.createSensor(
+    const sensor_id = await this.service.createSensor(
       sensor.name,
       sensor.type_id,
       sensor.config,
     );
+
+    return new IdResponseDto(sensor_id);
   }
 
   @Get('/:sensorId')

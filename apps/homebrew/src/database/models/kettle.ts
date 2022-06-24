@@ -43,7 +43,7 @@ export class Kettle extends Model {
   @Column({
     type: DataType.JSON,
   })
-  config?: string;
+  config?: any;
 
   @CreatedAt
   createdAt?: Date;

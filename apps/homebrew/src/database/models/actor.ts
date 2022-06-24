@@ -27,7 +27,7 @@ export class Actor extends Model {
   @Column({
     type: DataType.JSON,
   })
-  config: string;
+  config: any;
 
   @CreatedAt
   createdAt?: Date;

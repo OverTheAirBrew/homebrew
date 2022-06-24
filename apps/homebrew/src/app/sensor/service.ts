@@ -1,21 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Sensor } from '../../database/models/sensor';
 import { SensorRepository } from '../../lib/constants';
-import { IdResponseDto } from '../../models/dto/id-response.dto';
+import { SensorDoesNotExistError } from '../../lib/errors/sensor-does-not-exist-error copy';
 import { SensorDto } from '../../models/dto/sensor.dto';
 
 @Injectable()
 export class SensorService {
   constructor(@Inject(SensorRepository) private repository: typeof Sensor) {}
 
-  public async createSensor(name: string, type_id?: string, config?: string) {
+  public async createSensor(name: string, type_id?: string, config?: any) {
     const createdSensor = await this.repository.create({
       name,
       type_id,
       config,
     });
 
-    return new IdResponseDto(createdSensor.id);
+    return createdSensor.id;
   }
 
   public async getSensors() {
@@ -32,14 +32,10 @@ export class SensorService {
   }
 
   public async getSensorById(id: string) {
-    const sensor = await this.repository.findOne({
-      where: {
-        id,
-      },
-    });
+    const sensor = await this.repository.findByPk(id);
 
     if (!sensor) {
-      throw new Error('Sensor not found');
+      throw new SensorDoesNotExistError(id);
     }
 
     return new SensorDto(sensor.id, sensor.name, sensor.type_id, sensor.config);

@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ISensors } from '../../lib/constants';
+import { InvalidSensorTypeError } from '../../lib/errors/invalid-sensor-type';
 import { ISensor } from '../../lib/plugin/abstractions/sensor';
 import { PropertyMapper } from '../../lib/property-mapper';
 import { SensorTypeDto } from '../../models/dto/sensor-type.dto';
@@ -21,7 +22,7 @@ export class SensorTypesService {
     const sensorType = this.sensorTypes.find((s) => s.name === id);
 
     if (!sensorType) {
-      throw new Error('Invalid sensor type id');
+      throw new InvalidSensorTypeError(id);
     }
 
     return sensorType;
@@ -34,7 +35,6 @@ export class SensorTypesService {
   }
 
   public async validateConfig(type_id: string, config: any) {
-    const a = 1;
     const sensorType = await this.getRawSensorTypeById(type_id);
     return await sensorType.validate(config);
   }
