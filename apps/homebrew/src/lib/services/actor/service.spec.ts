@@ -58,7 +58,7 @@ describe('actor-service', () => {
   describe('getAllActors', () => {
     it('should return all actors', async () => {
       const actors = await service.getAllActors();
-      expect(actors).toEqual([
+      expect(actors).toMatchObject([
         {
           config: {},
           name: 'name',
@@ -72,7 +72,7 @@ describe('actor-service', () => {
   describe('getActorById', () => {
     it('should return the actor if one exists', async () => {
       const actor = await service.getActorById('testingactor');
-      expect(actor).toEqual({
+      expect(actor).toMatchObject({
         config: {},
         name: 'name',
         type_id: 'type_id',

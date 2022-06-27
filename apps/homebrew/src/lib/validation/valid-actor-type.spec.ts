@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
-import { ActorTypesService } from '../services/actor-types/service';
+import { DeviceTypesService } from '../services/device-types/service';
+import { DeviceService } from '../services/device/service';
 import { ValidActorType } from './valid-actor-type';
 
 describe('lib/validation/valid-actor-type', () => {
@@ -14,7 +15,13 @@ describe('lib/validation/valid-actor-type', () => {
       providers: [ValidActorType],
     })
       .useMocker((token) => {
-        if (token === ActorTypesService) {
+        if (token === DeviceService) {
+          return {
+            getDeviceById: jest.fn().mockReturnValue({ type_id: 1 }),
+          };
+        }
+
+        if (token === DeviceTypesService) {
           return {
             getRawActorTypeById: getRawActorTypeByIdStub,
           };
@@ -28,7 +35,7 @@ describe('lib/validation/valid-actor-type', () => {
   describe('validate', () => {
     it('should return true if the actor-type is valid', async () => {
       getRawActorTypeByIdStub.mockReturnValue({});
-      const valid = await service.validate('', {} as any);
+      const valid = await service.validate('', { object: {} } as any);
       expect(valid).toBeTruthy();
     });
 
@@ -37,7 +44,7 @@ describe('lib/validation/valid-actor-type', () => {
         throw new Error('');
       });
 
-      const valid = await service.validate('', {} as any);
+      const valid = await service.validate('', { object: {} } as any);
       expect(valid).toBeFalsy();
     });
   });

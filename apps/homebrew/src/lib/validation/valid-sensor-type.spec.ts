@@ -1,5 +1,7 @@
 import { Test } from '@nestjs/testing';
-import { SensorTypesService } from '../services/sensor-types/service';
+import { DeviceTypesService } from '../services/device-types/service';
+import { DeviceService } from '../services/device/service';
+
 import { ValidSensorType } from './valid-sensor-type';
 
 describe('lib/validation/valid-sensor-type', () => {
@@ -14,9 +16,15 @@ describe('lib/validation/valid-sensor-type', () => {
       providers: [ValidSensorType],
     })
       .useMocker((token) => {
-        if (token === SensorTypesService) {
+        if (token === DeviceTypesService) {
           return {
             getRawSensorTypeById: getRawSensorTypeByIdStub,
+          };
+        }
+
+        if (token === DeviceService) {
+          return {
+            getDeviceById: jest.fn().mockReturnValue({ type_id: 1 }),
           };
         }
       })
@@ -29,7 +37,7 @@ describe('lib/validation/valid-sensor-type', () => {
     it('should return true of the sensor type is valid', async () => {
       getRawSensorTypeByIdStub.mockReturnValue({});
 
-      const valid = await service.validate('1');
+      const valid = await service.validate('1', { object: {} } as any);
       expect(valid).toBeTruthy();
     });
 
@@ -38,7 +46,7 @@ describe('lib/validation/valid-sensor-type', () => {
         throw new Error('');
       });
 
-      const valid = await service.validate('1');
+      const valid = await service.validate('1', { object: {} } as any);
       expect(valid).toBeFalsy();
     });
   });

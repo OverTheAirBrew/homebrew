@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
-import { ActorTypesService } from '../services/actor-types/service';
+import { DeviceTypesService } from '../services/device-types/service';
+import { DeviceService } from '../services/device/service';
 import { ValidActorConfig } from './validate-actor-config';
 
 describe('lib/validation/valid-actor-config', () => {
@@ -14,9 +15,15 @@ describe('lib/validation/valid-actor-config', () => {
       providers: [ValidActorConfig],
     })
       .useMocker((token) => {
-        if (token === ActorTypesService) {
+        if (token === DeviceTypesService) {
           return {
-            validateConfig: validateConfigStub,
+            validateActorConfig: validateConfigStub,
+          };
+        }
+
+        if (token === DeviceService) {
+          return {
+            getDeviceById: jest.fn().mockReturnValue({ type_id: 1 }),
           };
         }
       })

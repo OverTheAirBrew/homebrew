@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { IActors, ILogics, ISensors } from '../../../lib/constants';
+import { IDevices, ILogics } from '../../../lib/constants';
 import { TranslationsService } from './service';
 
 describe('translations-service', () => {
@@ -10,24 +10,29 @@ describe('translations-service', () => {
       providers: [TranslationsService],
     })
       .useMocker((token) => {
-        if (token === IActors) {
+        if (token === IDevices) {
           return [
             {
-              name: 'testing-actor',
+              name: 'testing-device',
               localizations: {
                 en: {},
               },
-            },
-          ];
-        }
-
-        if (token === ISensors) {
-          return [
-            {
-              name: 'testing-sensor',
-              localizations: {
-                en: {},
-              },
+              getRawSensorTypes: jest.fn().mockReturnValue([
+                {
+                  name: 'testing-sensor',
+                  localizations: {
+                    en: {},
+                  },
+                },
+              ]),
+              getRawActorTypes: jest.fn().mockReturnValue([
+                {
+                  name: 'testing-actor',
+                  localizations: {
+                    en: {},
+                  },
+                },
+              ]),
             },
           ];
         }
@@ -54,12 +59,7 @@ describe('translations-service', () => {
         await service.generateTranslations();
 
       expect(locales).toStrictEqual(['en']);
-      expect(namespaces).toEqual([
-        'testing-sensor',
-        'testing-actor',
-        'testing-logic',
-        'common',
-      ]);
+      expect(namespaces).toEqual(['testing-logic', 'testing-device', 'common']);
     });
   });
 });
