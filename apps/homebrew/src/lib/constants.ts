@@ -6,3 +6,4 @@ export const KettleRepository = Symbol('KETTLE_REPOSITORY');
 export const IActors = Symbol('ACTORS');
 export const ISensors = Symbol('SENSORS');
 export const ILogics = Symbol('LOGICS');
+export const IDevices = Symbol('DEVICES');

@@ -10,6 +10,7 @@ import { SensorTypesController } from './app/sensor-types';
 import { SensorController } from './app/sensors';
 import { TranslationsController } from './app/translations';
 import { SensorReadingsCronService } from './cron/sensor-readings';
+import { DeviceModule } from './lib/devices/module';
 import { ServicesModule } from './lib/services/module';
 import { PluginsModule } from './plugins';
 import { SocketGateway } from './socket-gateway/gateway';
@@ -36,6 +37,8 @@ export const controllersList = [
 
     SensorReadingWorkerService,
     SensorReadingsCronService,
+
+    DeviceModule,
   ],
   controllers: [
     ActorTypesController,

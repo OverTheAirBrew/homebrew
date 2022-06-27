@@ -2,7 +2,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test } from '@nestjs/testing';
 import { Gpio } from 'onoff';
 import { GpioActor } from '.';
-import { SelectBoxProperty } from '../../../lib/plugin/properties';
+import { SelectBoxProperty } from '../../../../plugin/properties';
 
 jest.mock('onoff');
 

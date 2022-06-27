@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Sensor } from '../../../lib/plugin/abstractions/sensor';
+
+import { IOneWireController } from '@ota-internal/one-wire-sensor';
+import { Sensor } from '../../../../plugin/abstractions/sensor';
 import {
   NumberProperty,
   SelectBoxProperty,
-} from '../../../lib/plugin/properties';
-
-import { IOneWireController } from '@ota-internal/one-wire-sensor';
+} from '../../../../plugin/properties';
 
 export interface IOneWireParams {
   sensorAddress: string;
