@@ -7,10 +7,13 @@
     {
       "type": "node",
       "request": "launch",
-      "runtimeVersion": "14.18.1",
+      "runtimeVersion": "14",
       "name": "Debug Nest Framework",
       "args": [
-          "${workspaceFolder}/src/main.ts"
+          "${workspaceFolder}/apps/homebrew/src/main.ts"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
       ],
       "runtimeArgs": [
           "--nolazy",
@@ -19,11 +22,12 @@
           "-r",
           "tsconfig-paths/register"
       ],
+      "outFiles": [
+        "${workspaceFolder}/apps/homebrew/src/**/*.js"
+      ],
       "sourceMaps": true,
       "envFile": "${workspaceFolder}/.env",
-      "cwd": "${workspaceRoot}",
       "console": "integratedTerminal",
-      "protocol": "inspector"
-  }
+    }
   ]
 }

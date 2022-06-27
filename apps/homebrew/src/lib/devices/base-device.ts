@@ -15,7 +15,16 @@ import { PropertyMapper } from '../property-mapper';
 
 export interface IDevice<T> extends IPeripheral {
   getSensorTypes(): Promise<SensorTypeDto[]>;
+  getRawSensorTypes(): Promise<ISensor<any>[]>;
   getActorTypes(): Promise<ActorTypeDto[]>;
+  getRawActorTypes(): Promise<IActor<any>[]>;
+  getRawSensorTypeById(sensorType_id: string): Promise<ISensor<any>>;
+  getRawActorById(actorType_id: string): Promise<IActor<any>>;
+  validateConfig<T>(
+    type: 'actor' | 'sensor',
+    type_id: string,
+    config: T,
+  ): Promise<boolean>;
 }
 
 export const IDevice = class Dummy {} as ClassType<IDevice<any>>;
@@ -23,8 +32,8 @@ export const IDevice = class Dummy {} as ClassType<IDevice<any>>;
 export abstract class Device<T> extends Peripheral implements IDevice<T> {
   constructor(
     name: string,
-    public properties: Property[],
-    public localizations: PeripheralLocalizations,
+    properties: Property[],
+    localizations: PeripheralLocalizations,
     private actors: IActor<any>[],
     private sensors: ISensor<any>[],
     private mapper: PropertyMapper,
@@ -38,10 +47,18 @@ export abstract class Device<T> extends Peripheral implements IDevice<T> {
     );
   }
 
+  public async getRawSensorTypes() {
+    return this.sensors;
+  }
+
   public async getActorTypes() {
     return await Promise.all(
       this.actors.map((actor) => this.mapActorType(actor)),
     );
+  }
+
+  public async getRawActorTypes() {
+    return this.actors;
   }
 
   public async getRawSensorTypeById(sensorType_id: string) {
@@ -90,7 +107,7 @@ export abstract class Device<T> extends Peripheral implements IDevice<T> {
 
   private async mapActorType(actor: IActor<any>) {
     const mappedProperties = await Promise.all(
-      actor.properties.map((p) => this.mapper.map(actor.name, p)),
+      actor.properties.map((p) => this.mapper.map(actor.name, p, this.name)),
     );
 
     return new ActorTypeDto(actor.name, mappedProperties);
@@ -98,7 +115,7 @@ export abstract class Device<T> extends Peripheral implements IDevice<T> {
 
   private async mapSensorType(sensor: ISensor<any>) {
     const mappedProperties = await Promise.all(
-      sensor.properties.map((p) => this.mapper.map(sensor.name, p)),
+      sensor.properties.map((p) => this.mapper.map(sensor.name, p, this.name)),
     );
 
     return new SensorTypeDto(sensor.name, mappedProperties);

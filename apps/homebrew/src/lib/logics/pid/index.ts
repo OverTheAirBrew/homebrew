@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Logic } from '../../../lib/plugin/abstractions/logic';
-import { NumberProperty } from '../../../lib/plugin/properties';
+import { Logic } from '../../plugin/abstractions/logic';
+import { NumberProperty } from '../../plugin/properties';
 
 export interface IPidLogicParams {
   p: number;

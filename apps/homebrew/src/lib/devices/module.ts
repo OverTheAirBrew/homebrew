@@ -1,19 +1,20 @@
 import { Module } from '@nestjs/common';
-import { Device, IDevice } from './base-device';
+import { IDevices } from '../constants';
+import { IDevice } from './base-device';
+import { LocalDevice } from './local';
 import { LocalDeviceModule } from './local/module';
 
-const allDevices = [LocalDeviceModule];
-
 @Module({
-  imports: [...allDevices],
   providers: [
     {
-      provide: IDevice,
-      useFactory: (devices: Device<any>) => {
+      provide: IDevices,
+      useFactory: (...devices: IDevice<any>[]) => {
         return devices;
       },
-      inject: [...allDevices],
+      inject: [LocalDevice],
     },
   ],
+  imports: [LocalDeviceModule],
+  exports: [IDevices],
 })
 export class DeviceModule {}

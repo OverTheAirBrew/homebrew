@@ -5,12 +5,16 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { ActorDto } from '../../models/dto/actor.dto';
-import { ActorTypesService } from '../services/actor-types/service';
+import { DeviceTypesService } from '../services/device-types/service';
+import { DeviceService } from '../services/device/service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
 export class ValidActorConfig implements ValidatorConstraintInterface {
-  constructor(private actorTypeService: ActorTypesService) {}
+  constructor(
+    private deviceTypeService: DeviceTypesService,
+    private deviceService: DeviceService,
+  ) {}
 
   public async validate(text: any, args: ValidationArguments) {
     if (!args.object['type_id']) {
@@ -18,7 +22,12 @@ export class ValidActorConfig implements ValidatorConstraintInterface {
     }
 
     try {
-      const valid = await this.actorTypeService.validateConfig(
+      const device = await this.deviceService.getDeviceById(
+        args.object['device_id'],
+      );
+
+      const valid = await this.deviceTypeService.validateActorConfig(
+        device.type_id,
         (args.object as ActorDto).type_id,
         text,
       );

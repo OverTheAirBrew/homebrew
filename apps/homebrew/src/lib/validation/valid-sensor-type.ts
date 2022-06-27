@@ -4,16 +4,24 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { SensorTypesService } from '../services/sensor-types/service';
+import { DeviceTypesService } from '../services/device-types/service';
+import { DeviceService } from '../services/device/service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
 export class ValidSensorType implements ValidatorConstraintInterface {
-  constructor(private sensorTypesService: SensorTypesService) {}
+  constructor(
+    private deviceTypesService: DeviceTypesService,
+    private deviceService: DeviceService,
+  ) {}
 
-  public async validate(text: string) {
+  public async validate(text: string, args: ValidationArguments) {
     try {
-      await this.sensorTypesService.getRawSensorTypeById(text);
+      const device = await this.deviceService.getDeviceById(
+        args.object['device_id'],
+      );
+
+      await this.deviceTypesService.getRawSensorTypeById(device.type_id, text);
       return true;
     } catch (err) {
       return false;

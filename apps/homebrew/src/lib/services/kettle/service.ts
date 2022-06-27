@@ -30,16 +30,16 @@ export class KettleService {
   async getKettles() {
     const kettles = await this.repository.findAll();
 
-    return kettles.map((kettle) => {
-      return new KettleDto(
-        kettle.id,
-        kettle.name,
-        kettle.sensor_id,
-        kettle.heater_id,
-        kettle.logicType_id,
-        kettle.config,
-      );
-    });
+    return await Promise.all(kettles.map(this.mapKettle));
+  }
+
+  async getKettleById(kettle_id: string) {
+    const kettle = await this.repository.findByPk(kettle_id);
+    if (!kettle) {
+      throw new KettleNotFoundError(kettle_id);
+    }
+
+    return await this.mapKettle(kettle);
   }
 
   async updateKettle(id: string, kettle: KettleDto) {
@@ -58,5 +58,16 @@ export class KettleService {
     });
 
     await currentKettle.save();
+  }
+
+  private async mapKettle(kettle: Kettle) {
+    return new KettleDto(
+      kettle.id,
+      kettle.name,
+      kettle.sensor_id,
+      kettle.heater_id,
+      kettle.logicType_id,
+      kettle.config,
+    );
   }
 }

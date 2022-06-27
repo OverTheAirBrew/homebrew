@@ -17,6 +17,7 @@ export class SensorController {
   async createSensor(@Body() sensor: SensorDto) {
     const sensor_id = await this.service.createSensor(
       sensor.name,
+      sensor.device_id,
       sensor.type_id,
       sensor.config,
     );

@@ -8,9 +8,15 @@ import { ActorDoesNotExistError } from '../../errors/actor-does-not-exist-error'
 export class ActorService {
   constructor(@Inject(ActorRepository) private repository: typeof Actor) {}
 
-  public async createActor(name: string, type_id?: string, config?: string) {
+  public async createActor(
+    name: string,
+    device_id: string,
+    type_id?: string,
+    config?: string,
+  ) {
     const createdActor = await this.repository.create({
       name,
+      device_id,
       type_id,
       config,
     });
@@ -22,8 +28,13 @@ export class ActorService {
     const actors = await this.repository.findAll({ where: {} });
 
     return actors.map((actor) => {
-      const parsedConfig = JSON.parse(actor.config);
-      return new ActorDto(actor.id, actor.name, actor.type_id, parsedConfig);
+      return new ActorDto(
+        actor.id,
+        actor.name,
+        actor.device_id,
+        actor.type_id,
+        actor.config,
+      );
     });
   }
 
@@ -37,8 +48,9 @@ export class ActorService {
     return new ActorDto(
       actor.id,
       actor.name,
+      actor.device_id,
       actor.type_id,
-      JSON.parse(actor.config),
+      actor.config,
     );
   }
 }

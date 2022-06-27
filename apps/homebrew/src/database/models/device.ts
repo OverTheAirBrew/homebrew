@@ -3,26 +3,22 @@ import {
   CreatedAt,
   DataType,
   Default,
-  ForeignKey,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
-import { Device } from './device';
+
+interface IDevice {}
 
 @Table({
-  modelName: 'actors',
+  modelName: 'devices',
 })
-export class Actor extends Model {
+export class Device extends Model<IDevice, IDevice> {
   @Default(DataType.UUIDV4)
   @PrimaryKey
   @Column(DataType.UUID)
   id?: string;
-
-  @Column
-  @ForeignKey(() => Device)
-  device_id: string;
 
   @Column
   name: string;

@@ -1,23 +1,22 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, QueryInterface } from 'sequelize';
 
-async function up({ context: queryInterface }) {
-  await queryInterface.createTable('sensors', {
+async function up({ context: queryInterface }: { context: QueryInterface }) {
+  await queryInterface.createTable('devices', {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     type_id: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     config: {
       type: DataTypes.JSON,
-      allowNull: false,
+      allowNull: true,
       defaultValue: {},
     },
     createdAt: {
@@ -30,7 +29,7 @@ async function up({ context: queryInterface }) {
 }
 
 async function down({ context: queryInterface }) {
-  await queryInterface.dropTable('sensors');
+  await queryInterface.dropTable('devices');
 }
 
 module.exports = {

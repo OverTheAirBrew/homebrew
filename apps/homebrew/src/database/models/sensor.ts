@@ -1,14 +1,17 @@
 import {
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
   Default,
+  ForeignKey,
   HasMany,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { Device } from './device';
 import { Telemetry } from './telemetry';
 
 @Table({
@@ -19,6 +22,13 @@ export class Sensor extends Model {
   @PrimaryKey
   @Column(DataType.UUID)
   id?: string;
+
+  @Column
+  @ForeignKey(() => Device)
+  device_id: string;
+
+  @BelongsTo(() => Device)
+  device: Device;
 
   @Column
   name: string;

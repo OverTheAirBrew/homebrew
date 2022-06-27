@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IActors, ILogics, ISensors } from '../../../lib/constants';
-import { IActor } from '../../../lib/plugin/abstractions/actor';
+import { IDevices, ILogics } from '../../../lib/constants';
 import { ILogic } from '../../../lib/plugin/abstractions/logic';
-import { ISensor } from '../../../lib/plugin/abstractions/sensor';
-import { Peripheral } from '../../../lib/plugin/properties';
+import { IDevice } from '../../devices/base-device';
+
+const availableLocalizations = ['en'];
 
 const commonTranslations: Record<string, Record<string, any>> = {
   en: {
@@ -40,29 +40,72 @@ const commonTranslations: Record<string, Record<string, any>> = {
 @Injectable()
 export class TranslationsService {
   constructor(
-    @Inject(IActors) private actorTypes: IActor<any>[],
-    @Inject(ISensors) private sensorTypes: ISensor<any>[],
+    // @Inject(IActors) private actorTypes: IActor<any>[],
+    // @Inject(ISensors) private sensorTypes: ISensor<any>[],
     @Inject(ILogics) private logicTypes: ILogic<any>[],
+    @Inject(IDevices) private deviceTypes: IDevice<any>[],
   ) {}
 
   async generateTranslations() {
-    const translations = {};
+    let translations = {};
     const namespaces = [];
-    const locales = [];
+    const locales = availableLocalizations;
 
-    const types: Peripheral[] = [
-      ...this.sensorTypes,
-      ...this.actorTypes,
-      ...this.logicTypes,
-    ];
-
-    for (const type of types) {
-      for (const key of Object.keys(type.localizations)) {
-        translations[`${key}/${type.name}`] = type.localizations[key];
-        locales.push(key);
-        namespaces.push(`${type.name}`);
+    for (const type of this.logicTypes) {
+      for (const locale of locales) {
+        translations[`${locale}/${type.name}`] = type.localizations[locale];
+        namespaces.push(type.name);
       }
     }
+
+    for (const deviceType of this.deviceTypes) {
+      const sensors = await deviceType.getRawSensorTypes();
+      const actors = await deviceType.getRawActorTypes();
+
+      let deviceTranslations = {};
+
+      for (const locale of locales) {
+        let localeTranslations = {};
+
+        for (const peripheral of [...sensors, ...actors]) {
+          localeTranslations[peripheral.name] =
+            peripheral.localizations[locale];
+        }
+
+        deviceTranslations[`${locale}/${deviceType.name}`] = localeTranslations;
+      }
+
+      translations = {
+        ...translations,
+        ...deviceTranslations,
+      };
+
+      namespaces.push(deviceType.name);
+    }
+
+    // let types: Peripheral[] = [...this.logicTypes, ...this.deviceTypes];
+
+    // let devicePeripherals: Record<string, Peripheral[]> = {};
+
+    // for (const device of this.deviceTypes) {
+    //   const sensors = await device.getRawSensorTypes();
+    //   const actors = await device.getRawActorTypes();
+
+    //   devicePeripherals[device.name] = [...sensors, ...actors];
+    // }
+
+    // for (const devicePeripheral of Object.keys(devicePeripherals)) {
+    //   const peripheralTypes = devicePeripherals[devicePeripheral];
+
+    //   for (const pt of peripheralTypes) {
+    //     for (const key of Object.keys(pt.localizations)) {
+    //       translations[`${key}/${devicePeripheral}/${pt.name}`] =
+    //         pt.localizations[key];
+    //       locales.push(key);
+    //       namespaces.push(`${pt.name}`);
+    //     }
+    //   }
+    // }
 
     for (const key of Object.keys(commonTranslations)) {
       translations[`${key}/common`] = commonTranslations[key];

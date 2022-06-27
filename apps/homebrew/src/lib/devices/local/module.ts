@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   DS18B20Controller,
@@ -9,6 +9,7 @@ import { LocalDevice } from '.';
 import { IActors, ISensors } from '../../constants';
 import { Actor } from '../../plugin/abstractions/actor';
 import { Sensor } from '../../plugin/abstractions/sensor';
+import { PropertyMapper } from '../../property-mapper';
 
 import { GpioActor } from './actors/gpio';
 import { OneWireSensor } from './sensors/one-wire';
@@ -17,7 +18,6 @@ const Actors = [GpioActor];
 
 const Sensors = [OneWireSensor];
 
-@Global()
 @Module({
   providers: [
     ConfigService,
@@ -41,20 +41,22 @@ const Sensors = [OneWireSensor];
     ...Sensors,
     {
       provide: IActors,
-      useFactory: (actors: Actor<any>[]) => {
+      useFactory: (...actors: Actor<any>[]) => {
         return actors;
       },
       inject: [...Actors],
     },
     {
       provide: ISensors,
-      useFactory: (sensors: Sensor<any>[]) => {
+      useFactory: (...sensors: Sensor<any>[]) => {
         return sensors;
       },
       inject: [...Sensors],
     },
     LocalDevice,
+    PropertyMapper,
   ],
   exports: [LocalDevice],
+  imports: [],
 })
 export class LocalDeviceModule {}

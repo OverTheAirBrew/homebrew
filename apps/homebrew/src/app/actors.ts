@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -24,6 +25,7 @@ export class ActorController {
   async createActor(@Body() actor: ActorDto) {
     const actor_id = await this.service.createActor(
       actor.name,
+      actor.device_id,
       actor.type_id,
       actor.config,
     );
@@ -38,5 +40,10 @@ export class ActorController {
   })
   async getActors() {
     return await this.service.getAllActors();
+  }
+
+  @Get('/:actorId')
+  async getActorById(@Param('actorId') actorId: string) {
+    return await this.service.getActorById(actorId);
   }
 }

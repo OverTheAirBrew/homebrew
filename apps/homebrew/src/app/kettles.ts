@@ -1,8 +1,18 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { KettleService } from '../lib/services/kettle/service';
@@ -15,6 +25,7 @@ export class KettleController {
   constructor(private service: KettleService) {}
 
   @Post('/')
+  @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({
     type: IdResponseDto,
   })
@@ -40,7 +51,16 @@ export class KettleController {
     return kettles;
   }
 
+  @Get('/:kettleId')
+  @ApiResponse({
+    type: KettleDto,
+  })
+  async getKettle(@Param('kettleId') kettleId: string) {
+    return await this.service.getKettleById(kettleId);
+  }
+
   @Put('/:kettleId')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse()
   async updateKettle(
     @Body() kettle: KettleDto,
