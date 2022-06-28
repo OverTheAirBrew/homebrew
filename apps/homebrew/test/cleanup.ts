@@ -21,9 +21,10 @@ export interface IRepositories {
 }
 
 export async function cleanup(module: TestingModule) {
+  // These should be in the correct order to stop FK's failing during a delete
   const databases: IRepositories = {
-    kettles: module.get(KettleRepository),
     telemetry: module.get(TelemetryRepository),
+    kettles: module.get(KettleRepository),
     actors: module.get(ActorRepository),
     sensors: module.get(SensorRepository),
     devices: module.get(DeviceRepository),

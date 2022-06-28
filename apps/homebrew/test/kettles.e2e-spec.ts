@@ -11,24 +11,27 @@ describe('Kettles (e2e)', () => {
 
   let repositories: IRepositories;
 
+  let device_id: string;
+
   beforeEach(async () => {
     const { moduleFixtures, app: nestApplication } = await createApplication();
     app = nestApplication;
 
     repositories = await cleanup(moduleFixtures);
+
+    ({ id: device_id } = await repositories.devices.create({
+      name: 'test-device',
+      type_id: 'local-device',
+      config: {},
+    }));
   });
 
   it('POST /', async () => {
-    const { id: device_id } = await repositories.devices.create({
-      name: 'test-device',
-      type_id: 'local-device',
-    });
-
     const [{ id: actorId }, { id: sensorId }] = await Promise.all([
       repositories.actors.create({
         name: 'testingactor',
         device_id,
-        type_id: 'gpio',
+        type_id: 'gpio-actor',
         config: {
           gpioNumber: 1,
         },
@@ -36,7 +39,7 @@ describe('Kettles (e2e)', () => {
       repositories.sensors.create({
         name: 'testingsensor',
         device_id,
-        type_id: 'one-wire',
+        type_id: 'one-wire-sensor',
         config: {
           sensorAddress: '1234',
         },
@@ -71,6 +74,7 @@ describe('Kettles (e2e)', () => {
     const [{ id: actorId }, { id: sensorId }] = await Promise.all([
       repositories.actors.create({
         name: 'testingactor',
+        device_id,
         type_id: 'gpio',
         config: {
           gpioNumber: 1,
@@ -78,6 +82,7 @@ describe('Kettles (e2e)', () => {
       }),
       repositories.sensors.create({
         name: 'testingsensor',
+        device_id,
         type_id: 'one-wire',
         config: {
           sensorAddress: '1234',
@@ -113,6 +118,7 @@ describe('Kettles (e2e)', () => {
     const [{ id: actorId }, { id: sensorId }] = await Promise.all([
       repositories.actors.create({
         name: 'testingactor',
+        device_id,
         type_id: 'gpio',
         config: {
           gpioNumber: 1,
@@ -120,6 +126,7 @@ describe('Kettles (e2e)', () => {
       }),
       repositories.sensors.create({
         name: 'testingsensor',
+        device_id,
         type_id: 'one-wire',
         config: {
           sensorAddress: '1234',
