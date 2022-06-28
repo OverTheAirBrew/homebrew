@@ -3,10 +3,10 @@ import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test } from '@nestjs/testing';
 import { useContainer } from 'class-validator';
-import { controllersList } from '../src/app.module';
-import { DatabaseModule } from '../src/database/module';
-import { ServicesModule } from '../src/lib/services/module';
-import { SocketGatewayModule } from '../src/socket-gateway/module';
+import { controllersList } from '../../src/app.module';
+import { DatabaseModule } from '../../src/database/module';
+import { ServicesModule } from '../../src/lib/services/module';
+import { SocketGatewayModule } from '../../src/socket-gateway/module';
 
 export const TEST_MODULES: ModuleMetadata = {
   imports: [

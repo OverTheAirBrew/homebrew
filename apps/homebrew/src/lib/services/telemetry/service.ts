@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Telemetry } from '../../../database/models/telemetry';
-import { TelemetryRepository } from '../../../lib/constants';
+import { TelemetryRepository } from '../../constants';
 
 @Injectable()
 export class TelemetryService {

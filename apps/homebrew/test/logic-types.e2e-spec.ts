@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { createApplication } from './test-modules';
+import { createApplication } from './utils/test-modules';
 
 jest.useFakeTimers();
 jest.retryTimes(3);

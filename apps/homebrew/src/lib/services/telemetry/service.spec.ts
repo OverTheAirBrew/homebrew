@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { TelemetryRepository } from '../../../lib/constants';
+import { TelemetryRepository } from '../../constants';
 import { TelemetryService } from './service';
 
 describe('telemetry-service', () => {

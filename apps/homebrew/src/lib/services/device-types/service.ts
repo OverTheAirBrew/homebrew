@@ -29,32 +29,22 @@ export class DeviceTypesService {
   }
 
   public async getSensors(deviceType: string) {
-    const device = this.devices.find((d) => d.name === deviceType);
-
-    if (!device) {
-      throw new InvalidDeviceTypeError(deviceType);
-    }
-
+    const device = await this.getRawDeviceTypeById(deviceType);
     return device.getSensorTypes();
   }
 
   public async getActors(deviceType: string) {
-    const device = this.devices.find((d) => d.name === deviceType);
-
-    if (!device) {
-      throw new InvalidDeviceTypeError(deviceType);
-    }
-
+    const device = await this.getRawDeviceTypeById(deviceType);
     return device.getActorTypes();
   }
 
   public async getRawSensorTypeById(deviceType: string, sensor_id: string) {
-    const device = this.devices.find((d) => d.name === deviceType);
+    const device = await this.getRawDeviceTypeById(deviceType);
     return await device.getRawSensorTypeById(sensor_id);
   }
 
   public async getRawActorTypeById(deviceType: string, actorType_id: string) {
-    const device = this.devices.find((d) => d.name === deviceType);
+    const device = await this.getRawDeviceTypeById(deviceType);
     return await device.getRawActorById(actorType_id);
   }
 
