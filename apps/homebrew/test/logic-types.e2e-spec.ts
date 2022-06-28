@@ -1,7 +1,6 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { TEST_MODULES } from './test-modules';
+import { createApplication } from './test-modules';
 
 jest.useFakeTimers();
 jest.retryTimes(3);
@@ -10,13 +9,8 @@ describe('Logic Types (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-    const moduleFixtures = await Test.createTestingModule(
-      TEST_MODULES,
-    ).compile();
-
-    app = moduleFixtures.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe());
-    await app.init();
+    const { app: nestApplication } = await createApplication();
+    app = nestApplication;
   });
 
   it('GET /', async () => {

@@ -32,11 +32,9 @@ describe.only('Sensors (e2e)', () => {
         device_id,
         type_id: 'one-wire-sensor',
         config: {
-          sensorAddress: '1234',
+          sensorAddress: 'ABCD',
         },
       });
-
-    console.log('BODY', body);
 
     expect(status).toBe(201);
     expect(body).toHaveProperty('id');

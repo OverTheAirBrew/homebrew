@@ -1,8 +1,7 @@
 import { INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { cleanup, IRepositories } from './cleanup';
-import { TEST_MODULES } from './test-modules';
+import { createApplication } from './test-modules';
 
 jest.useFakeTimers();
 jest.retryTimes(3);
@@ -13,18 +12,22 @@ describe('Kettles (e2e)', () => {
   let repositories: IRepositories;
 
   beforeEach(async () => {
-    let moduleFixtures = await Test.createTestingModule(TEST_MODULES).compile();
-
-    app = moduleFixtures.createNestApplication();
-    await app.init();
+    const { moduleFixtures, app: nestApplication } = await createApplication();
+    app = nestApplication;
 
     repositories = await cleanup(moduleFixtures);
   });
 
   it('POST /', async () => {
+    const { id: device_id } = await repositories.devices.create({
+      name: 'test-device',
+      type_id: 'local-device',
+    });
+
     const [{ id: actorId }, { id: sensorId }] = await Promise.all([
       repositories.actors.create({
         name: 'testingactor',
+        device_id,
         type_id: 'gpio',
         config: {
           gpioNumber: 1,
@@ -32,6 +35,7 @@ describe('Kettles (e2e)', () => {
       }),
       repositories.sensors.create({
         name: 'testingsensor',
+        device_id,
         type_id: 'one-wire',
         config: {
           sensorAddress: '1234',
@@ -45,7 +49,7 @@ describe('Kettles (e2e)', () => {
         name: 'test-kettle',
         sensor_id: sensorId,
         actor_id: actorId,
-        logicType_id: 'pid',
+        logicType_id: 'pid-logic',
         config: {
           p: 1,
           i: 1,
