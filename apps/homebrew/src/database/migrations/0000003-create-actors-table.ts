@@ -10,6 +10,7 @@ async function up({ context: queryInterface }) {
     device_id: {
       type: DataTypes.UUID,
       references: { model: 'devices', key: 'id' },
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING,

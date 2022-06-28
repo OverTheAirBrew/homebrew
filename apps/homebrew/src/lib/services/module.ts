@@ -69,9 +69,8 @@ import { TranslationsService } from './translations/service';
       provide: DeviceRepository,
       useValue: Device,
     },
-    DeviceService,
     ValidDevice,
-
+    DeviceService,
     PropertyMapper,
   ],
   imports: [DeviceModule, LogicModule],

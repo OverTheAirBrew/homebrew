@@ -12,7 +12,7 @@ async function up({ context: queryInterface }: { context: QueryInterface }) {
     },
     type_id: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     config: {
       type: DataTypes.JSON,

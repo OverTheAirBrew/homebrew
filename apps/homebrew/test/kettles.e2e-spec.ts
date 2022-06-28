@@ -137,7 +137,7 @@ describe('Kettles (e2e)', () => {
         heater_id: actorId,
       });
 
-    expect(status).toBe(200);
+    expect(status).toBe(204);
 
     const kettle = await repositories.kettles.findByPk(kettleId);
     expect(kettle.name).toBe('testing-kettle-updated');

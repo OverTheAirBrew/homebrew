@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { TEST_MODULES } from './test-modules';
@@ -12,6 +12,7 @@ describe('Translations (e2e)', () => {
     ).compile();
 
     app = moduleFixtures.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   }, 30000);
 

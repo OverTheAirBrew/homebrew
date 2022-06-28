@@ -1,10 +1,4 @@
-import {
-  IsNotEmpty,
-  IsObject,
-  IsString,
-  IsUUID,
-  Validate,
-} from 'class-validator';
+import { IsNotEmpty, IsObject, IsString, Validate } from 'class-validator';
 import { ValidDevice } from '../../lib/validation/valid-device';
 import { ValidSensorType } from '../../lib/validation/valid-sensor-type';
 import { ValidSensorConfig } from '../../lib/validation/validate-sensor-config';
@@ -29,7 +23,8 @@ export class SensorDto {
   @IsString()
   name: string;
 
-  @IsUUID()
+  @IsString()
+  @IsNotEmpty()
   @Validate(ValidDevice)
   device_id: string;
 

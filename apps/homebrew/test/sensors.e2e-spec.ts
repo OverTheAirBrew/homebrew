@@ -1,23 +1,27 @@
 import { INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { cleanup, IRepositories } from './cleanup';
-import { TEST_MODULES } from './test-modules';
+import { createApplication } from './test-modules';
 
 jest.useFakeTimers();
 jest.retryTimes(3);
 
-describe('Sensors (e2e', () => {
+describe.only('Sensors (e2e)', () => {
   let app: INestApplication;
   let repositories: IRepositories;
 
-  beforeEach(async () => {
-    let moduleFixtures = await Test.createTestingModule(TEST_MODULES).compile();
+  let device_id: string;
 
-    app = moduleFixtures.createNestApplication();
-    await app.init();
+  beforeEach(async () => {
+    const { moduleFixtures, app: nestApplication } = await createApplication();
+    app = nestApplication;
 
     repositories = await cleanup(moduleFixtures);
+
+    ({ id: device_id } = await repositories.devices.create({
+      name: 'test-device',
+      type_id: 'local-device',
+    }));
   });
 
   it('POST /', async () => {
@@ -25,11 +29,14 @@ describe('Sensors (e2e', () => {
       .post('/sensors')
       .send({
         name: 'test-sensor',
-        type_id: 'one-wire',
+        device_id,
+        type_id: 'one-wire-sensor',
         config: {
           sensorAddress: '1234',
         },
       });
+
+    console.log('BODY', body);
 
     expect(status).toBe(201);
     expect(body).toHaveProperty('id');
@@ -45,11 +52,13 @@ describe('Sensors (e2e', () => {
       {
         name: 'sensor1',
         type_id: 'one-wire',
+        device_id,
         config: {},
       },
       {
         name: 'sensor2',
         type_id: 'one-wire',
+        device_id,
         config: {},
       },
     ]);
@@ -70,11 +79,13 @@ describe('Sensors (e2e', () => {
       {
         name: 'sensor1',
         type_id: 'one-wire',
+        device_id,
         config: {},
       },
       {
         name: 'sensor2',
         type_id: 'one-wire',
+        device_id,
         config: {},
       },
     ]);
