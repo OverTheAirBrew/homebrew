@@ -1,0 +1,9 @@
+{
+  "gpio-sensor": {
+    "gpioNumber": "GPIO Number"
+  },
+  "one-wire-sensor": {
+    "sensorAddress": "Sensor Address",
+    "offset": "Offser"
+  }
+}
