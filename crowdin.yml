@@ -1,0 +1,11 @@
+"project_id": "523994"
+"api_token_env": "HB_CROWDIN_API_KEY"
+"base_path": "."
+
+"files": [
+  {
+    "source": "/apps/homebrew/src/locale/**/*",                                    
+    "translation": "/locale/%two_letters_code%/folder1/%original_file_name%" 
+  }
+]
+

@@ -6,7 +6,7 @@ import { createApplication } from './test-modules';
 jest.useFakeTimers();
 jest.retryTimes(3);
 
-describe.only('Sensors (e2e)', () => {
+describe('Sensors (e2e)', () => {
   let app: INestApplication;
   let repositories: IRepositories;
 

@@ -15,19 +15,10 @@ export interface IOneWireParams {
 @Injectable()
 export class OneWireSensor extends Sensor<IOneWireParams> {
   constructor(private oneWireController: IOneWireController) {
-    super(
-      'one-wire',
-      [
-        new SelectBoxProperty('sensorAddress', true, () => this.getSensors()),
-        new NumberProperty('offset', false),
-      ],
-      {
-        en: {
-          sensorAddress: 'Sensor address',
-          offset: 'Offset',
-        },
-      },
-    );
+    super('one-wire', [
+      new SelectBoxProperty('sensorAddress', true, () => this.getSensors()),
+      new NumberProperty('offset', false),
+    ]);
   }
 
   private async deviceExists(address: string) {

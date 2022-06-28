@@ -9,9 +9,7 @@ import { LogicTypesService } from './service';
 
 class TestingLogicType extends Logic<any> {
   constructor() {
-    super('testing', [new NumberProperty('number', true)], {
-      en: {},
-    });
+    super('testing', [new NumberProperty('number', true)]);
   }
 
   public async process() {

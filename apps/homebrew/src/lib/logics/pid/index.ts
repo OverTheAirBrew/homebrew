@@ -11,23 +11,12 @@ export interface IPidLogicParams {
 @Injectable()
 export class PidLogic extends Logic<IPidLogicParams> {
   constructor() {
-    super(
-      'pid',
-      [
-        new NumberProperty('p', true),
-        new NumberProperty('i', true),
-        new NumberProperty('d', true),
-        new NumberProperty('maxOutput', false),
-      ],
-      {
-        en: {
-          p: 'P',
-          i: 'I',
-          d: 'D',
-          maxOutput: 'Max Output',
-        },
-      },
-    );
+    super('pid', [
+      new NumberProperty('p', true),
+      new NumberProperty('i', true),
+      new NumberProperty('d', true),
+      new NumberProperty('maxOutput', false),
+    ]);
   }
 
   public async process(params: IPidLogicParams) {

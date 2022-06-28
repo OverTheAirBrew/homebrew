@@ -1,11 +1,6 @@
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ClassType } from '../class-type';
-import {
-  IPeripheral,
-  Peripheral,
-  PeripheralLocalizations,
-  Property,
-} from '../properties';
+import { IPeripheral, Peripheral, Property } from '../properties';
 
 export interface IActor<T> extends IPeripheral {
   on(actor_id: string, params: T): Promise<void>;
@@ -18,10 +13,9 @@ export abstract class Actor<T> extends Peripheral implements IActor<T> {
   constructor(
     actorName: string,
     public properties: Property[],
-    public localizations: PeripheralLocalizations,
     private eventEmitter: EventEmitter2,
   ) {
-    super(`${actorName}-actor`, properties, localizations);
+    super(`${actorName}-actor`, properties);
   }
 
   public async on(actor_id: string, params: T) {

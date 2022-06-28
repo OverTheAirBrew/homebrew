@@ -1,10 +1,5 @@
 import { ClassType } from '../class-type';
-import {
-  IPeripheral,
-  Peripheral,
-  PeripheralLocalizations,
-  Property,
-} from '../properties';
+import { IPeripheral, Peripheral, Property } from '../properties';
 
 export interface ILogic<T> extends IPeripheral {
   process: (params: T) => Promise<void>;
@@ -13,12 +8,8 @@ export interface ILogic<T> extends IPeripheral {
 export const ILogic = class Dummy {} as ClassType<ILogic<any>>;
 
 export abstract class Logic<T> extends Peripheral implements ILogic<T> {
-  constructor(
-    logicName: string,
-    public properties: Property[],
-    public localizations: PeripheralLocalizations,
-  ) {
-    super(`${logicName}-logic`, properties, localizations);
+  constructor(logicName: string, public properties: Property[]) {
+    super(`${logicName}-logic`, properties);
   }
 
   protected async run(params: T) {

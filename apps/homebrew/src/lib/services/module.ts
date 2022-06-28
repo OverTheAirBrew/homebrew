@@ -30,7 +30,6 @@ import { KettleService } from './kettle/service';
 import { LogicTypesService } from './logic-types/service';
 import { SensorService } from './sensor/service';
 import { TelemetryService } from './telemetry/service';
-import { TranslationsService } from './translations/service';
 
 @Module({
   providers: [
@@ -63,7 +62,7 @@ import { TranslationsService } from './translations/service';
       provide: TelemetryRepository,
       useValue: Telemetry,
     },
-    TranslationsService,
+
     DeviceTypesService,
     {
       provide: DeviceRepository,
@@ -80,7 +79,6 @@ import { TranslationsService } from './translations/service';
     LogicTypesService,
     SensorService,
     TelemetryService,
-    TranslationsService,
     DeviceTypesService,
     DeviceService,
   ],

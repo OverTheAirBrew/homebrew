@@ -5,12 +5,7 @@ import { InvalidActorTypeError } from '../errors/invalid-actor-type';
 import { InvalidSensorTypeError } from '../errors/invalid-sensor-type';
 import { IActor } from '../plugin/abstractions/actor';
 import { ISensor } from '../plugin/abstractions/sensor';
-import {
-  IPeripheral,
-  Peripheral,
-  PeripheralLocalizations,
-  Property,
-} from '../plugin/properties';
+import { IPeripheral, Peripheral, Property } from '../plugin/properties';
 import { PropertyMapper } from '../property-mapper';
 
 export interface IDevice<T> extends IPeripheral {
@@ -33,12 +28,11 @@ export abstract class Device<T> extends Peripheral implements IDevice<T> {
   constructor(
     name: string,
     properties: Property[],
-    localizations: PeripheralLocalizations,
     private actors: IActor<any>[],
     private sensors: ISensor<any>[],
     private mapper: PropertyMapper,
   ) {
-    super(`${name}-device`, properties, localizations);
+    super(`${name}-device`, properties);
   }
 
   public async getSensorTypes() {

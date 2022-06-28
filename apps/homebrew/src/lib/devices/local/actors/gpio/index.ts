@@ -22,11 +22,6 @@ export class GpioActor
           21, 22, 23, 24, 25, 26, 27, 28,
         ]),
       ],
-      {
-        en: {
-          gpioNumber: 'GPIO number',
-        },
-      },
       eventEmitter,
     );
   }

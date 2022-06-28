@@ -8,7 +8,6 @@ import { DeviceController } from './app/devices';
 import { KettleController } from './app/kettles';
 import { LogicTypesController } from './app/logic-types';
 import { SensorController } from './app/sensors';
-import { TranslationsController } from './app/translations';
 import { SensorReadingsCronService } from './cron/sensor-readings';
 import { DatabaseModule } from './database/module';
 import { ServicesModule } from './lib/services/module';
@@ -20,7 +19,6 @@ export const controllersList = [
   KettleController,
   LogicTypesController,
   SensorController,
-  TranslationsController,
   DeviceTypesController,
   DeviceController,
 ];
