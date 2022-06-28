@@ -24,7 +24,10 @@ const Sensors = [OneWireSensor];
     {
       provide: IOneWireController,
       useFactory: (config: ConfigService) => {
-        if (config.get('NODE_ENV') === 'development') {
+        if (
+          config.get('NODE_ENV') === 'development' ||
+          config.get('CI') == 'true'
+        ) {
           return new StreamController(true, [
             {
               address: 'ABCD',

@@ -34,6 +34,7 @@ jobs:
       - run: npm run e2e
         env:
           DB_URL: mysql://root@127.0.0.1/test_database
+          NODE_ENV: testing
       - uses: codecov/codecov-action@v2
         with:
           fail_ci_if_error: true # optional (default = false)
