@@ -11,5 +11,8 @@
     "src/app/*.(t|j)s",
     "src/cron/*.(t|j)s",
     "src/workers/*.(t|j)s"
+  ],
+  "coveragePathIgnorePatterns": [
+    "<rootDir>/**/*.spec.ts"
   ]
 }
