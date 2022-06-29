@@ -22,5 +22,8 @@
   },
   "bugs": {
     "url": "https://github.com/overtheairbrew/homebrew/issues"
+  },
+  "devDependencies": {
+    "@crowdin/cli": "^3.7.8"
   }
 }

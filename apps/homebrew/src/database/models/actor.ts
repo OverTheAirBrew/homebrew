@@ -3,11 +3,13 @@ import {
   CreatedAt,
   DataType,
   Default,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { Device } from './device';
 
 @Table({
   modelName: 'actors',
@@ -17,6 +19,10 @@ export class Actor extends Model {
   @PrimaryKey
   @Column(DataType.UUID)
   id?: string;
+
+  @Column
+  @ForeignKey(() => Device)
+  device_id: string;
 
   @Column
   name: string;

@@ -28,5 +28,8 @@
     "@nestjs/common": "^8.4.7",
     "@ota-internal/shared": "^1.0.0",
     "fast-glob": "^3.2.11"
+  },
+  "devDependencies": {
+    "@crowdin/cli": "^3.7.8"
   }
 }

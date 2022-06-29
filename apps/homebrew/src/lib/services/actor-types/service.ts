@@ -1,46 +1,51 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IActors } from '../../../lib/constants';
-import { InvalidActorTypeError } from '../../../lib/errors/invalid-actor-type';
-import { IActor } from '../../../lib/plugin/abstractions/actor';
-import { PropertyMapper } from '../../../lib/property-mapper';
+import { Injectable } from '@nestjs/common';
 import { ActorTypeDto } from '../../../models/dto/actor-type.dto';
+import { InvalidActorTypeError } from '../../errors/invalid-actor-type';
+import { IActor } from '../../plugin/abstractions/actor';
+import { PropertyMapper } from '../../property-mapper';
+import { DeviceTypesService } from '../device-types/service';
 
 @Injectable()
 export class ActorTypesService {
   constructor(
-    @Inject(IActors) private actorTypes: IActor<any>[],
+    private deviceTypesService: DeviceTypesService,
     private mapper: PropertyMapper,
   ) {}
 
-  public async getActorTypes() {
-    return await Promise.all(
-      this.actorTypes.map((actor) => this.mapActorType(actor)),
+  public async getActorTypes(deviceType: string) {
+    const device = await this.deviceTypesService.getRawDeviceTypeById(
+      deviceType,
     );
+    return await Promise.all(device.actors.map((a) => this.mapActorType(a)));
   }
 
-  public async getRawActorTypeById(id: string) {
-    const sensorType = this.actorTypes.find((s) => s.name === id);
+  public async getRawActorTypeById(deviceType: string, actorType: string) {
+    const device = await this.deviceTypesService.getRawDeviceTypeById(
+      deviceType,
+    );
+    const actor = device.actors.find((a) => a.name === actorType);
 
-    if (!sensorType) {
-      throw new InvalidActorTypeError(id);
+    if (!actor) {
+      throw new InvalidActorTypeError(actorType);
     }
 
-    return sensorType;
+    return actor;
   }
 
-  public async getActorTypeById(id: string) {
-    const actorType = await this.getRawActorTypeById(id);
-    return this.mapActorType(actorType);
-  }
-
-  public async validateConfig(type_id: string, config: any) {
-    const actorType = await this.getRawActorTypeById(type_id);
-    return await actorType.validate(config);
+  public async validateConfig<T>(
+    deviceType: string,
+    actorType: string,
+    config: T,
+  ) {
+    const actor = await this.getRawActorTypeById(deviceType, actorType);
+    return await actor.validate(config);
   }
 
   private async mapActorType(actor: IActor<any>) {
     const mappedProperties = await Promise.all(
-      actor.properties.map((p) => this.mapper.map(actor.name, p)),
+      actor.properties.map((p) => {
+        return this.mapper.map(actor.name, p);
+      }),
     );
 
     return new ActorTypeDto(actor.name, mappedProperties);

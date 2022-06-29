@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { DeviceService } from '../services/device/service';
 import { SensorTypesService } from '../services/sensor-types/service';
 import { ValidSensorConfig } from './validate-sensor-config';
 
@@ -17,6 +18,12 @@ describe('lib/validation/validate-sensor-config', () => {
         if (token === SensorTypesService) {
           return {
             validateConfig: validateConfigStub,
+          };
+        }
+
+        if (token === DeviceService) {
+          return {
+            getDeviceById: jest.fn().mockReturnValue({ type_id: 1 }),
           };
         }
       })

@@ -9,11 +9,13 @@
     "migrate": "lerna run migrate",
     "release": "lerna exec --concurrency 1 --scope @overtheairbrew/* -- semantic-release -e semantic-release-monorepo",
     "postinstall": "lerna bootstrap",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "push-locales": "crowdin upload sources"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
+    "@crowdin/cli": "^3.7.8",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.2",
@@ -29,6 +31,7 @@
     "rimraf": "^3.0.2",
     "semantic-release": "^19.0.3",
     "semantic-release-monorepo": "^7.0.5",
+    "tsconfig-paths": "^4.0.0",
     "typescript": "^4.7.3"
   },
   "commitlint": {

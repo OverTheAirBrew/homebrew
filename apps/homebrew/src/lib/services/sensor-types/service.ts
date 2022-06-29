@@ -1,42 +1,45 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ISensors } from '../../../lib/constants';
-import { InvalidSensorTypeError } from '../../../lib/errors/invalid-sensor-type';
-import { ISensor } from '../../../lib/plugin/abstractions/sensor';
-import { PropertyMapper } from '../../../lib/property-mapper';
+import { Injectable } from '@nestjs/common';
 import { SensorTypeDto } from '../../../models/dto/sensor-type.dto';
+import { InvalidSensorTypeError } from '../../errors/invalid-sensor-type';
+import { ISensor } from '../../plugin/abstractions/sensor';
+import { PropertyMapper } from '../../property-mapper';
+import { DeviceTypesService } from '../device-types/service';
 
 @Injectable()
 export class SensorTypesService {
   constructor(
-    @Inject(ISensors) private sensorTypes: ISensor<any>[],
+    private deviceTypesService: DeviceTypesService,
     private mapper: PropertyMapper,
   ) {}
 
-  public async getSensorTypes() {
-    return await Promise.all(
-      this.sensorTypes.map((sensor) => this.mapSensorType(sensor)),
+  public async getSensorTypes(deviceType: string) {
+    const device = await this.deviceTypesService.getRawDeviceTypeById(
+      deviceType,
     );
+
+    return await Promise.all(device.sensors.map((s) => this.mapSensorType(s)));
   }
 
-  public async getRawSensorTypeById(id: string) {
-    const sensorType = this.sensorTypes.find((s) => s.name === id);
+  public async getRawSensorTypeById(deviceType: string, sensorType: string) {
+    const device = await this.deviceTypesService.getRawDeviceTypeById(
+      deviceType,
+    );
+    const sensor = device.sensors.find((s) => s.name === sensorType);
 
-    if (!sensorType) {
-      throw new InvalidSensorTypeError(id);
+    if (!sensor) {
+      throw new InvalidSensorTypeError(sensorType);
     }
 
-    return sensorType;
+    return sensor;
   }
 
-  public async getSensorTypeById(id: string) {
-    const sensorType = await this.getRawSensorTypeById(id);
-
-    return this.mapSensorType(sensorType);
-  }
-
-  public async validateConfig(type_id: string, config: any) {
-    const sensorType = await this.getRawSensorTypeById(type_id);
-    return await sensorType.validate(config);
+  public async validateConfig<T>(
+    deviceType: string,
+    sensorType: string,
+    config: T,
+  ) {
+    const sensor = await this.getRawSensorTypeById(deviceType, sensorType);
+    return await sensor.validate(config);
   }
 
   private async mapSensorType(sensor: ISensor<any>) {

@@ -1,7 +1,6 @@
 import { INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
-import { TEST_MODULES } from './test-modules';
+import { createApplication } from './utils/test-modules';
 
 jest.useFakeTimers();
 jest.retryTimes(3);
@@ -10,12 +9,8 @@ describe('Logic Types (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-    const moduleFixtures = await Test.createTestingModule(
-      TEST_MODULES,
-    ).compile();
-
-    app = moduleFixtures.createNestApplication();
-    await app.init();
+    const { app: nestApplication } = await createApplication();
+    app = nestApplication;
   });
 
   it('GET /', async () => {

@@ -2,7 +2,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Test } from '@nestjs/testing';
 import { when } from 'jest-when';
 import { v4 as uuid } from 'uuid';
-import { SensorRepository } from '../../../lib/constants';
+import { DeviceRepository, SensorRepository } from '../../../lib/constants';
 import { SensorDoesNotExistError } from '../../errors/sensor-does-not-exist-error';
 import { SensorTypesService } from '../sensor-types/service';
 
@@ -24,12 +24,14 @@ describe('sensor-service', () => {
     createSensorId = uuid();
 
     eventEmitterStub = jest.fn();
-    (getRawSensorTypeStub = jest.fn().mockReturnValue({
+
+    getRawSensorTypeStub = jest.fn().mockReturnValue({
       run: jest.fn().mockReturnValue(10),
-    })),
-      (createSensorStub = jest.fn().mockReturnValue({
-        id: createSensorId,
-      }));
+    });
+
+    createSensorStub = jest.fn().mockReturnValue({
+      id: createSensorId,
+    });
 
     findAllStub = jest.fn().mockReturnValue([
       {
@@ -37,6 +39,9 @@ describe('sensor-service', () => {
         name: 'name1',
         type_id: 'type_id1',
         config: {},
+        device: {
+          type_id: '1234',
+        },
       },
     ]);
 
@@ -61,6 +66,10 @@ describe('sensor-service', () => {
           };
         }
 
+        if (token === DeviceRepository) {
+          return {};
+        }
+
         if (token === SensorTypesService) {
           return {
             getRawSensorTypeById: getRawSensorTypeStub,
@@ -80,33 +89,36 @@ describe('sensor-service', () => {
 
   describe('createSensor', () => {
     it('should create and return the id of the sensor', async () => {
-      const id = await service.createSensor('name');
+      const id = await service.createSensor('name', 'device_id');
       expect(id).toBe(createSensorId);
 
       expect(createSensorStub.mock.calls).toHaveLength(1);
       expect(createSensorStub.mock.calls[0][0]).toStrictEqual({
         name: 'name',
+        device_id: 'device_id',
         type_id: undefined,
         config: undefined,
       });
     });
 
     it('should pass the type_id to the create sensor', async () => {
-      await service.createSensor('name', 'type_id');
+      await service.createSensor('name', 'device_id', 'type_id');
 
       expect(createSensorStub.mock.calls).toHaveLength(1);
       expect(createSensorStub.mock.calls[0][0]).toStrictEqual({
         name: 'name',
+        device_id: 'device_id',
         type_id: 'type_id',
         config: undefined,
       });
     });
 
     it('should pass the config to the create sensor call', async () => {
-      await service.createSensor('name', 'type_id', {});
+      await service.createSensor('name', 'device_id', 'type_id', {});
       expect(createSensorStub.mock.calls).toHaveLength(1);
       expect(createSensorStub.mock.calls[0][0]).toStrictEqual({
         name: 'name',
+        device_id: 'device_id',
         type_id: 'type_id',
         config: {},
       });
@@ -180,12 +192,18 @@ describe('sensor-service', () => {
           name: 'name1',
           type_id: 'type_id1',
           config: {},
+          device: {
+            type_id: 'device_type_id',
+          },
         },
         {
           id: 'id2',
           name: 'name2',
           type_id: 'type_id2',
           config: {},
+          device: {
+            type_id: 'device_type_id2',
+          },
         },
       ]);
 
@@ -193,8 +211,15 @@ describe('sensor-service', () => {
 
       expect(getRawSensorTypeStub.mock.calls).toHaveLength(2);
 
-      expect(getRawSensorTypeStub.mock.calls[0][0]).toBe('type_id1');
-      expect(getRawSensorTypeStub.mock.calls[1][0]).toBe('type_id2');
+      expect(getRawSensorTypeStub.mock.calls[0]).toEqual([
+        'device_type_id',
+        'type_id1',
+      ]);
+
+      expect(getRawSensorTypeStub.mock.calls[1]).toEqual([
+        'device_type_id2',
+        'type_id2',
+      ]);
 
       expect(eventEmitterStub.mock.calls).toHaveLength(2);
 

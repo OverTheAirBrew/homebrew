@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { ActorTypesService } from '../services/actor-types/service';
+import { DeviceService } from '../services/device/service';
 import { ValidActorConfig } from './validate-actor-config';
 
 describe('lib/validation/valid-actor-config', () => {
@@ -17,6 +18,12 @@ describe('lib/validation/valid-actor-config', () => {
         if (token === ActorTypesService) {
           return {
             validateConfig: validateConfigStub,
+          };
+        }
+
+        if (token === DeviceService) {
+          return {
+            getDeviceById: jest.fn().mockReturnValue({ type_id: 1 }),
           };
         }
       })
