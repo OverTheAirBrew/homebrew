@@ -107,6 +107,8 @@ describe('Kettles (e2e)', () => {
         sensor_id: sensorId,
         heater_id: actorId,
         logicType_id: null,
+        logicRun_id: null,
+        targetTemperature: null,
         config: {},
         id: kettleId,
         name: 'testing-kettle',
