@@ -9,7 +9,7 @@
   "coverageDirectory": "./coverage-e2e",
   "collectCoverageFrom": [
     "src/app/*.(t|j)s",
-    "cron/app/*.(t|j)s",
-    "workers/app/*.(t|j)s"
+    "src/cron/*.(t|j)s",
+    "src/workers/*.(t|j)s"
   ]
 }
