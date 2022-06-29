@@ -153,4 +153,20 @@ describe('Kettles (e2e)', () => {
     const kettle = await repositories.kettles.findByPk(kettleId);
     expect(kettle.name).toBe('testing-kettle-updated');
   });
+
+  it('GET /:kettleId', async () => {
+    const { id: kettleId } = await repositories.kettles.create({
+      name: 'testing-kettle',
+    });
+
+    const { status, body } = await request(app.getHttpServer())
+      .get(`/kettles/${kettleId}`)
+      .send();
+
+    expect(status).toBe(200);
+    expect(body).toMatchObject({
+      id: kettleId,
+      name: 'testing-kettle',
+    });
+  });
 });

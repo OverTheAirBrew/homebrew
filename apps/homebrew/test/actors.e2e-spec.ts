@@ -60,4 +60,30 @@ describe('Actors (e2e)', () => {
 
     expect(body.id).toBe(currentActors[0].id);
   });
+
+  it('GET /:actorId', async () => {
+    const [{ id: actor_id }] = await repositories.actors.bulkCreate([
+      {
+        name: 'testingactor',
+        device_id,
+        type_id: 'testing',
+        config: {},
+      },
+      {
+        name: 'testingactor2',
+        device_id,
+        type_id: 'testing',
+        config: {},
+      },
+    ]);
+
+    const { status, body } = await request(app.getHttpServer())
+      .get(`/actors/${actor_id}`)
+      .send();
+
+    expect(status).toBe(200);
+    expect(body).toMatchObject({
+      id: actor_id,
+    });
+  });
 });
