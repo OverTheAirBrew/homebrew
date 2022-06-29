@@ -28,6 +28,6 @@ export class TelemetryService {
       throw new NoTelemetryForSensorError(sensor_id);
     }
 
-    return telemetry?.reading;
+    return telemetry.reading;
   }
 }

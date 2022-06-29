@@ -100,8 +100,7 @@
 			"^.+\\.(t|j)s$": "ts-jest"
 		},
 		"collectCoverageFrom": [
-			"lib/**/*.(t|j)s",
-			"plugins/**/*.(t|j)s"
+			"lib/**/*.(t|j)s"
 		],
 		"coverageDirectory": "../coverage",
 		"testEnvironment": "node",
@@ -113,13 +112,6 @@
 			"models/*",
 			"main.ts",
 			"migrate.ts",
-			"cron/*",
-			"workers/*",
-			"socket-gateway/*",
-			"plugins/actors/index.ts",
-			"plugins/sensors/index.ts",
-			"plugins/logic/index.ts",
-			"plugins/index.ts",
 			"app.module.ts",
 			"main.ts"
 		]

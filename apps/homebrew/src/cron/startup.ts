@@ -15,8 +15,6 @@ export class StartupEvents {
   async startWorkers() {
     const runningKettles = await this.kettleService.getRunningKettles();
 
-    await new Promise((resolve) => setTimeout(resolve, 10000));
-
     for (const kettle of runningKettles) {
       this.eventEmitter.emit(
         ProcessKettleLogic.Channel,
