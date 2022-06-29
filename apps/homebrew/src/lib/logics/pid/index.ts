@@ -66,8 +66,6 @@ export class PidLogic extends Logic<IPidLogicParams> {
 
     let d = kd * (e - ePrev);
 
-    console.log(d, -1 * this._maxD);
-
     if (d > this._maxD) {
       d = this._maxD;
     } else if (d < -1 * this._maxD) {

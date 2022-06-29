@@ -1,3 +1,4 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class PropertyDto {
@@ -8,22 +9,34 @@ export class PropertyDto {
     this.name = name;
   }
 
-  @IsString() id: string;
-  @IsString() type: string;
-  @IsString() name: string;
+  @IsString()
+  @ApiProperty()
+  id: string;
+
+  @IsString()
+  @ApiProperty()
+  type: string;
+
+  @IsString()
+  @ApiProperty()
+  name: string;
 
   @IsOptional()
   @IsString()
+  @ApiPropertyOptional()
   placeholder?: string;
 
   @IsBoolean()
+  @ApiProperty()
   isRequired: boolean;
 
   @IsOptional()
   @IsArray()
+  @ApiPropertyOptional()
   selectBoxValues?: string[] | number[];
 
   @IsOptional()
   @IsString()
+  @ApiPropertyOptional()
   selectBoxDefaultValue: string | number;
 }

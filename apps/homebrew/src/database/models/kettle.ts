@@ -45,6 +45,14 @@ export class Kettle extends Model {
   })
   config?: any;
 
+  @AllowNull
+  @Column
+  logicRun_id: string;
+
+  @AllowNull
+  @Column
+  targetTemperature: number;
+
   @CreatedAt
   createdAt?: Date;
 

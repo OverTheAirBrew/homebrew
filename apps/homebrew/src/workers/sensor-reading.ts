@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { NewSensorReadingEvent } from '../lib/events';
+
 import { TelemetryService } from '../lib/services/telemetry/service';
 import { NewSensorReading } from '../models/events/new-sensor-reading';
 import { SocketGateway } from '../socket-gateway/gateway';
@@ -12,12 +12,12 @@ export class SensorReadingWorkerService {
     private telemetryService: TelemetryService,
   ) {}
 
-  @OnEvent(NewSensorReadingEvent)
+  @OnEvent(NewSensorReading.Channel)
   async sendEventToUi(payload: NewSensorReading) {
-    this.gateway.sendMessage(NewSensorReadingEvent, payload);
+    this.gateway.sendMessage(NewSensorReading.Channel, payload);
   }
 
-  @OnEvent(NewSensorReadingEvent)
+  @OnEvent(NewSensorReading.Channel)
   async saveSensorTelemetry(payload: NewSensorReading) {
     await this.telemetryService.createTelemetry(
       payload.sensor_id,

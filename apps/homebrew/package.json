@@ -37,6 +37,7 @@
 		"@nestjs/websockets": "^8.4.4",
 		"@ota-internal/one-wire-sensor": "^1.0.0",
 		"@ota-internal/shared": "^1.0.0",
+		"@s1seven/nestjs-tools-lock": "^0.4.4",
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.13.2",
 		"onoff": "^6.0.3",

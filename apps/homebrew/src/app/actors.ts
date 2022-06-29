@@ -7,7 +7,12 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ActorService } from '../lib/services/actor/service';
 import { ActorDto } from '../models/dto/actor.dto';
 import { IdResponseDto } from '../models/dto/id-response.dto';
@@ -22,6 +27,7 @@ export class ActorController {
   @ApiCreatedResponse({
     type: IdResponseDto,
   })
+  @ApiOperation({ summary: 'Create a new actor' })
   async createActor(@Body() actor: ActorDto) {
     const actor_id = await this.service.createActor(
       actor.name,
@@ -43,6 +49,9 @@ export class ActorController {
   }
 
   @Get('/:actorId')
+  @ApiOkResponse({
+    type: ActorDto,
+  })
   async getActorById(@Param('actorId') actorId: string) {
     return await this.service.getActorById(actorId);
   }

@@ -14,4 +14,15 @@ export class TelemetryService {
       reading,
     });
   }
+
+  public async getLatestTemperature(sensor_id: string) {
+    const telemetry = await this.repository.findOne({
+      where: {
+        sensor_id,
+      },
+      order: [['createdAt', 'DESC']],
+    });
+
+    return telemetry.reading;
+  }
 }

@@ -5,10 +5,12 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
 } from '@nestjs/common';
 import {
+  ApiAcceptedResponse,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -67,5 +69,12 @@ export class KettleController {
     @Param('kettleId') kettleId: string,
   ) {
     await this.service.updateKettle(kettleId, kettle);
+  }
+
+  @Patch('/:kettleId/working')
+  @HttpCode(HttpStatus.ACCEPTED)
+  @ApiAcceptedResponse()
+  async toggleKettleWorking(@Param('kettleId') kettleId: string) {
+    await this.service.toggleKettleWorking(kettleId);
   }
 }
