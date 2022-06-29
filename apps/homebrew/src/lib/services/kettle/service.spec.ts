@@ -1,3 +1,4 @@
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Test } from '@nestjs/testing';
 import { when } from 'jest-when';
 import { v4 as uuid } from 'uuid';
@@ -56,6 +57,12 @@ describe('kettle-service', () => {
             create: createKettleStub,
             findAll: findAllStub,
             findByPk: findByPkStub,
+          }),
+        },
+        {
+          provide: EventEmitter2,
+          useFactory: () => ({
+            emit: jest.fn(),
           }),
         },
       ],
@@ -184,7 +191,16 @@ describe('kettle-service', () => {
     it('should update the name', async () => {
       await service.updateKettle(
         'id1',
-        new KettleDto('', 'name', 'sensor_id', 'heater_id', 'logicType_id', {}),
+        new KettleDto(
+          '',
+          'name',
+          'sensor_id',
+          'heater_id',
+          'logicType_id',
+          1,
+          'logicRun_id',
+          {},
+        ),
       );
 
       expect(updateStub.mock.calls[0][0]).toStrictEqual({
@@ -208,6 +224,8 @@ describe('kettle-service', () => {
             'sensor_id',
             'heater_id',
             'logicType_id',
+            1,
+            'logicRun_id',
             {},
           ),
         );
