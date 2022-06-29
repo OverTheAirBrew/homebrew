@@ -41,7 +41,7 @@ export class KettleWorkingService {
     try {
       const [logicType, latestTemperature, actor] = await Promise.all([
         this.logicService.getRawLogicTypeById(payload.logicType),
-        this.telemetryService.getLatestTemperature(kettle.sensor_id),
+        this.telemetryService.getLatestValue(kettle.sensor_id),
         this.actorService.getActorById(kettle.heater_id),
       ]);
 

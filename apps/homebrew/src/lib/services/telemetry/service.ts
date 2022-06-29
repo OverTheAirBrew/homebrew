@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Telemetry } from '../../../database/models/telemetry';
 import { TelemetryRepository } from '../../constants';
+import { NoTelemetryForSensorError } from '../../errors/no-telemetry-for-sensor-error';
 
 @Injectable()
 export class TelemetryService {
@@ -15,7 +16,7 @@ export class TelemetryService {
     });
   }
 
-  public async getLatestTemperature(sensor_id: string) {
+  public async getLatestValue(sensor_id: string) {
     const telemetry = await this.repository.findOne({
       where: {
         sensor_id,
@@ -23,6 +24,10 @@ export class TelemetryService {
       order: [['createdAt', 'DESC']],
     });
 
-    return telemetry.reading;
+    if (!telemetry) {
+      throw new NoTelemetryForSensorError(sensor_id);
+    }
+
+    return telemetry?.reading;
   }
 }

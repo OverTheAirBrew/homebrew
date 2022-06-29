@@ -75,7 +75,12 @@ export class KettleService {
       throw new KettleNotFoundError(kettleId);
     }
 
-    if (!kettle.sensor_id || !kettle.heater_id || !kettle.logicType_id) {
+    if (
+      !kettle.sensor_id ||
+      !kettle.heater_id ||
+      !kettle.logicType_id ||
+      !kettle.targetTemperature
+    ) {
       throw new KettleInIncorrectStateToWork(kettleId);
     }
 
