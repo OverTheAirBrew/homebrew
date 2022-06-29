@@ -1,84 +1,50 @@
 import { Test } from '@nestjs/testing';
-import { TestingActor } from '../../../../test/utils/test-providers/actor';
-import { TestingDevice } from '../../../../test/utils/test-providers/device';
-import { TestingSensor } from '../../../../test/utils/test-providers/sensor';
-import { IActors, IDevices, ISensors } from '../../constants';
-import { InvalidDeviceTypeError } from '../../errors/invalid-device-type';
+import { IDevices } from '../../constants';
 import { PropertyMapper } from '../../property-mapper';
 import { DeviceTypesService } from './service';
 
+import { TestingDevice } from '../../../../test/utils/test-providers/device';
+import { InvalidDeviceTypeError } from '../../errors/invalid-device-type';
+
 describe('lib/services/device-types', () => {
   let service: DeviceTypesService;
-  let mapperSpy: PropertyMapper;
-
-  let sensorValidateStub: jest.Mock;
-  let actorValidateStub: jest.Mock;
+  let mapperStub: jest.Mock;
 
   beforeEach(async () => {
-    sensorValidateStub = jest.fn().mockResolvedValue(true);
-    actorValidateStub = jest.fn().mockResolvedValue(true);
+    mapperStub = jest.fn().mockResolvedValue({});
 
     const moduleRef = await Test.createTestingModule({
       providers: [
         DeviceTypesService,
-        TestingDevice,
         {
           provide: IDevices,
-          useFactory: (...devices: any) => {
-            return devices;
+          useFactory: () => {
+            return [new TestingDevice([], [])];
           },
-          inject: [TestingDevice],
-        },
-        {
-          provide: ISensors,
-          useFactory: (...sensors: any) => {
-            return sensors;
-          },
-          inject: [TestingSensor],
-        },
-        {
-          provide: IActors,
-          useFactory: (...actors: any) => {
-            return actors;
-          },
-          inject: [TestingActor],
         },
         {
           provide: PropertyMapper,
           useFactory: () => ({
-            map: jest.fn().mockReturnValue({}),
+            map: mapperStub,
           }),
-        },
-        {
-          provide: TestingSensor,
-          useFactory: () => {
-            return new TestingSensor(sensorValidateStub);
-          },
-        },
-        {
-          provide: TestingActor,
-          useFactory: () => {
-            return new TestingActor(actorValidateStub);
-          },
         },
       ],
     }).compile();
 
     service = moduleRef.get(DeviceTypesService);
-    mapperSpy = moduleRef.get(PropertyMapper);
   });
 
   describe('getDeviceTypes', () => {
     it('should map the properties', async () => {
       await service.getDeviceTypes();
-      expect(mapperSpy.map).toHaveBeenCalled();
+      expect(mapperStub).toHaveBeenCalled();
     });
   });
 
   describe('getRawDeviceTypeById', () => {
     it('should return the raw device type', async () => {
       const deviceType = await service.getRawDeviceTypeById('testing-device');
-      expect(deviceType).toBeInstanceOf(TestingDevice);
+      expect(deviceType.name).toBe('testing-device');
     });
 
     it('should throw an error if the device type does not exist', async () => {
@@ -88,87 +54,6 @@ describe('lib/services/device-types', () => {
       } catch (err) {
         expect(err).toBeInstanceOf(InvalidDeviceTypeError);
       }
-    });
-  });
-
-  describe('getSensors', () => {
-    it('should return the sensors for a valid device', async () => {
-      const sensors = await service.getSensors('testing-device');
-      expect(sensors).toMatchObject([
-        {
-          properties: [{}],
-          type: 'testing-sensor',
-        },
-      ]);
-    });
-
-    it('should error if the device type is invalid', async () => {
-      try {
-        await service.getSensors('unknown-device');
-        fail('should not reach this point');
-      } catch (err) {
-        expect(err).toBeInstanceOf(InvalidDeviceTypeError);
-      }
-    });
-  });
-
-  describe('getActors', () => {
-    it('should return the actors for a valid device', async () => {
-      const actors = await service.getActors('testing-device');
-
-      expect(actors).toMatchObject([
-        {
-          properties: [{}],
-          type: 'testing-actor',
-        },
-      ]);
-    });
-
-    it('should error if the device type is invalid', async () => {
-      try {
-        await service.getActors('unknown-device');
-        fail('should not reach this point');
-      } catch (err) {
-        expect(err).toBeInstanceOf(InvalidDeviceTypeError);
-      }
-    });
-  });
-
-  describe('getRawSensorById', () => {
-    it('should return the raw sensor', async () => {
-      const sensor = await service.getRawSensorTypeById(
-        'testing-device',
-        'testing-sensor',
-      );
-      expect(sensor).toBeInstanceOf(TestingSensor);
-    });
-  });
-
-  describe('getRawActorById', () => {
-    it('should return the raw actor', async () => {
-      const actor = await service.getRawActorTypeById(
-        'testing-device',
-        'testing-actor',
-      );
-      expect(actor).toBeInstanceOf(TestingActor);
-    });
-  });
-
-  describe('validateSensorConfig', () => {
-    it('should call the sensor validator', async () => {
-      await service.validateSensorConfig(
-        'testing-device',
-        'testing-sensor',
-        {},
-      );
-      expect(sensorValidateStub).toHaveBeenCalled();
-    });
-  });
-
-  describe('validateActorConfig', () => {
-    it('should call the actor validator function', async () => {
-      await service.validateActorConfig('testing-device', 'testing-actor', {});
-      expect(actorValidateStub).toHaveBeenCalled();
     });
   });
 });

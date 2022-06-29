@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
-import { DeviceTypesService } from '../services/device-types/service';
 import { DeviceService } from '../services/device/service';
+import { SensorTypesService } from '../services/sensor-types/service';
 import { ValidSensorConfig } from './validate-sensor-config';
 
 describe('lib/validation/validate-sensor-config', () => {
@@ -15,9 +15,9 @@ describe('lib/validation/validate-sensor-config', () => {
       providers: [ValidSensorConfig],
     })
       .useMocker((token) => {
-        if (token === DeviceTypesService) {
+        if (token === SensorTypesService) {
           return {
-            validateSensorConfig: validateConfigStub,
+            validateConfig: validateConfigStub,
           };
         }
 

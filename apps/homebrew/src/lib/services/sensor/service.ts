@@ -7,14 +7,14 @@ import { SensorDoesNotExistError } from '../../../lib/errors/sensor-does-not-exi
 import { SensorDto } from '../../../models/dto/sensor.dto';
 import { NewSensorReading } from '../../../models/events/new-sensor-reading';
 import { NewSensorReadingEvent } from '../../events';
-import { DeviceTypesService } from '../device-types/service';
+import { SensorTypesService } from '../sensor-types/service';
 
 @Injectable()
 export class SensorService {
   constructor(
     @Inject(SensorRepository) private repository: typeof Sensor,
     @Inject(DeviceRepository) private deviceRepository: typeof Device,
-    private deviceTypeService: DeviceTypesService,
+    private sensorTypesService: SensorTypesService,
     private eventEmitter: EventEmitter2,
   ) {}
 
@@ -71,11 +71,10 @@ export class SensorService {
     });
 
     for (const sensor of sensors) {
-      const device = await this.deviceTypeService.getRawDeviceTypeById(
+      const sensorType = await this.sensorTypesService.getRawSensorTypeById(
         sensor.device.type_id,
+        sensor.type_id,
       );
-
-      const sensorType = await device.getRawSensorTypeById(sensor.type_id);
 
       const sensorReading = await sensorType.run(sensor.id, sensor.config);
 

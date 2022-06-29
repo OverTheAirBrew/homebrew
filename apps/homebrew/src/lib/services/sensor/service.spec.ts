@@ -4,7 +4,7 @@ import { when } from 'jest-when';
 import { v4 as uuid } from 'uuid';
 import { DeviceRepository, SensorRepository } from '../../../lib/constants';
 import { SensorDoesNotExistError } from '../../errors/sensor-does-not-exist-error';
-import { DeviceTypesService } from '../device-types/service';
+import { SensorTypesService } from '../sensor-types/service';
 
 import { SensorService } from './service';
 
@@ -70,11 +70,9 @@ describe('sensor-service', () => {
           return {};
         }
 
-        if (token === DeviceTypesService) {
+        if (token === SensorTypesService) {
           return {
-            getRawDeviceTypeById: jest.fn().mockReturnValue({
-              getRawSensorTypeById: getRawSensorTypeStub,
-            }),
+            getRawSensorTypeById: getRawSensorTypeStub,
           };
         }
 
@@ -204,7 +202,7 @@ describe('sensor-service', () => {
           type_id: 'type_id2',
           config: {},
           device: {
-            type_id: 'device_type_id',
+            type_id: 'device_type_id2',
           },
         },
       ]);
@@ -213,8 +211,15 @@ describe('sensor-service', () => {
 
       expect(getRawSensorTypeStub.mock.calls).toHaveLength(2);
 
-      expect(getRawSensorTypeStub.mock.calls[0][0]).toBe('type_id1');
-      expect(getRawSensorTypeStub.mock.calls[1][0]).toBe('type_id2');
+      expect(getRawSensorTypeStub.mock.calls[0]).toEqual([
+        'device_type_id',
+        'type_id1',
+      ]);
+
+      expect(getRawSensorTypeStub.mock.calls[1]).toEqual([
+        'device_type_id2',
+        'type_id2',
+      ]);
 
       expect(eventEmitterStub.mock.calls).toHaveLength(2);
 

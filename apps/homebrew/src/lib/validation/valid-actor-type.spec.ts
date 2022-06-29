@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { DeviceTypesService } from '../services/device-types/service';
+import { ActorTypesService } from '../services/actor-types/service';
 import { DeviceService } from '../services/device/service';
 import { ValidActorType } from './valid-actor-type';
 
@@ -21,7 +21,7 @@ describe('lib/validation/valid-actor-type', () => {
           };
         }
 
-        if (token === DeviceTypesService) {
+        if (token === ActorTypesService) {
           return {
             getRawActorTypeById: getRawActorTypeByIdStub,
           };

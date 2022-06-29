@@ -1,16 +1,16 @@
 import { TestingModule } from '@nestjs/testing';
-import { Actor } from '../src/database/models/actor';
-import { Device } from '../src/database/models/device';
-import { Kettle } from '../src/database/models/kettle';
-import { Sensor } from '../src/database/models/sensor';
-import { Telemetry } from '../src/database/models/telemetry';
+import { Actor } from '../../src/database/models/actor';
+import { Device } from '../../src/database/models/device';
+import { Kettle } from '../../src/database/models/kettle';
+import { Sensor } from '../../src/database/models/sensor';
+import { Telemetry } from '../../src/database/models/telemetry';
 import {
   ActorRepository,
   DeviceRepository,
   KettleRepository,
   SensorRepository,
   TelemetryRepository,
-} from '../src/lib/constants';
+} from '../../src/lib/constants';
 
 export interface IRepositories {
   sensors: typeof Sensor;

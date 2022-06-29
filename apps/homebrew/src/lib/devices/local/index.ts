@@ -12,6 +12,6 @@ export class LocalDevice extends Device<{}> {
     @Inject(ISensors) sensors: Sensor<any>[],
     propertyMapper: PropertyMapper,
   ) {
-    super('local', [], actors, sensors, propertyMapper);
+    super('local', [], actors, sensors);
   }
 }

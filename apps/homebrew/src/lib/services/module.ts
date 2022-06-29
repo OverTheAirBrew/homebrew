@@ -23,11 +23,13 @@ import { ValidSensorType } from '../validation/valid-sensor-type';
 import { ValidActorConfig } from '../validation/validate-actor-config';
 import { ValidLogicConfig } from '../validation/validate-logic-config';
 import { ValidSensorConfig } from '../validation/validate-sensor-config';
+import { ActorTypesService } from './actor-types/service';
 import { ActorService } from './actor/service';
 import { DeviceTypesService } from './device-types/service';
 import { DeviceService } from './device/service';
 import { KettleService } from './kettle/service';
 import { LogicTypesService } from './logic-types/service';
+import { SensorTypesService } from './sensor-types/service';
 import { SensorService } from './sensor/service';
 import { TelemetryService } from './telemetry/service';
 
@@ -71,6 +73,8 @@ import { TelemetryService } from './telemetry/service';
     ValidDevice,
     DeviceService,
     PropertyMapper,
+    SensorTypesService,
+    ActorTypesService,
   ],
   imports: [DeviceModule, LogicModule],
   exports: [
@@ -81,6 +85,8 @@ import { TelemetryService } from './telemetry/service';
     TelemetryService,
     DeviceTypesService,
     DeviceService,
+    SensorTypesService,
+    ActorTypesService,
   ],
 })
 export class ServicesModule {}

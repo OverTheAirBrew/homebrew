@@ -4,14 +4,14 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { DeviceTypesService } from '../services/device-types/service';
+import { ActorTypesService } from '../services/actor-types/service';
 import { DeviceService } from '../services/device/service';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
 export class ValidActorType implements ValidatorConstraintInterface {
   constructor(
-    private deviceTypesService: DeviceTypesService,
+    private actorTypesService: ActorTypesService,
     private deviceService: DeviceService,
   ) {}
 
@@ -21,7 +21,7 @@ export class ValidActorType implements ValidatorConstraintInterface {
         args.object['device_id'],
       );
 
-      await this.deviceTypesService.getRawActorTypeById(device.type_id, text);
+      await this.actorTypesService.getRawActorTypeById(device.type_id, text);
       return true;
     } catch (err) {
       return false;
