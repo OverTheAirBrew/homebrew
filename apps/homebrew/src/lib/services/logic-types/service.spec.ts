@@ -13,7 +13,7 @@ class TestingLogicType extends Logic<any> {
   }
 
   public async process() {
-    return;
+    return {} as any;
   }
 }
 
