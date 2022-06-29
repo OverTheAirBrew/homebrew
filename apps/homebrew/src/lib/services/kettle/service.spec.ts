@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { when } from 'jest-when';
 import { v4 as uuid } from 'uuid';
 import { Kettle } from '../../../database/models/kettle';
 import { KettleRepository } from '../../../lib/constants';
@@ -37,24 +38,28 @@ describe('kettle-service', () => {
 
     updateStub = jest.fn();
 
-    findByPkStub = jest.fn().mockReturnValue({
+    findByPkStub = jest.fn();
+
+    when(findByPkStub).calledWith('id1').mockReturnValue({
       update: updateStub,
       save: jest.fn(),
     });
 
+    when(findByPkStub).calledWith('id2').mockReturnValue(null);
+
     const moduleRef = await Test.createTestingModule({
-      providers: [KettleService],
-    })
-      .useMocker((token) => {
-        if (token === KettleRepository) {
-          return {
+      providers: [
+        KettleService,
+        {
+          provide: KettleRepository,
+          useFactory: () => ({
             create: createKettleStub,
             findAll: findAllStub,
             findByPk: findByPkStub,
-          };
-        }
-      })
-      .compile();
+          }),
+        },
+      ],
+    }).compile();
 
     service = moduleRef.get(KettleService);
     repository = moduleRef.get(KettleRepository);
@@ -178,7 +183,7 @@ describe('kettle-service', () => {
   describe('updateKettle', () => {
     it('should update the name', async () => {
       await service.updateKettle(
-        '1',
+        'id1',
         new KettleDto('', 'name', 'sensor_id', 'heater_id', 'logicType_id', {}),
       );
 
@@ -196,7 +201,7 @@ describe('kettle-service', () => {
 
       expect(async () => {
         await service.updateKettle(
-          '1',
+          'id1',
           new KettleDto(
             '',
             'name',
@@ -207,6 +212,22 @@ describe('kettle-service', () => {
           ),
         );
       }).rejects.toThrow(KettleNotFoundError);
+    });
+  });
+
+  describe('getKettleById', () => {
+    it('should return the kettle with the id', async () => {
+      const kettle = await service.getKettleById('id1');
+      expect(kettle).toMatchObject({});
+    });
+
+    it('should throw an error if the kettle is not found', async () => {
+      try {
+        await service.getKettleById('id2');
+        fail('should have thrown an error');
+      } catch (err) {
+        expect(err).toBeInstanceOf(KettleNotFoundError);
+      }
     });
   });
 });

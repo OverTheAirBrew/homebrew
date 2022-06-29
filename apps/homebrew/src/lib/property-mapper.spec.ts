@@ -18,6 +18,25 @@ describe('lib/property-mapper', () => {
   });
 
   describe('map', () => {
+    it('should map the property name', async () => {
+      const response = await service.map(
+        'test',
+        new NumberProperty('number', true),
+      );
+
+      expect(response.name).toBe('test:number');
+    });
+
+    it('should map the property name if there is a device', async () => {
+      const response = await service.map(
+        'test',
+        new NumberProperty('number', true),
+        'device',
+      );
+
+      expect(response.name).toBe('device:test.number');
+    });
+
     it('should map a number property', async () => {
       const response = await service.map(
         'numeric',

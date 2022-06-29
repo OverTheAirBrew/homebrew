@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ActorTypeDto } from '../../../models/dto/actor-type.dto';
-import { ActorDoesNotExistError } from '../../errors/actor-does-not-exist-error';
+import { InvalidActorTypeError } from '../../errors/invalid-actor-type';
 import { IActor } from '../../plugin/abstractions/actor';
 import { PropertyMapper } from '../../property-mapper';
 import { DeviceTypesService } from '../device-types/service';
@@ -16,7 +16,7 @@ export class ActorTypesService {
     const device = await this.deviceTypesService.getRawDeviceTypeById(
       deviceType,
     );
-    return await Promise.all(device.actors.map(this.mapActorType));
+    return await Promise.all(device.actors.map((a) => this.mapActorType(a)));
   }
 
   public async getRawActorTypeById(deviceType: string, actorType: string) {
@@ -26,7 +26,7 @@ export class ActorTypesService {
     const actor = device.actors.find((a) => a.name === actorType);
 
     if (!actor) {
-      throw new ActorDoesNotExistError(actorType);
+      throw new InvalidActorTypeError(actorType);
     }
 
     return actor;
@@ -43,7 +43,9 @@ export class ActorTypesService {
 
   private async mapActorType(actor: IActor<any>) {
     const mappedProperties = await Promise.all(
-      actor.properties.map((p) => this.mapper.map(actor.name, p)),
+      actor.properties.map((p) => {
+        return this.mapper.map(actor.name, p);
+      }),
     );
 
     return new ActorTypeDto(actor.name, mappedProperties);

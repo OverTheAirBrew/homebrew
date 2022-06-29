@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SensorTypeDto } from '../../../models/dto/sensor-type.dto';
-import { SensorDoesNotExistError } from '../../errors/sensor-does-not-exist-error';
+import { InvalidSensorTypeError } from '../../errors/invalid-sensor-type';
 import { ISensor } from '../../plugin/abstractions/sensor';
 import { PropertyMapper } from '../../property-mapper';
 import { DeviceTypesService } from '../device-types/service';
@@ -17,7 +17,7 @@ export class SensorTypesService {
       deviceType,
     );
 
-    return await Promise.all(device.sensors.map(this.mapSensorType));
+    return await Promise.all(device.sensors.map((s) => this.mapSensorType(s)));
   }
 
   public async getRawSensorTypeById(deviceType: string, sensorType: string) {
@@ -27,7 +27,7 @@ export class SensorTypesService {
     const sensor = device.sensors.find((s) => s.name === sensorType);
 
     if (!sensor) {
-      throw new SensorDoesNotExistError(sensorType);
+      throw new InvalidSensorTypeError(sensorType);
     }
 
     return sensor;
