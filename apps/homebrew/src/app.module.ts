@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
-import { LockModule, LockService } from '@s1seven/nestjs-tools-lock';
 import { ActorController } from './app/controllers/actors';
 import { DeviceTypesController } from './app/controllers/device-types';
 import { DeviceController } from './app/controllers/devices';
@@ -16,6 +15,9 @@ import { SensorReadingWorkerService } from './app/workers/sensor-reading';
 import { DatabaseModule } from './database/module';
 import { ServicesModule } from './lib/services/module';
 import { SocketGatewayModule } from './socket-gateway/module';
+
+import { CachingModule } from '@ota-internal/caching';
+import { LockingModule } from '@ota-internal/locking';
 
 export const controllersList = [
   ActorController,
@@ -35,12 +37,13 @@ const workersList = [SensorReadingWorkerService, KettleWorkingService];
     ConfigModule.forRoot(),
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
-    LockModule.forRoot({}),
     DatabaseModule,
     SocketGatewayModule,
     ServicesModule,
+    CachingModule,
+    LockingModule,
   ],
   controllers: [...controllersList],
-  providers: [...cronList, ...workersList, LockService],
+  providers: [...cronList, ...workersList],
 })
 export class AppModule {}

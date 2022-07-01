@@ -1,6 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
-import { LockService } from '@s1seven/nestjs-tools-lock';
+import { ILockingClient } from '@ota-internal/locking';
 import { ActorTypesService } from '../../lib/services/actor-types/service';
 import { ActorService } from '../../lib/services/actor/service';
 import { DeviceService } from '../../lib/services/device/service';
@@ -19,7 +19,7 @@ export class KettleWorkingService {
     private actorTypeService: ActorTypesService,
     private deviceService: DeviceService,
     private eventEmitter: EventEmitter2,
-    @Inject(LockService) private lockService: LockService,
+    private lockService: ILockingClient,
   ) {}
 
   @OnEvent(ProcessKettleLogic.Channel)

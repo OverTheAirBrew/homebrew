@@ -1,2 +1,16 @@
-export * from './abstractions';
-export * from './mechanisms/in-memory-cache';
+import { Module } from '@nestjs/common';
+import { ICacheClient } from './abstractions';
+import { InMemoryCache } from './mechanisms/in-memory-cache';
+
+@Module({
+  providers: [
+    {
+      provide: ICacheClient,
+      useValue: new InMemoryCache(),
+    },
+  ],
+  exports: [ICacheClient],
+})
+export class CachingModule {}
+
+export { ICacheClient };

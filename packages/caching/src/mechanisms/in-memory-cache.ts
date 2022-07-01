@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import * as NodeCache from 'node-cache';
 import { ICacheClient } from '../abstractions';
 
@@ -8,6 +9,7 @@ interface IInMemoryCacheOptions {
   maxKeys?: number;
 }
 
+@Injectable()
 export class InMemoryCache implements ICacheClient {
   private cache: NodeCache;
 

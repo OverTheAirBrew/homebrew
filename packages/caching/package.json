@@ -23,6 +23,7 @@
     "url": "https://github.com/overtheairbrew/homebrew/issues"
   },
   "dependencies": {
+    "@nestjs/common": "^8.4.7",
     "@ota-internal/shared": "^1.0.0",
     "node-cache": "^5.1.2"
   }

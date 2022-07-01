@@ -26,6 +26,7 @@
     "url": "https://github.com/overtheairbrew/homebrew/issues"
   },
   "dependencies": {
+    "@nestjs/common": "^8.4.7",
     "@ota-internal/caching": "^1.0.0",
     "@ota-internal/shared": "^1.0.0",
     "retry": "^0.13.1",

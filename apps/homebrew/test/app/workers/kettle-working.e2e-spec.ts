@@ -1,10 +1,12 @@
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { Test } from '@nestjs/testing';
-import { LockModule, LockService } from '@s1seven/nestjs-tools-lock';
 import { KettleWorkingService } from '../../../src/app/workers/kettle-working';
 import { DatabaseModule } from '../../../src/database/module';
 import { ServicesModule } from '../../../src/lib/services/module';
 import { cleanup, IRepositories } from '../../utils/cleanup';
+
+import { CachingModule } from '@ota-internal/caching';
+import { LockingModule } from '@ota-internal/locking';
 
 describe('kettle-working', () => {
   let service: KettleWorkingService;
@@ -16,12 +18,13 @@ describe('kettle-working', () => {
     emitSpy = jest.spyOn(EventEmitter2.prototype, 'emit');
 
     const moduleRef = await Test.createTestingModule({
-      providers: [KettleWorkingService, LockService],
+      providers: [KettleWorkingService],
       imports: [
         ServicesModule,
         EventEmitterModule.forRoot(),
         DatabaseModule,
-        LockModule.forRoot({}),
+        CachingModule,
+        LockingModule,
       ],
     }).compile();
 
@@ -55,6 +58,11 @@ describe('kettle-working', () => {
           },
         }),
       ]);
+
+      await repositories.telemetry.create({
+        sensor_id,
+        reading: 10,
+      });
 
       const {
         id: kettle_id,
