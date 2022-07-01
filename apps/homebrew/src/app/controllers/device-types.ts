@@ -1,11 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ActorTypesService } from '../lib/services/actor-types/service';
-import { DeviceTypesService } from '../lib/services/device-types/service';
-import { SensorTypesService } from '../lib/services/sensor-types/service';
-import { ActorTypeDto } from '../models/dto/actor-type.dto';
-import { DeviceTypeDto } from '../models/dto/device-type.dto';
-import { SensorTypeDto } from '../models/dto/sensor-type.dto';
+import { ActorTypesService } from '../../lib/services/actor-types/service';
+import { DeviceTypesService } from '../../lib/services/device-types/service';
+import { SensorTypesService } from '../../lib/services/sensor-types/service';
+import { ActorTypeDto } from '../../models/dto/actor-type.dto';
+import { DeviceTypeDto } from '../../models/dto/device-type.dto';
+import { SensorTypeDto } from '../../models/dto/sensor-type.dto';
 
 @ApiTags('device-types')
 @Controller('device-types')

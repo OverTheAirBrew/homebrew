@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { LogicTypesService } from '../lib/services/logic-types/service';
-import { LogicTypeDto } from '../models/dto/logic-type.dto';
+import { LogicTypesService } from '../../lib/services/logic-types/service';
+import { LogicTypeDto } from '../../models/dto/logic-type.dto';
 
 @ApiTags('logic-types')
 @Controller('logic-types')

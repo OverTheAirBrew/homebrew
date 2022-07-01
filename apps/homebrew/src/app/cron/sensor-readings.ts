@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { SensorService } from '../lib/services/sensor/service';
+import { SensorService } from '../../lib/services/sensor/service';
 
 @Injectable()
 export class SensorReadingsCronService {

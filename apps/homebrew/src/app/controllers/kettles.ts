@@ -17,9 +17,9 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { KettleService } from '../lib/services/kettle/service';
-import { IdResponseDto } from '../models/dto/id-response.dto';
-import { KettleDto } from '../models/dto/kettle.dto';
+import { KettleService } from '../../lib/services/kettle/service';
+import { IdResponseDto } from '../../models/dto/id-response.dto';
+import { KettleDto } from '../../models/dto/kettle.dto';
 
 @ApiTags('kettles')
 @Controller('kettles')

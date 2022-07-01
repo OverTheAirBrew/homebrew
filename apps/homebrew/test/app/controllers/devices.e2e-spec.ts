@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { cleanup, IRepositories } from './utils/cleanup';
-import { createApplication } from './utils/test-modules';
+import { cleanup, IRepositories } from '../../utils/cleanup';
+import { createApplication } from '../../utils/test-modules';
 
 describe('Devices (e2e)', () => {
   let app: INestApplication;

@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { LockService } from '@s1seven/nestjs-tools-lock';
-import { ActorTypesService } from '../lib/services/actor-types/service';
-import { ActorService } from '../lib/services/actor/service';
-import { DeviceService } from '../lib/services/device/service';
-import { KettleService } from '../lib/services/kettle/service';
-import { LogicTypesService } from '../lib/services/logic-types/service';
-import { TelemetryService } from '../lib/services/telemetry/service';
-import { ProcessKettleLogic } from '../models/events/process-kettle-logic';
+import { ActorTypesService } from '../../lib/services/actor-types/service';
+import { ActorService } from '../../lib/services/actor/service';
+import { DeviceService } from '../../lib/services/device/service';
+import { KettleService } from '../../lib/services/kettle/service';
+import { LogicTypesService } from '../../lib/services/logic-types/service';
+import { TelemetryService } from '../../lib/services/telemetry/service';
+import { ProcessKettleLogic } from '../../models/events/process-kettle-logic';
 
 @Injectable()
 export class KettleWorkingService {
@@ -59,8 +59,6 @@ export class KettleWorkingService {
         latestTemperature,
         kettle.targetTemperature,
       );
-
-      console.log(heatTime, waitTime, nextParams);
 
       // await actorType.on(actor.id, actor.config);
       await new Promise((resolve) => setTimeout(resolve, heatTime));

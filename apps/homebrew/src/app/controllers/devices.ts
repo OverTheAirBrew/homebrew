@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { DeviceService } from '../lib/services/device/service';
-import { DeviceDto } from '../models/dto/device.dto';
+import { DeviceService } from '../../lib/services/device/service';
+import { DeviceDto } from '../../models/dto/device.dto';
 
 @ApiTags('devices')
 @Controller('devices')

@@ -1,10 +1,10 @@
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { Test } from '@nestjs/testing';
-import { StartupEvents } from '../../src/cron/startup';
-import { DatabaseModule } from '../../src/database/module';
-import { ServicesModule } from '../../src/lib/services/module';
-import { ProcessKettleLogic } from '../../src/models/events/process-kettle-logic';
-import { cleanup, IRepositories } from '../utils/cleanup';
+import { StartupEvents } from '../../../src/app/cron/startup';
+import { DatabaseModule } from '../../../src/database/module';
+import { ServicesModule } from '../../../src/lib/services/module';
+import { ProcessKettleLogic } from '../../../src/models/events/process-kettle-logic';
+import { cleanup, IRepositories } from '../../utils/cleanup';
 
 describe('cron/startup', () => {
   let service: StartupEvents;
@@ -14,8 +14,6 @@ describe('cron/startup', () => {
   let repositories: IRepositories;
 
   beforeEach(async () => {
-    emitStub = jest.fn().mockResolvedValue({});
-
     emitStub = jest.spyOn(EventEmitter2.prototype, 'emit');
 
     let moduleRef = await Test.createTestingModule({

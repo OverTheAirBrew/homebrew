@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
-import { TelemetryService } from '../lib/services/telemetry/service';
-import { NewSensorReading } from '../models/events/new-sensor-reading';
-import { SocketGateway } from '../socket-gateway/gateway';
+import { TelemetryService } from '../../lib/services/telemetry/service';
+import { NewSensorReading } from '../../models/events/new-sensor-reading';
+import { SocketGateway } from '../../socket-gateway/gateway';
 
 @Injectable()
 export class SensorReadingWorkerService {

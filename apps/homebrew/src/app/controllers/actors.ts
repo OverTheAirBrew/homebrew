@@ -13,9 +13,9 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { ActorService } from '../lib/services/actor/service';
-import { ActorDto } from '../models/dto/actor.dto';
-import { IdResponseDto } from '../models/dto/id-response.dto';
+import { ActorService } from '../../lib/services/actor/service';
+import { ActorDto } from '../../models/dto/actor.dto';
+import { IdResponseDto } from '../../models/dto/id-response.dto';
 
 @ApiTags('actors')
 @Controller('actors')

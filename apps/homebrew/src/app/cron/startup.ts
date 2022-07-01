@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Timeout } from '@nestjs/schedule';
-import { KettleService } from '../lib/services/kettle/service';
-import { ProcessKettleLogic } from '../models/events/process-kettle-logic';
+import { KettleService } from '../../lib/services/kettle/service';
+import { ProcessKettleLogic } from '../../models/events/process-kettle-logic';
 
 @Injectable()
 export class StartupEvents {

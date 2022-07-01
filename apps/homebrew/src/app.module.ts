@@ -3,19 +3,19 @@ import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
 import { LockModule, LockService } from '@s1seven/nestjs-tools-lock';
-import { ActorController } from './app/actors';
-import { DeviceTypesController } from './app/device-types';
-import { DeviceController } from './app/devices';
-import { KettleController } from './app/kettles';
-import { LogicTypesController } from './app/logic-types';
-import { SensorController } from './app/sensors';
-import { SensorReadingsCronService } from './cron/sensor-readings';
-import { StartupEvents } from './cron/startup';
+import { ActorController } from './app/controllers/actors';
+import { DeviceTypesController } from './app/controllers/device-types';
+import { DeviceController } from './app/controllers/devices';
+import { KettleController } from './app/controllers/kettles';
+import { LogicTypesController } from './app/controllers/logic-types';
+import { SensorController } from './app/controllers/sensors';
+import { SensorReadingsCronService } from './app/cron/sensor-readings';
+import { StartupEvents } from './app/cron/startup';
+import { KettleWorkingService } from './app/workers/kettle-working';
+import { SensorReadingWorkerService } from './app/workers/sensor-reading';
 import { DatabaseModule } from './database/module';
 import { ServicesModule } from './lib/services/module';
 import { SocketGatewayModule } from './socket-gateway/module';
-import { KettleWorkingService } from './workers/kettle-working';
-import { SensorReadingWorkerService } from './workers/sensor-reading';
 
 export const controllersList = [
   ActorController,

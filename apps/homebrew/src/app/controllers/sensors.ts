@@ -1,8 +1,8 @@
 import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { SensorService } from '../lib/services/sensor/service';
-import { IdResponseDto } from '../models/dto/id-response.dto';
-import { SensorDto } from '../models/dto/sensor.dto';
+import { SensorService } from '../../lib/services/sensor/service';
+import { IdResponseDto } from '../../models/dto/id-response.dto';
+import { SensorDto } from '../../models/dto/sensor.dto';
 
 @ApiTags('sensors')
 @Controller('sensors')
