@@ -1,0 +1,59 @@
+{
+  "name": "@ota-internal/locking",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Nick Sharp <nick.sharp.87@gmail.com>",
+  "homepage": "https://github.com/overtheairbrew/homebrew#readme",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/overtheairbrew/homebrew.git"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist coverage src/**/*.{js,map}",
+    "build": "tsc",
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "migrate": ""
+  },
+  "bugs": {
+    "url": "https://github.com/overtheairbrew/homebrew/issues"
+  },
+  "dependencies": {
+    "@ota-internal/caching": "^1.0.0",
+    "@ota-internal/shared": "^1.0.0",
+    "retry": "^0.13.1",
+    "uuid": "^8.3.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": []
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.4",
+    "jest": "^28.1.2",
+    "ts-jest": "^28.0.5",
+    "ts-node": "^10.8.1",
+    "tsconfig-paths": "^4.0.0"
+  }
+}
