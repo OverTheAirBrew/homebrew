@@ -1,7 +1,7 @@
-import { Locking } from './index';
+import { LockingClient } from './locking';
 
 describe('index', () => {
-  let service: Locking;
+  let service: LockingClient;
 
   let getStub: jest.Mock;
   let setStub: jest.Mock;
@@ -19,7 +19,7 @@ describe('index', () => {
       flushAll: jest.fn(),
     };
 
-    service = new Locking(cache);
+    service = new LockingClient(cache);
   });
 
   describe('lock', () => {
