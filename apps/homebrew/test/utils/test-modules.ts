@@ -1,22 +1,12 @@
 import { ModuleMetadata, ValidationPipe } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test } from '@nestjs/testing';
 import { useContainer } from 'class-validator';
-import { controllersList } from '../../src/app.module';
-import { DatabaseModule } from '../../src/database/module';
 import { ServicesModule } from '../../src/lib/services/module';
-import { SocketGatewayModule } from '../../src/socket-gateway/module';
+
+import { AppModule } from '../../src/app.module';
 
 export const TEST_MODULES: ModuleMetadata = {
-  imports: [
-    ConfigModule.forRoot(),
-    EventEmitterModule.forRoot(),
-    DatabaseModule,
-    SocketGatewayModule,
-    ServicesModule,
-  ],
-  controllers: [...controllersList],
+  imports: [AppModule],
 };
 
 export async function createApplication() {

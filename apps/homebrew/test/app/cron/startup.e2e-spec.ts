@@ -1,5 +1,6 @@
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { Test } from '@nestjs/testing';
+import { LockingModule } from '@ota-internal/locking';
 import { StartupEvents } from '../../../src/app/cron/startup';
 import { DatabaseModule } from '../../../src/database/module';
 import { ServicesModule } from '../../../src/lib/services/module';
@@ -18,7 +19,12 @@ describe('cron/startup', () => {
 
     let moduleRef = await Test.createTestingModule({
       providers: [StartupEvents],
-      imports: [ServicesModule, EventEmitterModule.forRoot(), DatabaseModule],
+      imports: [
+        ServicesModule,
+        EventEmitterModule.forRoot(),
+        DatabaseModule,
+        LockingModule,
+      ],
     }).compile();
 
     service = moduleRef.get(StartupEvents);

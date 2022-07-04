@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ICacheClient } from './abstractions';
 import { InMemoryCache } from './mechanisms/in-memory-cache';
 
+@Global()
 @Module({
   providers: [
     {
