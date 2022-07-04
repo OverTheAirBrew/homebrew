@@ -1,4 +1,7 @@
-**/*.ts
+# ignore the .ts files
+*.ts
+# include the .d.ts files
+!*.d.ts
 
 .circleci
 .github
@@ -10,7 +13,6 @@ test
 .editorconfig
 .env.example
 .gitignore
-.npmignore
 .npmrc
 .nvmrc
 .nycrc

@@ -1,0 +1,29 @@
+{
+  "interpolation": {
+    "is-required": "{{name}} is required",
+    "new-thing": "Create a new {{type}}",
+    "update-thing": "Update {{type}}",
+    "select-type-message": "Please select a {{type}} to configure",
+    "list": "{{type}} list"
+  },
+  "global": {
+    "name": "Name"
+  },
+  "sensors": {
+    "name": "Sensor",
+    "type": "Sensor Type"
+  },
+  "actors": {
+    "name": "Actor",
+    "type": "Actor Type"
+  },
+  "kettles": {
+    "name": "Kettle"
+  },
+  "logics": {
+    "type": "Logic Type"
+  },
+  "heaters": {
+    "name": "Heater"
+  }
+}

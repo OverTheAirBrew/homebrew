@@ -1,0 +1,35 @@
+{
+  "name": "@ota-internal/one-wire-sensor",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Nick Sharp <nick.sharp.87@gmail.com>",
+  "homepage": "https://github.com/overtheairbrew/homebrew#readme",
+  "license": "ISC",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/overtheairbrew/homebrew.git"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist coverage src/**/*.{js,map}",
+    "build": "tsc",
+    "test": "",
+    "migrate": ""
+  },
+  "bugs": {
+    "url": "https://github.com/overtheairbrew/homebrew/issues"
+  },
+  "dependencies": {
+    "@nestjs/common": "^8.4.7",
+    "@ota-internal/shared": "^1.0.0",
+    "fast-glob": "^3.2.11"
+  },
+  "devDependencies": {
+    "@crowdin/cli": "^3.7.8"
+  }
+}

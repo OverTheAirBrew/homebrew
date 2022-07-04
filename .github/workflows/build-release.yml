@@ -1,0 +1,56 @@
+name: Build And Release
+
+on: [ push ]
+
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:16
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          MYSQL_DATABASE: test_database
+    
+    strategy:
+      matrix: 
+        node-version: [ 14.x ]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: |
+          npm ci
+          npm run bootstrap
+      - run: npm run build
+      - run: npm run migrate
+      - run: npm run test
+        env:
+          DB_URL: mysql://root@127.0.0.1/test_database
+      - run: npm run e2e
+        env:
+          DB_URL: mysql://root@127.0.0.1/test_database
+          NODE_ENV: testing
+      - uses: codecov/codecov-action@v2
+        with:
+          fail_ci_if_error: true # optional (default = false)
+          files: ./apps/homebrew/coverage/coverage-final.json,./apps/homebrew/coverage-e2e/coverage-final.json
+          flags: homebrew
+          name: homebrew
+      - uses: codecov/codecov-action@v2
+        with:
+          fail_ci_if_error: true # optional (default = false)
+          files: ./packages/locking/coverage/coverage-final.json
+          flags: locking
+          name: locking
+      - run: npm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm run push-locales
+        env: 
+          HB_CROWDIN_API_KEY: ${{ secrets.CROWDIN_API_KEY }}

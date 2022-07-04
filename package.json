@@ -1,65 +1,42 @@
 {
-  "name": "@overtheairbrew/homebrew",
-  "version": "0.0.0-development",
-  "main": "src/application.js",
-  "types": "src/application.d.ts",
-  "files": [
-    "src"
-  ],
+  "name": "overtheair",
+  "private": true,
   "scripts": {
-    "test": "nyc --reporter=text-summary --reporter=lcov mocha 'test/**/*.spec.js' --exit",
-    "coverage": "codecov",
-    "prebuild": "del '**/*.{js,map,d.ts}' '!node_modules'",
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "run-dev": "nodemon ./app/index.js",
-    "semantic-release": "semantic-release"
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "test": "lerna run test:cov",
+    "e2e": "lerna run test:e2e:cov",
+    "migrate": "lerna run migrate",
+    "release": "lerna exec --concurrency 1 --scope @overtheairbrew/* -- semantic-release -e semantic-release-monorepo",
+    "postinstall": "lerna bootstrap",
+    "prepare": "husky install",
+    "push-locales": "crowdin upload sources"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "class-transformer": "^0.4.0",
-    "class-validator": "^0.13.1",
-    "class-validator-jsonschema": "^3.0.1",
-    "express": "^4.17.1",
-    "express-async-errors": "^3.1.1",
-    "fluent-ts-validator": "^3.0.2",
-    "multer": "^1.4.2",
-    "project-version": "^2.0.0",
-    "reflect-metadata": "^0.1.13",
-    "routing-controllers": "^0.9.0",
-    "routing-controllers-openapi": "^3.0.0",
-    "sequelize": "^6.6.2",
-    "sequelize-typescript": "^2.1.0",
-    "source-map-support": "^0.5.19",
-    "sqlite3": "^5.0.2",
-    "swagger-ui-express": "^4.1.6",
-    "typedi": "^0.10.0",
-    "umzug": "^3.0.0-beta.16",
-    "winston": "^3.3.3"
-  },
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "description": "",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/overtheairbrew/homebrew.git",
-    "directory": "packages/ota-homebrew-app"
-  },
-  "gitHead": "7166ab8473e0bb15c44e99a53251538c5f6b0368",
   "devDependencies": {
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
-    "@types/node": "^14.17.4",
-    "del-cli": "^4.0.0",
-    "semantic-release": "^17.4.4",
-    "typescript": "^4.3.4"
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@crowdin/cli": "^3.7.8",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.2",
+    "@semantic-release/npm": "^9.0.0",
+    "@semantic-release/release-notes-generator": "^10.0.3",
+    "@types/jest": "^28.1.1",
+    "@types/node": "^17.0.43",
+    "codecov": "^3.8.2",
+    "husky": "^8.0.1",
+    "lerna": "^5.1.2",
+    "lint-staged": "^13.0.1",
+    "prettier": "^2.3.2",
+    "rimraf": "^3.0.2",
+    "semantic-release": "^19.0.3",
+    "semantic-release-monorepo": "^7.0.5",
+    "tsconfig-paths": "^4.0.0",
+    "typescript": "^4.7.3"
   },
-  "publishConfig": {
-    "access": "public"
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }

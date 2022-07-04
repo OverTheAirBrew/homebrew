@@ -5,19 +5,50 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-node",
+      "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/app/index.ts",
-      "outFiles": ["${workspaceFolder}/**/*.js"],
+      "runtimeVersion": "14",
+      "name": "Debug Nest Framework",
+      "args": [
+          "${workspaceFolder}/apps/homebrew/src/main.ts"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "runtimeArgs": [
+          "--nolazy",
+          "-r",
+          "ts-node/register",
+          "-r",
+          "tsconfig-paths/register"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/apps/homebrew/src/**/*.js"
+      ],
+      "sourceMaps": true,
       "envFile": "${workspaceFolder}/.env",
-      "outputCapture": "std",
-      "runtimeVersion": "15",
-      "resolveSourceMapLocations": [
-        "${workspaceFolder}/**",
-        "!**/node_modules/**"
-      ]
+      "console": "integratedTerminal",
+    },
+    {
+      "name": "Attach",
+      "port": 9229,
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    },
+    {
+      "name": "vscode-jest-tests",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+      "request": "launch",
+      "type": "node",
+      "args": [
+        "--runInBand",
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }

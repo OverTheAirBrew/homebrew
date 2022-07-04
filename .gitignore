@@ -157,3 +157,10 @@ app/ota.db
 **/*.d.ts
 
 !commitlint.config.js
+!release.config.js
+
+.npmrc
+
+*.sqlite
+
+coverage-e2e
