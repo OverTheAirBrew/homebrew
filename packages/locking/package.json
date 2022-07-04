@@ -48,7 +48,9 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
-    "coveragePathIgnorePatterns": []
+    "coveragePathIgnorePatterns": [
+      "index.ts"
+    ]
   },
   "devDependencies": {
     "@types/jest": "^28.1.4",
