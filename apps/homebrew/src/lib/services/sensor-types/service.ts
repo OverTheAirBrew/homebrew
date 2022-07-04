@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { ISensor } from '@ota-internal/shared';
 import { SensorTypeDto } from '../../../models/dto/sensor-type.dto';
 import { InvalidSensorTypeError } from '../../errors/invalid-sensor-type';
-import { ISensor } from '../../plugin/abstractions/sensor';
 import { PropertyMapper } from '../../property-mapper';
 import { DeviceTypesService } from '../device-types/service';
 

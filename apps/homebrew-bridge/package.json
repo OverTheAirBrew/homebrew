@@ -1,32 +1,31 @@
 {
-  "name": "@ota-internal/shared",
+  "name": "@overtheairbrew/homebrew-bridge",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "Nick Sharp <nick.sharp.87@gmail.com>",
   "homepage": "https://github.com/overtheairbrew/homebrew#readme",
   "license": "ISC",
-  "private": true,
-  "main": "dist/index.js",
+  "main": "lib/homebrew-bridge.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
   "files": [
-    "dist"
+    "lib"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/overtheairbrew/homebrew.git"
   },
   "scripts": {
-    "prebuild": "rimraf dist coverage src/**/*.{js,map}",
-    "build": "tsc",
-    "test": "",
-    "migrate": ""
+    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/overtheairbrew/homebrew/issues"
   },
-  "devDependencies": {
-    "@crowdin/cli": "^3.7.8"
-  },
   "dependencies": {
-    "@nestjs/event-emitter": "^1.1.1"
+    "@nestjs/common": "^8.4.7",
+    "@nestjs/core": "^8.4.7",
+    "class-validator": "^0.13.2"
   }
 }

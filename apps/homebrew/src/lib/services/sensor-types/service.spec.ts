@@ -1,7 +1,6 @@
 import { Test } from '@nestjs/testing';
+import { NumberProperty, Sensor } from '@ota-internal/shared';
 import { InvalidSensorTypeError } from '../../../lib/errors/invalid-sensor-type';
-import { Sensor } from '../../../lib/plugin/abstractions/sensor';
-import { NumberProperty } from '../../../lib/plugin/properties';
 import { PropertyMapper } from '../../../lib/property-mapper';
 import { DeviceTypesService } from '../device-types/service';
 import { SensorTypesService } from './service';

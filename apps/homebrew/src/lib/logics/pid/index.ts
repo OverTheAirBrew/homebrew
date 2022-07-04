@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Logic } from '../../plugin/abstractions/logic';
-import { NumberProperty } from '../../plugin/properties';
+import { Logic, NumberProperty } from '@ota-internal/shared';
 
 export interface IPidLogicParams {
   p: number;
