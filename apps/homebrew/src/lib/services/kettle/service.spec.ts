@@ -393,4 +393,32 @@ describe('kettle-service', () => {
       expect(kettles).toHaveLength(1);
     });
   });
+
+  describe('getRawKettleWithInclusions', () => {
+    it('should throw an error when there are no kettles', async () => {
+      findByPkStub.mockResolvedValue(undefined);
+
+      try {
+        await service.getRawKettleWithInclusions('id1');
+        fail('should have failed');
+      } catch (err) {
+        expect(err).toBeInstanceOf(KettleNotFoundError);
+      }
+    });
+
+    it('should return a kettle', async () => {
+      findByPkStub.mockResolvedValue({
+        id: 'id1',
+        sensor_id: 'sensor_id',
+        heater_id: 'heater_id',
+        logicType_id: 'logicType_id',
+        targetTemperature: 1,
+        logicRun_id: 'logicRun_id',
+        config: {},
+      });
+
+      const kettle = await service.getRawKettleWithInclusions('id1');
+      expect(kettle).toBeDefined();
+    });
+  });
 });

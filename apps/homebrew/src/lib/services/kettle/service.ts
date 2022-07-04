@@ -2,7 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Op } from 'sequelize';
 import { v4 as uuid } from 'uuid';
+import { Actor } from '../../../database/models/actor';
 import { Kettle } from '../../../database/models/kettle';
+import { Sensor } from '../../../database/models/sensor';
+import { Telemetry } from '../../../database/models/telemetry';
 import { KettleRepository } from '../../../lib/constants';
 import { KettleNotFoundError } from '../../../lib/errors/kettle-not-found-error';
 import { nullIfEmpty } from '../../../lib/utils';
@@ -43,11 +46,36 @@ export class KettleService {
 
   async getKettleById(kettle_id: string) {
     const kettle = await this.repository.findByPk(kettle_id);
+
     if (!kettle) {
       throw new KettleNotFoundError(kettle_id);
     }
 
     return await this.mapKettle(kettle);
+  }
+
+  async getRawKettleWithInclusions(kettle_id: string) {
+    const kettle = await this.repository.findByPk(kettle_id, {
+      include: [
+        Actor,
+        {
+          model: Sensor,
+          include: [
+            {
+              model: Telemetry,
+              order: [['createdAt', 'DESC']],
+              limit: 1,
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!kettle) {
+      throw new KettleNotFoundError(kettle_id);
+    }
+
+    return kettle;
   }
 
   async updateKettle(id: string, kettle: KettleDto) {

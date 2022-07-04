@@ -12,6 +12,7 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Device } from './device';
+import { Kettle } from './kettle';
 import { Telemetry } from './telemetry';
 
 @Table({
@@ -48,5 +49,8 @@ export class Sensor extends Model {
   updatedAt?: Date;
 
   @HasMany(() => Telemetry)
-  telemetries: Telemetry;
+  telemetries: Telemetry[];
+
+  @HasMany(() => Kettle)
+  kettles: Kettle[];
 }
