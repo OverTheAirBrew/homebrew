@@ -1,5 +1,6 @@
 import {
   AllowNull,
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
@@ -45,9 +46,23 @@ export class Kettle extends Model {
   })
   config?: any;
 
+  @AllowNull
+  @Column
+  logicRun_id: string;
+
+  @AllowNull
+  @Column
+  targetTemperature: number;
+
   @CreatedAt
   createdAt?: Date;
 
   @UpdatedAt
   updatedAt?: Date;
+
+  @BelongsTo(() => Actor, { foreignKey: 'heater_id' })
+  heater?: Actor;
+
+  @BelongsTo(() => Sensor, { foreignKey: 'sensor_id' })
+  sensor?: Sensor;
 }

@@ -29,6 +29,7 @@ import { DeviceTypesService } from './device-types/service';
 import { DeviceService } from './device/service';
 import { KettleService } from './kettle/service';
 import { LogicTypesService } from './logic-types/service';
+import { ProcessService } from './process/service';
 import { SensorTypesService } from './sensor-types/service';
 import { SensorService } from './sensor/service';
 import { TelemetryService } from './telemetry/service';
@@ -75,6 +76,7 @@ import { TelemetryService } from './telemetry/service';
     PropertyMapper,
     SensorTypesService,
     ActorTypesService,
+    ProcessService,
   ],
   imports: [DeviceModule, LogicModule],
   exports: [
@@ -87,6 +89,7 @@ import { TelemetryService } from './telemetry/service';
     DeviceService,
     SensorTypesService,
     ActorTypesService,
+    ProcessService,
   ],
 })
 export class ServicesModule {}

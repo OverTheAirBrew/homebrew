@@ -14,6 +14,9 @@ export const sequelize = new Sequelize({
   storage: join(homedir(), 'ota.homebrew.db'),
   models: [Actor, Sensor, Telemetry, Kettle, Device],
   logging: false,
+  define: {
+    timestamps: true,
+  },
 });
 
 export const databaseProviders = [

@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsObject,
@@ -27,18 +28,22 @@ export class ActorDto {
   id: string;
 
   @IsString()
+  @ApiProperty()
   name: string;
 
   @IsUUID()
   @Validate(ValidDevice)
+  @ApiProperty()
   device_id: string;
 
   @IsString()
   @Validate(ValidActorType)
+  @ApiProperty()
   type_id: string;
 
   @IsObject()
   @IsNotEmpty({})
   @Validate(ValidActorConfig)
+  @ApiProperty()
   config: any;
 }

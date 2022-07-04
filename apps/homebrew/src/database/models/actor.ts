@@ -4,12 +4,14 @@ import {
   DataType,
   Default,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Device } from './device';
+import { Kettle } from './kettle';
 
 @Table({
   modelName: 'actors',
@@ -40,4 +42,7 @@ export class Actor extends Model {
 
   @UpdatedAt
   updatedAt?: Date;
+
+  @HasMany(() => Kettle)
+  kettles: Kettle[];
 }

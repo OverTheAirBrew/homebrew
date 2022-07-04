@@ -9,7 +9,7 @@
 	"author": "",
 	"license": "ISC",
 	"scripts": {
-		"prebuild": "rimraf dist coverage coverage-e2e src/**/*.{js,map}",
+		"prebuild": "rimraf dist coverage coverage-e2e src/**/*.{js,map} test/**/*.{js,map}",
 		"build": "nest build",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
@@ -35,6 +35,8 @@
 		"@nestjs/schedule": "^2.0.1",
 		"@nestjs/swagger": "^5.2.1",
 		"@nestjs/websockets": "^8.4.4",
+		"@ota-internal/caching": "^1.0.0",
+		"@ota-internal/locking": "^1.0.0",
 		"@ota-internal/one-wire-sensor": "^1.0.0",
 		"@ota-internal/shared": "^1.0.0",
 		"class-transformer": "^0.5.1",
@@ -99,8 +101,7 @@
 			"^.+\\.(t|j)s$": "ts-jest"
 		},
 		"collectCoverageFrom": [
-			"lib/**/*.(t|j)s",
-			"plugins/**/*.(t|j)s"
+			"lib/**/*.(t|j)s"
 		],
 		"coverageDirectory": "../coverage",
 		"testEnvironment": "node",
@@ -112,13 +113,6 @@
 			"models/*",
 			"main.ts",
 			"migrate.ts",
-			"cron/*",
-			"workers/*",
-			"socket-gateway/*",
-			"plugins/actors/index.ts",
-			"plugins/sensors/index.ts",
-			"plugins/logic/index.ts",
-			"plugins/index.ts",
 			"app.module.ts",
 			"main.ts"
 		]

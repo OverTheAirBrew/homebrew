@@ -6,7 +6,6 @@ import { DeviceRepository, SensorRepository } from '../../../lib/constants';
 import { SensorDoesNotExistError } from '../../../lib/errors/sensor-does-not-exist-error';
 import { SensorDto } from '../../../models/dto/sensor.dto';
 import { NewSensorReading } from '../../../models/events/new-sensor-reading';
-import { NewSensorReadingEvent } from '../../events';
 import { SensorTypesService } from '../sensor-types/service';
 
 @Injectable()
@@ -79,7 +78,7 @@ export class SensorService {
       const sensorReading = await sensorType.run(sensor.id, sensor.config);
 
       this.eventEmitter.emit(
-        NewSensorReadingEvent,
+        NewSensorReading.Channel,
         new NewSensorReading(sensor.id, sensorReading),
       );
     }

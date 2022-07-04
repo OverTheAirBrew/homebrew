@@ -8,6 +8,6 @@
   },
   "coverageDirectory": "./coverage-e2e",
   "collectCoverageFrom": [
-    "src/app/*.(t|j)s"
+    "src/app/**/*.(t|j)s"
   ]
 }

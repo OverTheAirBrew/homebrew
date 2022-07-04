@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsObject, IsString } from 'class-validator';
 
 export class DeviceDto {
@@ -11,14 +12,17 @@ export class DeviceDto {
   id: string;
 
   @IsString()
+  @ApiProperty()
   name: string;
 
   @IsString()
+  @ApiProperty()
   // @Validate(ValidDeviceType)
   type_id: string;
 
   @IsObject()
   @IsNotEmpty()
+  @ApiProperty()
   // @Validate(ValidDeviceConfig)
   config: any;
 }

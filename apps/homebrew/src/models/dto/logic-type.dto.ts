@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsString } from 'class-validator';
 import { PropertyDto } from './property.dto';
 
@@ -7,6 +8,14 @@ export class LogicTypeDto {
     this.properties = properties;
   }
 
-  @IsString() type: string;
-  @IsArray() properties: PropertyDto[];
+  @IsString()
+  @ApiProperty()
+  type: string;
+
+  @IsArray()
+  @ApiProperty({
+    type: PropertyDto,
+    isArray: true,
+  })
+  properties: PropertyDto[];
 }
