@@ -31,4 +31,22 @@ describe('sensors/dummy', () => {
       expect(result).toBeLessThanOrEqual(5);
     });
   });
+
+  describe('validate', () => {
+    it('should return true if the values are valid', async () => {
+      const result = await service.validate({
+        values: '1,2,3,4,5',
+      });
+
+      expect(result).toBeTruthy();
+    });
+
+    it('should return false if the values are invalid', async () => {
+      const result = await service.validate({
+        values: '1,A,B,C',
+      });
+
+      expect(result).toBeFalsy();
+    });
+  });
 });
