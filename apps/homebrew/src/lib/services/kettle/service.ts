@@ -104,10 +104,11 @@ export class KettleService {
     }
 
     if (
-      !kettle.sensor_id ||
-      !kettle.heater_id ||
-      !kettle.logicType_id ||
-      !kettle.targetTemperature
+      !kettle.logicRun_id &&
+      (!kettle.sensor_id ||
+        !kettle.heater_id ||
+        !kettle.logicType_id ||
+        !kettle.targetTemperature)
     ) {
       throw new KettleInIncorrectStateToWork(kettleId);
     }

@@ -8,7 +8,7 @@ import { cleanup, IRepositories } from '../../utils/cleanup';
 import { CachingModule } from '@ota-internal/caching';
 import { LockingModule } from '@ota-internal/locking';
 
-describe('kettle-working', () => {
+describe('kettle-working (e2e)', () => {
   let service: KettleWorkingService;
 
   let emitSpy: jest.SpyInstance;

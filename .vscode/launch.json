@@ -37,6 +37,18 @@
         "<node_internals>/**"
       ],
       "type": "node"
+    },
+    {
+      "name": "vscode-jest-tests",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+      "request": "launch",
+      "type": "node",
+      "args": [
+        "--runInBand",
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }

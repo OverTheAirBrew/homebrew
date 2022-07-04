@@ -32,17 +32,19 @@ const cronList = [SensorReadingsCronService, StartupEvents];
 
 const workersList = [SensorReadingWorkerService, KettleWorkingService];
 
+export const importsList = [
+  ConfigModule.forRoot(),
+  ScheduleModule.forRoot(),
+  EventEmitterModule.forRoot(),
+  DatabaseModule,
+  SocketGatewayModule,
+  ServicesModule,
+  CachingModule,
+  LockingModule,
+];
+
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    ScheduleModule.forRoot(),
-    EventEmitterModule.forRoot(),
-    DatabaseModule,
-    SocketGatewayModule,
-    ServicesModule,
-    CachingModule,
-    LockingModule,
-  ],
+  imports: [...importsList],
   controllers: [...controllersList],
   providers: [...cronList, ...workersList],
 })

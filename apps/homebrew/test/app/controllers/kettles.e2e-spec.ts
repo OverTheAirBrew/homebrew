@@ -171,4 +171,42 @@ describe('Kettles (e2e)', () => {
       name: 'testing-kettle',
     });
   });
+
+  it('PATCH /:kettleId/working', async () => {
+    const [{ id: actorId }, { id: sensorId }] = await Promise.all([
+      repositories.actors.create({
+        name: 'testingactor',
+        device_id,
+        type_id: 'gpio',
+        config: {
+          gpioNumber: 1,
+        },
+      }),
+      repositories.sensors.create({
+        name: 'testingsensor',
+        device_id,
+        type_id: 'one-wire',
+        config: {
+          sensorAddress: '1234',
+        },
+      }),
+    ]);
+
+    const { id: kettleId } = await repositories.kettles.create({
+      name: 'testing-kettle',
+      sensor_id: sensorId,
+      heater_id: actorId,
+      targetTemperature: 10,
+      logicType_id: 'logic-type',
+    });
+
+    const { status, body } = await request(app.getHttpServer())
+      .patch(`/kettles/${kettleId}/working`)
+      .send({});
+
+    expect(status).toBe(202);
+
+    const { logicRun_id } = await repositories.kettles.findByPk(kettleId);
+    expect(logicRun_id).toBeDefined();
+  });
 });

@@ -330,10 +330,11 @@ describe('kettle-service', () => {
       }
     });
 
-    it('should throw an error when there is no sensor_id on the kettle', async () => {
+    it('should throw an error when there is no sensor_id on the kettle and the logic is been enabled', async () => {
       findByPkStub.mockResolvedValue({
         ...fullKettle,
         sensor_id: undefined,
+        logicRun_id: undefined,
       });
 
       try {
@@ -348,6 +349,7 @@ describe('kettle-service', () => {
       findByPkStub.mockResolvedValue({
         ...fullKettle,
         heater_id: undefined,
+        logicRun_id: undefined,
       });
 
       try {
@@ -362,6 +364,7 @@ describe('kettle-service', () => {
       findByPkStub.mockResolvedValue({
         ...fullKettle,
         logicType_id: undefined,
+        logicRun_id: undefined,
       });
 
       try {
@@ -376,6 +379,7 @@ describe('kettle-service', () => {
       findByPkStub.mockResolvedValue({
         ...fullKettle,
         targetTemperature: undefined,
+        logicRun_id: undefined,
       });
 
       try {

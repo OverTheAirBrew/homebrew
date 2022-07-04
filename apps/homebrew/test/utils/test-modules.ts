@@ -3,10 +3,11 @@ import { Test } from '@nestjs/testing';
 import { useContainer } from 'class-validator';
 import { ServicesModule } from '../../src/lib/services/module';
 
-import { AppModule } from '../../src/app.module';
+import { controllersList, importsList } from '../../src/app.module';
 
 export const TEST_MODULES: ModuleMetadata = {
-  imports: [AppModule],
+  imports: [...importsList],
+  controllers: [...controllersList],
 };
 
 export async function createApplication() {
