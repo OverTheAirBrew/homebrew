@@ -1,27 +1,28 @@
 import { Test } from '@nestjs/testing';
-import {
-  IOneWireController,
-  StreamController,
-} from '@ota-internal/one-wire-sensor/dist';
+import { DS18B20Controller } from '@ota-internal/one-wire-sensor/dist';
 import { SelectBoxProperty } from '@ota-internal/shared';
+import { when } from 'jest-when';
 import { OneWireSensor } from '.';
-describe('plugins/sensors/one-wire', () => {
+
+describe('sensors/one-wire', () => {
   let service: OneWireSensor;
 
   beforeEach(async () => {
+    const currentValueStub = jest.fn();
+
+    when(currentValueStub).calledWith('valid-sensor').mockResolvedValue({
+      celcius: 10,
+    });
+
     const moduleRef = await Test.createTestingModule({
       providers: [
         OneWireSensor,
         {
-          provide: IOneWireController,
-          useFactory: () => {
-            return new StreamController(true, [
-              {
-                address: '1234',
-                expectedValues: [1, 2, 3, 4, 5],
-              },
-            ]);
-          },
+          provide: DS18B20Controller,
+          useFactory: () => ({
+            findDevices: jest.fn().mockResolvedValue(['valid-sensor']),
+            getCurrentValue: currentValueStub,
+          }),
         },
       ],
     }).compile();
@@ -39,7 +40,7 @@ describe('plugins/sensors/one-wire', () => {
       expect(sensorAddressProp).toBeDefined();
       expect(
         await (sensorAddressProp as SelectBoxProperty<any>).values(),
-      ).toContain('1234');
+      ).toContain('valid-sensor');
     });
   });
 
@@ -55,20 +56,20 @@ describe('plugins/sensors/one-wire', () => {
 
     it('should return the value from the sensor', async () => {
       const result = await service.run('', {
-        sensorAddress: '1234',
+        sensorAddress: 'valid-sensor',
         offset: 0,
       });
 
-      expect(result).toBe(1);
+      expect(result).toBe(10);
     });
 
     it('should apply the offset if there is one', async () => {
       const result = await service.run('', {
-        sensorAddress: '1234',
+        sensorAddress: 'valid-sensor',
         offset: 1,
       });
 
-      expect(result).toBe(2);
+      expect(result).toBe(11);
     });
   });
 });

@@ -30,7 +30,7 @@ describe('Actors (e2e)', () => {
       name: 'testingactor',
       device_id,
       type_id: 'testing',
-      config: '{}',
+      config: {},
     });
 
     const { status, body } = await request(app.getHttpServer()).get('/actors');
@@ -47,10 +47,8 @@ describe('Actors (e2e)', () => {
       .send({
         name: 'testing-actor',
         device_id,
-        type_id: 'gpio-actor',
-        config: {
-          gpioNumber: 1,
-        },
+        type_id: 'dummy-actor',
+        config: {},
       });
 
     expect(status).toBe(201);
