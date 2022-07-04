@@ -1,13 +1,13 @@
 import { Global, Injectable } from '@nestjs/common';
+import { IProperty, SelectBoxProperty } from '@ota-internal/shared';
 import { PropertyDto } from '../models/dto/property.dto';
-import { Property, SelectBoxProperty } from './plugin/properties';
 
 @Global()
 @Injectable()
 export class PropertyMapper {
   public async map(
     parent_id: string,
-    property: Property,
+    property: IProperty,
     device_name?: string,
   ): Promise<PropertyDto> {
     const propertyName = !!device_name

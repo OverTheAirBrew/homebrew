@@ -3,9 +3,8 @@ import {
   IOneWireController,
   StreamController,
 } from '@ota-internal/one-wire-sensor/dist';
+import { SelectBoxProperty } from '@ota-internal/shared';
 import { OneWireSensor } from '.';
-import { SelectBoxProperty } from '../../../../plugin/properties';
-
 describe('plugins/sensors/one-wire', () => {
   let service: OneWireSensor;
 

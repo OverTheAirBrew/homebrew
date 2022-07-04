@@ -1,7 +1,6 @@
 import { Test } from '@nestjs/testing';
+import { Actor, NumberProperty } from '@ota-internal/shared';
 import { InvalidActorTypeError } from '../../../lib/errors/invalid-actor-type';
-import { Actor } from '../../../lib/plugin/abstractions/actor';
-import { NumberProperty } from '../../../lib/plugin/properties';
 import { PropertyMapper } from '../../../lib/property-mapper';
 import { DeviceTypesService } from '../device-types/service';
 import { ActorTypesService } from './service';
@@ -42,8 +41,7 @@ describe('actor-types-service', () => {
           }),
         },
       ],
-    })
-    .compile();
+    }).compile();
 
     service = moduleRef.get(ActorTypesService);
     mapperSpy = moduleRef.get(PropertyMapper);

@@ -1,5 +1,6 @@
 import { ClassType } from '../class-type';
-import { IPeripheral, Peripheral, Property } from '../properties';
+import { IPeripheral, Peripheral } from '../properties';
+import { Property } from '../properties/base-property';
 
 export interface ILogic<T> extends IPeripheral {
   run: (

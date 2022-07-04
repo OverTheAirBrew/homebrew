@@ -1,4 +1,4 @@
-import { ClassType } from '../class-type';
+import { ClassType } from './class-type';
 
 export interface ILogger {
   debug(message: string, ...args: any[]): void;
