@@ -41,9 +41,9 @@ describe('sensor-readings', () => {
         {
           name: 'sensor1',
           device_id: deviceId,
-          type_id: 'one-wire-sensor',
+          type_id: 'dummy-sensor',
           config: {
-            sensorAddress: 'ABCD',
+            values: '1',
           },
         },
       ]);

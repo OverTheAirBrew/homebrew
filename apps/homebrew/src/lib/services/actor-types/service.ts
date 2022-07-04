@@ -23,6 +23,7 @@ export class ActorTypesService {
     const device = await this.deviceTypesService.getRawDeviceTypeById(
       deviceType,
     );
+
     const actor = device.actors.find((a) => a.name === actorType);
 
     if (!actor) {

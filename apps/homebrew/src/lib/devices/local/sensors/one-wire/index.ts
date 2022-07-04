@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { IOneWireController } from '@ota-internal/one-wire-sensor';
+import { DS18B20Controller } from '@ota-internal/one-wire-sensor';
 import {
   NumberProperty,
   SelectBoxProperty,
@@ -14,7 +14,7 @@ export interface IOneWireParams {
 
 @Injectable()
 export class OneWireSensor extends Sensor<IOneWireParams> {
-  constructor(private oneWireController: IOneWireController) {
+  constructor(private oneWireController: DS18B20Controller) {
     super('one-wire', [
       new SelectBoxProperty('sensorAddress', true, () => this.getSensors()),
       new NumberProperty('offset', false),
