@@ -1,74 +1,34 @@
-// import { Test } from '@nestjs/testing';
-// import {
-//   IOneWireController,
-//   StreamController,
-// } from '@ota-internal/one-wire-sensor/dist';
-// import { SelectBoxProperty } from '@ota-internal/shared';
-// import { OneWireSensor } from '.';
-// describe('plugins/sensors/one-wire', () => {
-//   let service: OneWireSensor;
+import { Test } from '@nestjs/testing';
+import { DummySensor } from '.';
 
-//   beforeEach(async () => {
-//     const moduleRef = await Test.createTestingModule({
-//       providers: [
-//         OneWireSensor,
-//         {
-//           provide: IOneWireController,
-//           useFactory: () => {
-//             return new StreamController(true, [
-//               {
-//                 address: '1234',
-//                 expectedValues: [1, 2, 3, 4, 5],
-//               },
-//             ]);
-//           },
-//         },
-//       ],
-//     }).compile();
+describe('sensors/dummy', () => {
+  let service: DummySensor;
 
-//     service = moduleRef.get(OneWireSensor);
-//   });
+  beforeEach(async () => {
+    const moduleRef = await Test.createTestingModule({
+      providers: [DummySensor],
+    }).compile();
 
-//   describe('properties', () => {
-//     it('should return a list of sensors', async () => {
-//       const properties = service.properties;
+    service = moduleRef.get(DummySensor);
+  });
 
-//       const sensorAddressProp = properties.find(
-//         (p) => p.id === 'sensorAddress',
-//       );
-//       expect(sensorAddressProp).toBeDefined();
-//       expect(
-//         await (sensorAddressProp as SelectBoxProperty<any>).values(),
-//       ).toContain('1234');
-//     });
-//   });
+  describe('properties', () => {
+    it('should return a list of properties', async () => {
+      const properties = service.properties;
 
-//   describe('process', () => {
-//     it('should return null if the sensor does not exist', async () => {
-//       const result = await service.run('', {
-//         sensorAddress: '123434',
-//         offset: 0,
-//       });
+      const sensorAddressProp = properties.find((p) => p.id === 'values');
+      expect(sensorAddressProp).toBeDefined();
+    });
+  });
 
-//       expect(result).toBeNull();
-//     });
+  describe('process', () => {
+    it('should return the value from the sensor', async () => {
+      const result = await service.run('', {
+        values: '1,2,3,4,5',
+      });
 
-//     it('should return the value from the sensor', async () => {
-//       const result = await service.run('', {
-//         sensorAddress: '1234',
-//         offset: 0,
-//       });
-
-//       expect(result).toBe(1);
-//     });
-
-//     it('should apply the offset if there is one', async () => {
-//       const result = await service.run('', {
-//         sensorAddress: '1234',
-//         offset: 1,
-//       });
-
-//       expect(result).toBe(2);
-//     });
-//   });
-// });
+      expect(result).toBeGreaterThanOrEqual(1);
+      expect(result).toBeLessThanOrEqual(5);
+    });
+  });
+});

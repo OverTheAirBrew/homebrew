@@ -1,5 +1,6 @@
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ClassType } from '../class-type';
+import { ActorStateChanged } from '../messages/actor-state-changed';
 import { IPeripheral, Peripheral } from '../properties';
 import { Property } from '../properties/base-property';
 
@@ -22,19 +23,19 @@ export abstract class Actor<T> extends Peripheral implements IActor<T> {
   public async on(actor_id: string, params: T) {
     await this.processOn(params);
 
-    // await this.messagingManager.sendEvent(ActorStateChanged)({
-    //   actor_id,
-    //   state: 'on',
-    // });
+    this.eventEmitter.emit(
+      ActorStateChanged.Channel,
+      new ActorStateChanged(actor_id, 'on'),
+    );
   }
 
   public async off(actor_id: string, params: T) {
     await this.processOff(params);
 
-    // await this.messagingManager.sendEvent(ActorStateChanged)({
-    //   actor_id,
-    //   state: 'off',
-    // });
+    this.eventEmitter.emit(
+      ActorStateChanged.Channel,
+      new ActorStateChanged(actor_id, 'off'),
+    );
   }
 
   protected abstract processOn(params: T): Promise<void>;

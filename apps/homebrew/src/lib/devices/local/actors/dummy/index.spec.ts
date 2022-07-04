@@ -1,67 +1,54 @@
-// import { EventEmitterModule } from '@nestjs/event-emitter';
-// import { Test } from '@nestjs/testing';
-// import { SelectBoxProperty } from '@ota-internal/shared';
-// import { Gpio } from 'onoff';
-// import { GpioActor } from '.';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Test } from '@nestjs/testing';
+import { ActorStateChanged } from '@ota-internal/shared';
+import { DummyActor } from '.';
 
-// jest.mock('onoff');
+describe('plugin/gpio', () => {
+  let service: DummyActor;
 
-// describe('plugin/gpio', () => {
-//   let service: GpioActor;
+  let emitStub: jest.Mock;
 
-//   beforeEach(async () => {
-//     const moduleRef = await Test.createTestingModule({
-//       providers: [GpioActor],
-//       imports: [EventEmitterModule.forRoot()],
-//     }).compile();
+  beforeEach(async () => {
+    emitStub = jest.fn();
 
-//     service = moduleRef.get(GpioActor);
-//   });
+    const moduleRef = await Test.createTestingModule({
+      providers: [
+        DummyActor,
+        {
+          provide: EventEmitter2,
+          useFactory: () => ({
+            emit: emitStub,
+          }),
+        },
+      ],
+    }).compile();
 
-//   it('should turn on when requested', async () => {
-//     await service.on('test', { gpio: 10 });
+    service = moduleRef.get(DummyActor);
+  });
 
-//     expect(Gpio.prototype.constructor).toHaveBeenCalledWith(10, 'out');
+  it('should turn on when requested', async () => {
+    await service.on('test', {});
 
-//     expect(Gpio.prototype.writeSync).toHaveBeenCalled();
-//     expect(Gpio.prototype.writeSync).toHaveBeenCalledWith(1);
-//   });
+    expect(emitStub).toHaveBeenCalled();
+    expect(emitStub.mock.calls[0]).toMatchObject([
+      ActorStateChanged.Channel,
+      {
+        actor_id: 'test',
+        state: 'on',
+      },
+    ]);
+  });
 
-//   it('should turn off when requested', async () => {
-//     await service.off('test', { gpio: 10 });
+  it('should turn off when requested', async () => {
+    await service.off('test', {});
 
-//     expect(Gpio.prototype.constructor).toHaveBeenCalledWith(10, 'out');
-//     expect(Gpio.prototype.writeSync).toHaveBeenCalledWith(0);
-//   });
-
-//   it('should return the properties', async () => {
-//     const properties = service.properties;
-
-//     const gpioNumberProperty = properties.find(
-//       (prop) => prop.id === 'gpioNumber',
-//     );
-
-//     expect(gpioNumberProperty).toBeDefined();
-//     expect(gpioNumberProperty.type).toBe('select-box');
-//     expect(gpioNumberProperty.required).toBeTruthy();
-
-//     const values = await (
-//       gpioNumberProperty as SelectBoxProperty<number>
-//     ).values();
-
-//     const gpioNumberList = await generateArray(28);
-
-//     for (const value of values) {
-//       expect(gpioNumberList.indexOf(value)).toBeGreaterThan(-1);
-//     }
-//   });
-// });
-
-// async function generateArray(total: number): Promise<number[]> {
-//   var arr: number[] = [];
-//   for (var i = 1; i <= total; i++) {
-//     arr.push(i);
-//   }
-
-//   return arr;
-// }
+    expect(emitStub).toHaveBeenCalled();
+    expect(emitStub.mock.calls[0]).toMatchObject([
+      ActorStateChanged.Channel,
+      {
+        actor_id: 'test',
+        state: 'off',
+      },
+    ]);
+  });
+});
