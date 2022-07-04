@@ -2,7 +2,7 @@ const BRANCH = process.env.CIRCLE_BRANCH;
 
 module.exports = {
   branches: [
-    'master',
+    'main',
     {
       name: 'next',
       prerelease: true,
