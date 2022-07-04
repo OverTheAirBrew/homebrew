@@ -1,8 +1,7 @@
 import { Test } from '@nestjs/testing';
+import { Logic, NumberProperty } from '@ota-internal/shared';
 import { ILogics } from '../../../lib/constants';
 import { InvalidLogicTypeError } from '../../../lib/errors/invalid-logic-type';
-import { Logic } from '../../../lib/plugin/abstractions/logic';
-import { NumberProperty } from '../../../lib/plugin/properties';
 import { PropertyMapper } from '../../../lib/property-mapper';
 import { LogicTypeDto } from '../../../models/dto/logic-type.dto';
 import { LogicTypesService } from './service';

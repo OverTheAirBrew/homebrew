@@ -1,5 +1,4 @@
-import { Actor, IActor } from '../../../src/lib/plugin/abstractions/actor';
-import { NumberProperty } from '../../../src/lib/plugin/properties';
+import { Actor, IActor, NumberProperty } from '@ota-internal/shared';
 
 export class TestingActor extends Actor<any> implements IActor<any> {
   constructor(private validateFunc: () => Promise<boolean>) {

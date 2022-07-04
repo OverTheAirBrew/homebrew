@@ -3,7 +3,8 @@ import {
   NumberProperty,
   SelectBoxProperty,
   StringProperty,
-} from './plugin/properties';
+} from '@ota-internal/shared';
+
 import { PropertyMapper } from './property-mapper';
 
 describe('lib/property-mapper', () => {

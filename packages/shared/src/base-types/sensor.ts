@@ -1,5 +1,6 @@
 import { ClassType } from '../class-type';
-import { IPeripheral, Peripheral, Property } from '../properties';
+import { IPeripheral, Peripheral } from '../properties';
+import { Property } from '../properties/base-property';
 
 export interface ISensor<T> extends IPeripheral {
   run(sensor_id: string, params: T): Promise<number>;

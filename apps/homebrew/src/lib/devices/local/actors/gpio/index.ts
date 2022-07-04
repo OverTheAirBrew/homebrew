@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Gpio } from 'onoff';
-import { Actor, IActor } from '../../../../plugin/abstractions/actor';
-import { SelectBoxProperty } from '../../../../plugin/properties';
+// import { Actor, IActor } from '../../../../plugin/abstractions/actor';
+
+import { Actor, IActor, SelectBoxProperty } from '@ota-internal/shared';
 
 interface IGpioActorParams {
   gpio: number;

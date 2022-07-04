@@ -1,6 +1,7 @@
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ClassType } from '../class-type';
-import { IPeripheral, Peripheral, Property } from '../properties';
+import { IPeripheral, Peripheral } from '../properties';
+import { Property } from '../properties/base-property';
 
 export interface IActor<T> extends IPeripheral {
   on(actor_id: string, params: T): Promise<void>;
