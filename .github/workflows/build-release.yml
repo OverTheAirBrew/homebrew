@@ -26,18 +26,27 @@ jobs:
         env:
           DB_URL: mysql://root@127.0.0.1/test_database
           NODE_ENV: testing
-      - uses: codecov/codecov-action@v2
+      - name: push homebrew coverage
+        uses: codecov/codecov-action@v2
         with:
           fail_ci_if_error: true # optional (default = false)
           files: ./apps/homebrew/coverage/coverage-final.json,./apps/homebrew/coverage-e2e/coverage-final.json
           flags: homebrew
           name: homebrew
-      - uses: codecov/codecov-action@v2
+      - name: push locking coverage
+        uses: codecov/codecov-action@v2
         with:
           fail_ci_if_error: true # optional (default = false)
           files: ./packages/locking/coverage/coverage-final.json
           flags: locking
           name: locking
+      - name: push homebrew-bridge coverage
+        uses: codecov/codecov-action@v2
+        with:
+          fail_ci_if_error: true # optional (default = false)
+          files: ./apps/homebrew-bridge/coverage/coverage-final.json,./apps/homebrew-bridge/coverage-e2e/coverage-final.json
+          flags: homebrew-bridge
+          name: homebrew-bridge
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
