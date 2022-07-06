@@ -21,6 +21,7 @@
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
     "@crowdin/cli": "^3.7.8",
+    "@overtheairbrew/semantic-release-docker": "^4.2.8",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^9.0.0",
     "@semantic-release/github": "^7.2.3",
