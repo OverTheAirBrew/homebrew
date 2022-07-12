@@ -1,19 +1,17 @@
-FROM circleci/node:16 as base
+FROM overtheairbrew/build:node-14 as base
 
 ARG APP=homebrew
 ENV CI=true
 
 WORKDIR /app
 
-USER circleci
+COPY ./package.json ./
+COPY ./package-lock.json ./
+COPY ./tsconfig.json ./
+COPY ./lerna.json ./
 
-COPY --chown=circleci ./package.json ./
-COPY --chown=circleci ./package-lock.json ./
-COPY --chown=circleci ./tsconfig.json ./
-COPY --chown=circleci ./lerna.json ./
-
-COPY --chown=circleci ./apps/${APP} ./apps/${APP}
-COPY --chown=circleci ./packages ./packages
+COPY ./apps/${APP} ./apps/${APP}
+COPY ./packages ./packages
 
 RUN npm ci --ignore-scripts --omit=optional
 RUN npm run bootstrap -- -- --omit=optional
