@@ -5,6 +5,8 @@ ENV CI=true
 
 WORKDIR /app
 
+USER circleci
+
 COPY --chown=circleci ./package.json ./
 COPY --chown=circleci ./package-lock.json ./
 COPY --chown=circleci ./tsconfig.json ./
