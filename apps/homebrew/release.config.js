@@ -2,7 +2,7 @@ const path = require('path');
 
 const BRANCH = process.env.CIRCLE_BRANCH;
 
-let DOCKER_TAGS = ['{{version}}'];
+let DOCKER_TAGS = ['{{major}}.{{minor}}.{{patch}}'];
 
 if (BRANCH === 'main') {
   DOCKER_TAGS.push('latest');
