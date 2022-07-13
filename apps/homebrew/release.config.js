@@ -32,7 +32,7 @@ module.exports = {
         login: false,
 
         platforms: ['linux/arm/v7'],
-        dockerArgs: {
+        buildArgs: {
           APP: 'homebrew',
         },
 
