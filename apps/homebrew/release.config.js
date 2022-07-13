@@ -24,19 +24,20 @@ module.exports = {
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
     [
-      '@overtheairbrew/semantic-release-docker',
+      '@overtheairbrew/semantic-release-dockerbuildx',
       {
-        dockerTags: DOCKER_TAGS,
         dockerImage: 'homebrew',
-        dockerCwd: dockerFileLocation,
-        dockerFile: 'Dockerfile',
         dockerProject: 'overtheairbrew',
+
+        login: false,
+
+        platforms: ['linux/arm/v7'],
         dockerArgs: {
           APP: 'homebrew',
         },
-        login: false,
-        build_system: 'buildx',
-        platforms: ['linux/arm/v7'],
+
+        tags: DOCKER_TAGS,
+        cwd: dockerFileLocation,
       },
     ],
     '@semantic-release/github',
