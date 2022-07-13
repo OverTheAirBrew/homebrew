@@ -31,7 +31,7 @@ module.exports = {
 
         login: false,
 
-        platforms: ['linux/amd64', 'linux/arm64', 'linux/arm/v7'],
+        platforms: ['linux/arm64', 'linux/arm/v7'],
         buildArgs: {
           APP: 'homebrew',
         },
@@ -40,7 +40,7 @@ module.exports = {
         cwd: dockerFileLocation,
       },
     ],
-    '@semantic-release/github',
-    '@semantic-release/git',
+    // '@semantic-release/github',
+    // '@semantic-release/git',
   ],
 };

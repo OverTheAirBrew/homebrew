@@ -1,4 +1,4 @@
-FROM overtheairbrew/build:node-14 as base
+FROM node:16 as base
 
 ARG APP=homebrew
 ENV CI=true
