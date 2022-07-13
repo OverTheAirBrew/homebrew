@@ -31,7 +31,7 @@ module.exports = {
 
         login: false,
 
-        platforms: ['linux/arm64', 'linux/arm/v7'],
+        platforms: ['linux/amd64', 'linux/arm64', 'linux/arm/v7'],
         buildArgs: {
           APP: 'homebrew',
         },
