@@ -48,8 +48,8 @@ jobs:
       - run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
-          DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       - run: npm run push-locales
         env: 
           HB_CROWDIN_API_KEY: ${{ secrets.CROWDIN_API_KEY }}
