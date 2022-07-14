@@ -15,3 +15,4 @@ jobs:
             Only _next_ branch can be merged into main
           reactions: '-1'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: exit 1
