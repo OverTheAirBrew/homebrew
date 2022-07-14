@@ -4,13 +4,20 @@ import { SensorTypeDto } from '../../../models/dto/sensor-type.dto';
 import { InvalidSensorTypeError } from '../../errors/invalid-sensor-type';
 import { PropertyMapper } from '../../property-mapper';
 import { DeviceTypesService } from '../device-types/service';
+import { DeviceService } from '../device/service';
 
 @Injectable()
 export class SensorTypesService {
   constructor(
+    private deviceService: DeviceService,
     private deviceTypesService: DeviceTypesService,
     private mapper: PropertyMapper,
   ) {}
+
+  public async getSensorTypesForDeviceId(deviceId: string) {
+    const device = await this.deviceService.getDeviceById(deviceId);
+    return await this.getSensorTypes(device.type_id);
+  }
 
   public async getSensorTypes(deviceType: string) {
     const device = await this.deviceTypesService.getRawDeviceTypeById(

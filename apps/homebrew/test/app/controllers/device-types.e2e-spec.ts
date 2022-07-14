@@ -3,6 +3,9 @@ import * as request from 'supertest';
 import { cleanup, IRepositories } from '../../utils/cleanup';
 import { createApplication } from '../../utils/test-modules';
 
+jest.useFakeTimers();
+jest.retryTimes(3);
+
 describe('Device-Types (e2e)', () => {
   let app: INestApplication;
   let repositories: IRepositories;
