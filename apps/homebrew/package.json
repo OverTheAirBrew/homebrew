@@ -23,9 +23,7 @@
 		"test:e2e": "jest --verbose --runInBand --config ./test/jest-e2e.json",
 		"test:e2e:cov": "npm run test:e2e -- --coverage",
 		"test:all:cov": "npm run test:cov && npm run test:e2e:cov",
-		"migrate": "node ./dist/migrate.js",
-    "prerelease": "npm run convert-symlinks && npm pack", 
-    "convert-symlinks": "mkdir ./node_modules_dereferenced && cp -L -r ./node_modules/* ./node_modules_dereferenced && rm -rf ./node_modules && mv ./node_modules_dereferenced ./node_modules"
+		"migrate": "node ./dist/migrate.js"
 	},
 	"dependencies": {
 		"@nestjs/common": "^8.0.0",

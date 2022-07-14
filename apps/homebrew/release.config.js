@@ -40,17 +40,7 @@ module.exports = {
         cwd: dockerFileLocation,
       },
     ],
-    [
-      '@semantic-release/github',
-      {
-        assets: [
-          {
-            path: 'overtheairbrew-homebrew-${nextRelease.version}.tgz',
-            label: 'homebrew-${nextRelease.version}',
-          },
-        ],
-      },
-    ],
+    '@semantic-release/github',
     '@semantic-release/git',
   ],
 };
