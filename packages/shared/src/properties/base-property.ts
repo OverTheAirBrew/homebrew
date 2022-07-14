@@ -1,3 +1,12 @@
+export interface IProperty {
+  required: boolean;
+  id: string;
+
+  type: PropertyType;
+
+  validateProperty(param: any): Promise<boolean>;
+}
+
 type PropertyType = 'string' | 'number' | 'select-box';
 
 export type AdditionalValidation = (value: any) => Promise<boolean>;

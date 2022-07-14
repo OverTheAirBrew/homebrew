@@ -1,0 +1,25 @@
+name: check-mergability
+
+on:
+  pull_request:
+
+jobs:
+  check-downstream:
+    runs-on: ubuntu-latest
+    if: github.head_ref != 'next' && github.base_ref == 'main'
+    steps:
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |
+            Only _next_ branch can be merged into main
+          comment_includes: 'Only _next_ branch can be merged into main'
+          reactions: '-1'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: exit 1
+
+  valid:
+    runs-on: ubuntu-latest
+    if: github.head_ref == 'next' && github.base_ref == 'main'
+    steps: 
+      - run: exit 0

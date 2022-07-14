@@ -1,6 +1,5 @@
+import { NumberProperty, StringProperty } from '@ota-internal/shared';
 import { TestingActor } from '../../../test/utils/test-providers/actor';
-import { TestingSensor } from '../../../test/utils/test-providers/sensor';
-import { NumberProperty, StringProperty } from '../plugin/properties';
 import { Device } from './base-device';
 
 class BaseDevice extends Device<{}> {
@@ -20,7 +19,7 @@ class BaseDevice extends Device<{}> {
           properties: [new NumberProperty('number', true)],
           name: 'test-sensor',
           validate: jest.fn().mockReturnValue(true),
-        } as any as TestingSensor,
+        } as any,
       ],
     );
   }

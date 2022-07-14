@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { Actor, Sensor } from '@ota-internal/shared';
 import { IActors, ISensors } from '../../constants';
-import { Actor } from '../../plugin/abstractions/actor';
-import { Sensor } from '../../plugin/abstractions/sensor';
 import { PropertyMapper } from '../../property-mapper';
 import { Device } from '../base-device';
 

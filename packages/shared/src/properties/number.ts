@@ -1,5 +1,4 @@
-import { Property } from '.';
-import { AdditionalValidation } from './base-property';
+import { AdditionalValidation, Property } from './base-property';
 
 export class NumberProperty extends Property {
   constructor(

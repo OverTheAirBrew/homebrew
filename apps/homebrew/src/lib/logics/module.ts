@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
+import { ILogic } from '@ota-internal/shared';
 import { ILogics } from '../constants';
-import { ILogic } from '../plugin/abstractions/logic';
+
 import { PidLogic } from './pid';
 
 const Logics = [PidLogic];

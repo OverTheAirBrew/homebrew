@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
+import { Actor, NumberProperty } from '@ota-internal/shared';
 import { InvalidActorTypeError } from '../../../lib/errors/invalid-actor-type';
-import { Actor } from '../../../lib/plugin/abstractions/actor';
-import { NumberProperty } from '../../../lib/plugin/properties';
 import { PropertyMapper } from '../../../lib/property-mapper';
 import { DeviceTypesService } from '../device-types/service';
+import { DeviceService } from '../device/service';
 import { ActorTypesService } from './service';
 
 class TestingActorType extends Actor<any> {
@@ -41,9 +41,16 @@ describe('actor-types-service', () => {
             }),
           }),
         },
+        {
+          provide: DeviceService,
+          useFactory: () => ({
+            getDeviceById: jest.fn().mockResolvedValue({
+              type_id: 'testing-actor',
+            }),
+          }),
+        },
       ],
-    })
-    .compile();
+    }).compile();
 
     service = moduleRef.get(ActorTypesService);
     mapperSpy = moduleRef.get(PropertyMapper);
@@ -75,13 +82,6 @@ describe('actor-types-service', () => {
     });
   });
 
-  // describe('getActorTypeById', () => {
-  //   it('should return a mapped actor type', async () => {
-  //     const actorType = await service.getActorTypeById('testing-actor');
-  //     expect(actorType).toBeInstanceOf(ActorTypeDto);
-  //   });
-  // });
-
   describe('validateConfig', () => {
     it('should return true when the config is valid', async () => {
       const valid = await service.validateConfig(
@@ -106,5 +106,10 @@ describe('actor-types-service', () => {
 
       expect(valid).toBeFalsy();
     });
+  });
+
+  it('should return the services', async () => {
+    const services = await service.getActorTypesForDeviceId('testing-device');
+    expect(services).toHaveLength(1);
   });
 });

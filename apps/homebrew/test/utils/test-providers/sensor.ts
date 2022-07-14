@@ -1,5 +1,4 @@
-import { ISensor, Sensor } from '../../../src/lib/plugin/abstractions/sensor';
-import { NumberProperty } from '../../../src/lib/plugin/properties';
+import { ISensor, NumberProperty, Sensor } from '@ota-internal/shared';
 
 export class TestingSensor extends Sensor<any> implements ISensor<any> {
   constructor(private validateFunc: () => Promise<boolean>) {

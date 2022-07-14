@@ -1,16 +1,23 @@
 import { Injectable } from '@nestjs/common';
+import { IActor } from '@ota-internal/shared';
 import { ActorTypeDto } from '../../../models/dto/actor-type.dto';
 import { InvalidActorTypeError } from '../../errors/invalid-actor-type';
-import { IActor } from '../../plugin/abstractions/actor';
 import { PropertyMapper } from '../../property-mapper';
 import { DeviceTypesService } from '../device-types/service';
+import { DeviceService } from '../device/service';
 
 @Injectable()
 export class ActorTypesService {
   constructor(
+    private deviceService: DeviceService,
     private deviceTypesService: DeviceTypesService,
     private mapper: PropertyMapper,
   ) {}
+
+  public async getActorTypesForDeviceId(deviceId: string) {
+    const device = await this.deviceService.getDeviceById(deviceId);
+    return await this.getActorTypes(device.type_id);
+  }
 
   public async getActorTypes(deviceType: string) {
     const device = await this.deviceTypesService.getRawDeviceTypeById(
@@ -23,6 +30,7 @@ export class ActorTypesService {
     const device = await this.deviceTypesService.getRawDeviceTypeById(
       deviceType,
     );
+
     const actor = device.actors.find((a) => a.name === actorType);
 
     if (!actor) {

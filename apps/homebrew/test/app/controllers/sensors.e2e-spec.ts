@@ -30,9 +30,9 @@ describe('Sensors (e2e)', () => {
       .send({
         name: 'test-sensor',
         device_id,
-        type_id: 'one-wire-sensor',
+        type_id: 'dummy-sensor',
         config: {
-          sensorAddress: 'ABCD',
+          values: '1,2,3',
         },
       });
 
@@ -49,13 +49,13 @@ describe('Sensors (e2e)', () => {
     const [{ id: id1 }, { id: id2 }] = await repositories.sensors.bulkCreate([
       {
         name: 'sensor1',
-        type_id: 'one-wire',
+        type_id: 'dummy-sensor',
         device_id,
         config: {},
       },
       {
         name: 'sensor2',
-        type_id: 'one-wire',
+        type_id: 'dummy-sensor',
         device_id,
         config: {},
       },
@@ -76,13 +76,13 @@ describe('Sensors (e2e)', () => {
     const [{ id: id1 }, { id: id2 }] = await repositories.sensors.bulkCreate([
       {
         name: 'sensor1',
-        type_id: 'one-wire',
+        type_id: 'dummy-sensor',
         device_id,
         config: {},
       },
       {
         name: 'sensor2',
-        type_id: 'one-wire',
+        type_id: 'dummy-sensor',
         device_id,
         config: {},
       },

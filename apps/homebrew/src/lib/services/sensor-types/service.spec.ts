@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
+import { NumberProperty, Sensor } from '@ota-internal/shared';
 import { InvalidSensorTypeError } from '../../../lib/errors/invalid-sensor-type';
-import { Sensor } from '../../../lib/plugin/abstractions/sensor';
-import { NumberProperty } from '../../../lib/plugin/properties';
 import { PropertyMapper } from '../../../lib/property-mapper';
 import { DeviceTypesService } from '../device-types/service';
+import { DeviceService } from '../device/service';
 import { SensorTypesService } from './service';
 
 class TestingSensorType extends Sensor<any> {
@@ -36,6 +36,14 @@ describe('sensor-types-service', () => {
           useFactory: () => ({
             getRawDeviceTypeById: jest.fn().mockResolvedValue({
               sensors: [new TestingSensorType()],
+            }),
+          }),
+        },
+        {
+          provide: DeviceService,
+          useFactory: () => ({
+            getDeviceById: jest.fn().mockResolvedValue({
+              type_id: 'testing-sensor',
             }),
           }),
         },
@@ -72,16 +80,6 @@ describe('sensor-types-service', () => {
     });
   });
 
-  // describe('getSensorTypeById', () => {
-  //   it('should return a mapped logic type', async () => {
-  //     const logicType = await service.getSensorTypeById(
-  //       'testing-device',
-  //       'testing-sensor',
-  //     );
-  //     expect(logicType).toBeInstanceOf(SensorTypeDto);
-  //   });
-  // });
-
   describe('validateConfig', () => {
     it('should return true when the config is valid', async () => {
       const valid = await service.validateConfig(
@@ -105,6 +103,15 @@ describe('sensor-types-service', () => {
       );
 
       expect(valid).toBeFalsy();
+    });
+  });
+
+  describe('getSensorTypesForDeviceId', () => {
+    it('should return the services', async () => {
+      const services = await service.getSensorTypesForDeviceId(
+        'testing-device',
+      );
+      expect(services).toHaveLength(1);
     });
   });
 });

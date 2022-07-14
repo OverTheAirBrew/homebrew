@@ -3,26 +3,17 @@ name: Build And Release
 on: [ push ]
 
 jobs:
-  container-job:
+  build-release:
     runs-on: ubuntu-latest
-    container: node:16
+    container: overtheairbrew/build:node-14
     services:
       mysql:
         image: mysql:5.7
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
           MYSQL_DATABASE: test_database
-    
-    strategy:
-      matrix: 
-        node-version: [ 14.x ]
-
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
       - run: |
           npm ci
           npm run bootstrap
@@ -47,10 +38,29 @@ jobs:
           files: ./packages/locking/coverage/coverage-final.json
           flags: locking
           name: locking
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
       - run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       - run: npm run push-locales
         env: 
           HB_CROWDIN_API_KEY: ${{ secrets.CROWDIN_API_KEY }}
+      - name: Sync homebrew dockerhub description
+        uses: peter-evans/dockerhub-description@v3
+        if: github.ref == 'refs/heads/next'
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: overtheairbrew/homebrew
+          short-description: ${{ github.event.repository.description }}
+          readme-filepath: ./apps/homebrew/README.md

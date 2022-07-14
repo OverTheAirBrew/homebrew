@@ -36,7 +36,7 @@ describe('sensor-reading (e2e)', () => {
     const { id: sensor_id } = await repositories.sensors.create({
       name: 'sensor_1',
       device_id,
-      type_id: 'one-wire-sensor',
+      type_id: 'dummy-sensor',
       config: {},
     });
 
