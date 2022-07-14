@@ -40,7 +40,7 @@ module.exports = {
         cwd: dockerFileLocation,
       },
     ],
-    '@semantic-release/github',
-    '@semantic-release/git',
+    // '@semantic-release/github',
+    // '@semantic-release/git',
   ],
 };
