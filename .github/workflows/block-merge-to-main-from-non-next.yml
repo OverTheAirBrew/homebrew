@@ -8,4 +8,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "${github.event.pull_request}"
+          echo "${github.base_ref}"
+          echo "${github.head_ref}"
