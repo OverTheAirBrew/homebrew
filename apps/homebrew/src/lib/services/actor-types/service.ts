@@ -4,13 +4,20 @@ import { ActorTypeDto } from '../../../models/dto/actor-type.dto';
 import { InvalidActorTypeError } from '../../errors/invalid-actor-type';
 import { PropertyMapper } from '../../property-mapper';
 import { DeviceTypesService } from '../device-types/service';
+import { DeviceService } from '../device/service';
 
 @Injectable()
 export class ActorTypesService {
   constructor(
+    private deviceService: DeviceService,
     private deviceTypesService: DeviceTypesService,
     private mapper: PropertyMapper,
   ) {}
+
+  public async getActorTypesForDeviceId(deviceId: string) {
+    const device = await this.deviceService.getDeviceById(deviceId);
+    return await this.getActorTypes(device.type_id);
+  }
 
   public async getActorTypes(deviceType: string) {
     const device = await this.deviceTypesService.getRawDeviceTypeById(
