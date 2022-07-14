@@ -18,6 +18,7 @@ import { SocketGatewayModule } from './socket-gateway/module';
 
 import { CachingModule } from '@ota-internal/caching';
 import { LockingModule } from '@ota-internal/locking';
+import { HealthController } from './app/controllers/health';
 
 export const controllersList = [
   ActorController,
@@ -26,6 +27,7 @@ export const controllersList = [
   SensorController,
   DeviceTypesController,
   DeviceController,
+  HealthController,
 ];
 
 const cronList = [SensorReadingsCronService, StartupEvents];
