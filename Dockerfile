@@ -17,6 +17,7 @@ RUN npm ci --ignore-scripts --omit=optional
 RUN npm run bootstrap -- -- --omit=optional
 
 RUN npm run build
+RUN npm run prerelease
 
 FROM node:16
 
@@ -32,28 +33,9 @@ VOLUME [ "/homebrew/data" ]
 
 WORKDIR /app
 
-COPY --chown=node --from=base /app/package.json ./package.json
-COPY --chown=node --from=base /app/node_modules ./node_modules
-
 COPY --chown=node --from=base /app/apps/${APP}/dist ./apps/${APP}/dist
 COPY --chown=node --from=base /app/apps/${APP}/package.json ./apps/${APP}/package.json
 COPY --chown=node --from=base /app/apps/${APP}/node_modules ./apps/${APP}/node_modules
-
-COPY --chown=node --from=base /app/packages/shared/dist ./packages/shared/dist
-COPY --chown=node --from=base /app/packages/shared/package.json ./packages/shared/package.json
-# COPY --chown=node --from=base /app/packages/shared/node_modules ./packages/shared/node_modules
-
-COPY --chown=node --from=base /app/packages/caching/dist ./packages/caching/dist
-COPY --chown=node --from=base /app/packages/caching/package.json ./packages/caching/package.json
-COPY --chown=node --from=base /app/packages/caching/node_modules ./packages/caching/node_modules
-
-COPY --chown=node --from=base /app/packages/one-wire-sensor/dist ./packages/one-wire-sensor/dist
-COPY --chown=node --from=base /app/packages/one-wire-sensor/package.json ./packages/one-wire-sensor/package.json
-COPY --chown=node --from=base /app/packages/one-wire-sensor/node_modules ./packages/one-wire-sensor/node_modules
-
-COPY --chown=node --from=base /app/packages/locking/dist ./packages/locking/dist
-COPY --chown=node --from=base /app/packages/locking/package.json ./packages/locking/package.json
-COPY --chown=node --from=base /app/packages/locking/node_modules ./packages/locking/node_modules
 
 WORKDIR /app/apps/${APP}
 

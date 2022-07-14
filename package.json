@@ -7,6 +7,7 @@
     "test": "lerna run test:cov",
     "e2e": "lerna run test:e2e:cov",
     "migrate": "lerna run migrate",
+    "prerelease": "lerna run --scope @overtheairbrew/* prerelease",
     "release": "lerna exec --concurrency 1 --scope @overtheairbrew/* -- semantic-release -e semantic-release-monorepo",
     "postinstall": "lerna bootstrap",
     "prepare": "husky install",

@@ -166,3 +166,4 @@ app/ota.db
 coverage-e2e
 
 docker
+node_modules_dereferenced
