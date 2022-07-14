@@ -3,17 +3,15 @@ name: Build And Release
 on: [ push ]
 
 jobs:
-  container-job:
+  build-release:
     runs-on: ubuntu-latest
-    container: overtheairbrew/build:node-14
+    container: node:16
     services:
       mysql:
         image: mysql:5.7
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
           MYSQL_DATABASE: test_database
-  
-
     steps:
       - uses: actions/checkout@v3
       - run: |
@@ -57,3 +55,12 @@ jobs:
       - run: npm run push-locales
         env: 
           HB_CROWDIN_API_KEY: ${{ secrets.CROWDIN_API_KEY }}
+      - name: Sync homebrew dockerhub description
+        uses: peter-evans/dockerhub-description@v3
+        if: github.ref == 'refs/heads/next'
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: overtheairbrew/homebrew
+          short-description: ${{ github.event.repository.description }}
+          readme-filepath: ./apps/homebrew/README.md
