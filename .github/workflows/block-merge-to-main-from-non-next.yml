@@ -1,7 +1,7 @@
 name: check-mergability
 
 on:
-  pull_request_target:
+  pull_request:
 
 jobs:
   check-downstream:
