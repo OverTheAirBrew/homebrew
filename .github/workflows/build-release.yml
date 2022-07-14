@@ -5,7 +5,7 @@ on: [ push ]
 jobs:
   build-release:
     runs-on: ubuntu-latest
-    container: node:16
+    container: overtheairbrew/build:node-16
     services:
       mysql:
         image: mysql:5.7
