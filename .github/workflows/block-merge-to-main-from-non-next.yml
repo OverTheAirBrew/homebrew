@@ -6,7 +6,7 @@ on:
 jobs:
   check-downstream:
     runs-on: ubuntu-latest
-    if: github.head_ref !== next && github.base_ref === main
+    if: github.head_ref != next && github.base_ref == main
     steps:
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v1
