@@ -3,6 +3,9 @@ import * as request from 'supertest';
 import { cleanup, IRepositories } from '../../utils/cleanup';
 import { createApplication } from '../../utils/test-modules';
 
+jest.useFakeTimers();
+jest.retryTimes(3);
+
 describe('Devices (e2e)', () => {
   let app: INestApplication;
   let repositories: IRepositories;
@@ -49,5 +52,39 @@ describe('Devices (e2e)', () => {
         config: {},
       },
     ]);
+  });
+
+  it('GET /:device_id/sensor-types', async () => {
+    const [{ id: id1 }] = await repositories.devices.bulkCreate([
+      {
+        name: 'test-device',
+        type_id: 'local-device',
+        config: {},
+      },
+    ]);
+
+    const { status, body } = await request(app.getHttpServer())
+      .get(`/devices/${id1}/sensor-types`)
+      .send({});
+
+    expect(status).toBe(200);
+    expect(body.length).toBeGreaterThan(0);
+  });
+
+  it('GET /:device_id/actor-types', async () => {
+    const [{ id: id1 }] = await repositories.devices.bulkCreate([
+      {
+        name: 'test-device',
+        type_id: 'local-device',
+        config: {},
+      },
+    ]);
+
+    const { status, body } = await request(app.getHttpServer())
+      .get(`/devices/${id1}/actor-types`)
+      .send({});
+
+    expect(status).toBe(200);
+    expect(body.length).toBeGreaterThan(0);
   });
 });
