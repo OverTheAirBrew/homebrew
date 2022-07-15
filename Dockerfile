@@ -17,7 +17,11 @@ RUN npm ci --ignore-scripts --omit=optional
 RUN npm run bootstrap -- -- --omit=optional
 
 RUN npm run build
-RUN npm run convert-symlinks
+
+# convert lerna symlinks to real paths
+WORKDIR /app/apps/${APP}
+RUN npm run convert-symlinks 
+
 
 FROM node:16
 
