@@ -9,9 +9,11 @@ import { SequelizeStorage, Umzug } from 'umzug';
 import { Device } from './models/device';
 import { Kettle } from './models/kettle';
 
+const HOME_DIR = process.env.HOME_DIR || homedir();
+
 export const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: join(homedir(), 'ota.homebrew.db'),
+  storage: join(HOME_DIR, 'ota.homebrew.db'),
   models: [Actor, Sensor, Telemetry, Kettle, Device],
   logging: false,
   define: {

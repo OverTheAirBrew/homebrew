@@ -30,6 +30,5 @@
     "fast-glob": "^3.2.11"
   },
   "devDependencies": {
-    "@crowdin/cli": "^3.7.8"
   }
 }

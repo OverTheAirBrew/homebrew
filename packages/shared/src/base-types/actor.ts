@@ -15,7 +15,7 @@ export abstract class Actor<T> extends Peripheral implements IActor<T> {
   constructor(
     actorName: string,
     public properties: Property[],
-    private eventEmitter: EventEmitter2,
+    private eventEmitter?: EventEmitter2,
   ) {
     super(`${actorName}-actor`, properties);
   }
@@ -23,7 +23,7 @@ export abstract class Actor<T> extends Peripheral implements IActor<T> {
   public async on(actor_id: string, params: T) {
     await this.processOn(params);
 
-    this.eventEmitter.emit(
+    await this.emit(
       ActorStateChanged.Channel,
       new ActorStateChanged(actor_id, 'on'),
     );
@@ -32,10 +32,16 @@ export abstract class Actor<T> extends Peripheral implements IActor<T> {
   public async off(actor_id: string, params: T) {
     await this.processOff(params);
 
-    this.eventEmitter.emit(
+    await this.emit(
       ActorStateChanged.Channel,
       new ActorStateChanged(actor_id, 'off'),
     );
+  }
+
+  private async emit<T>(channel: string, message: T) {
+    if (this.eventEmitter) {
+      this.eventEmitter.emit(channel, message);
+    }
   }
 
   protected abstract processOn(params: T): Promise<void>;

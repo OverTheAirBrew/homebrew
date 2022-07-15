@@ -3,5 +3,9 @@
     "apps/*",
     "packages/*"
   ],
-  "version": "independent"
+  "version": "independent",
+  "lerna-dockerize": {
+    "templateDockerfileName": "Dockerfile.template",
+    "baseDockerfileName": "Dockerfile.base"
+  }
 }
