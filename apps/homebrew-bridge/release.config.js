@@ -1,14 +1,15 @@
 const path = require('path');
 
-const BRANCH = process.env.CIRCLE_BRANCH;
+const BRANCH = process.env.BRANCH;
 
-let DOCKER_TAGS = ['{{major}}.{{minor}}.{{patch}}'];
+let DOCKER_TAGS = ['{{version}}'];
 
 if (BRANCH === 'main') {
   DOCKER_TAGS.push('latest');
-} else if (BRANCH === 'next') {
-  DOCKER_TAGS.push('next');
 }
+// else if (BRANCH === 'next') {
+//   DOCKER_TAGS.push('');
+// }
 
 const dockerFileLocation = path.join(process.cwd(), '..', '..');
 
