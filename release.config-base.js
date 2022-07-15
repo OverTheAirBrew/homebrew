@@ -55,7 +55,7 @@ function generateReleaseConfig(appName) {
       [
         '@semantic-release/npm',
         {
-          publish: false,
+          npmPublish: false,
         },
       ],
       '@semantic-release/git',
