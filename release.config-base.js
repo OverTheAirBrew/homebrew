@@ -1,4 +1,6 @@
-export function generateReleaseConfig(appName) {
+const path = require('path');
+
+function generateReleaseConfig(appName) {
   const BRANCH = process.env.BRANCH;
 
   let DOCKER_TAGS = ['{{version}}'];
@@ -60,3 +62,7 @@ export function generateReleaseConfig(appName) {
     ],
   };
 }
+
+module.exports = {
+  generateReleaseConfig,
+};
