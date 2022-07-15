@@ -23,6 +23,6 @@ export class ActorService {
       throw new Error(`Actor ${actorType} not found`);
     }
 
-    return await actor.on(undefined, params);
+    return await actor.off(undefined, params);
   }
 }

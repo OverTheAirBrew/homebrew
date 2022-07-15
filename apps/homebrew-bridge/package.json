@@ -98,6 +98,13 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
-    "coveragePathIgnorePatterns": []
+    "coveragePathIgnorePatterns": [
+			"module.ts",
+			"controller.ts",
+			"models/*",
+			"main.ts",
+			"app.module.ts",
+			"main.ts"
+    ]
   }
 }
