@@ -9,6 +9,8 @@ describe('Health (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
+    const onOffStub = jest.fn().mockResolvedValue({});
+
     const { app: nestApplication } = await createApplication();
     app = nestApplication;
   });

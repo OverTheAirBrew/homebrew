@@ -18,8 +18,6 @@ export class SensorController {
 
   @Get('/one-wire/latest-reading')
   async getSensorReading(@Query('sensorAddress') sensorAddress: string) {
-    console.log(sensorAddress);
-
     const reading = await this.sensorService.getReading('one-wire-sensor', {
       sensorAddress,
     });
