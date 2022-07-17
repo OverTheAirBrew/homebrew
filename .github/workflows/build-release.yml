@@ -62,7 +62,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}]
-          BRANCH: ${GITHUB_REF##*/}
+          BRANCH: ${{ github.head_ref || github.ref_name }}
       - run: npm run push-locales
         env: 
           HB_CROWDIN_API_KEY: ${{ secrets.CROWDIN_API_KEY }}
