@@ -2,7 +2,6 @@ const path = require('path');
 
 function generateReleaseConfig(appName) {
   const BRANCH = process.env.BRANCH;
-  const GITHUB_REF = process.env.GITHUB_REF;
 
   let DOCKER_TAGS = ['{{version}}'];
 
@@ -11,15 +10,6 @@ function generateReleaseConfig(appName) {
   } else if (BRANCH === 'next') {
     DOCKER_TAGS.push('next');
   }
-
-  console.log(
-    'BRANCH',
-    BRANCH,
-    'GITHUB_REF',
-    GITHUB_REF,
-    'DOCKER_TAGS',
-    DOCKER_TAGS,
-  );
 
   const dockerFileLocation = path.join(process.cwd(), '..', '..');
 
