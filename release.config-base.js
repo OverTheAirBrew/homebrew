@@ -35,6 +35,7 @@ function generateReleaseConfig(appName) {
           platforms: ['linux/arm64', 'linux/arm/v7', 'linux/amd64'],
           buildArgs: {
             APP: appName,
+            RELEASE_NUMBER_ARG: '{{version}}',
           },
 
           tags: DOCKER_TAGS,

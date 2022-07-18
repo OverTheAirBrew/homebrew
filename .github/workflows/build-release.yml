@@ -75,3 +75,12 @@ jobs:
           repository: overtheairbrew/homebrew
           short-description: ${{ github.event.repository.description }}
           readme-filepath: ./apps/homebrew/README.md
+      - name: Sync homebrew-bridge dockerhub description
+        uses: peter-evans/dockerhub-description@v3
+        if: github.ref == 'refs/heads/next'
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: overtheairbrew/homebrew-bridge
+          short-description: ${{ github.event.repository.description }}
+          readme-filepath: ./apps/homebrew-bridge/README.md
