@@ -5,6 +5,7 @@ on: [ push ]
 jobs:
   build-release:
     runs-on: ubuntu-latest
+    concurrency: ${{ github.head_ref || github.ref_name }}
     container: overtheairbrew/build:node-14
     services:
       mysql:
