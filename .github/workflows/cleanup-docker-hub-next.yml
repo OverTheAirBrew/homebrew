@@ -16,3 +16,4 @@ jobs:
         user: overtheairbrew
         repos: '["homebrew", "homebrew-bridge"]'
         substrings: '["next"]'
+        keep-last: 0
