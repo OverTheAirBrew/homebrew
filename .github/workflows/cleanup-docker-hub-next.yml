@@ -1,0 +1,18 @@
+name: Cleanup Next Tags
+
+on:
+  pull_request_target:
+    types: ['closed']
+
+jobs:
+  runs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: m3ntorship/action-dockerhub-cleanup@1.4
+      if: github.head_ref == 'next'
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        user: ${{ secrets.DOCKER_USERNAME }}
+        repos: '["overtheairbrew/homebrew", "overtheairbrew/homebrew-bridge"]'
+        substrings: '["next"]'
