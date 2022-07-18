@@ -167,3 +167,5 @@ coverage-e2e
 
 docker
 node_modules_dereferenced
+
+!release.config-base.js

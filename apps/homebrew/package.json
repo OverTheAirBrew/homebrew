@@ -1,6 +1,6 @@
 {
 	"name": "@overtheairbrew/homebrew",
-	"version": "1.0.0-next.7",
+	"version": "1.2.0-next.1",
 	"main": "dist/main.js",
 	"files": [
 		"dist"
@@ -24,8 +24,8 @@
 		"test:e2e:cov": "npm run test:e2e -- --coverage",
 		"test:all:cov": "npm run test:cov && npm run test:e2e:cov",
 		"migrate": "node ./dist/migrate.js",
-    "prerelease": "npm run convert-symlinks && npm pack", 
-    "convert-symlinks": "mkdir ./node_modules_dereferenced && cp -L -r ./node_modules/* ./node_modules_dereferenced && rm -rf ./node_modules && mv ./node_modules_dereferenced ./node_modules"
+		"prerelease": "npm run convert-symlinks && npm pack",
+		"convert-symlinks": "mkdir ./node_modules_dereferenced && cp -L -r ./node_modules/* ./node_modules_dereferenced && rm -rf ./node_modules && mv ./node_modules_dereferenced ./node_modules"
 	},
 	"dependencies": {
 		"@nestjs/common": "^8.0.0",
@@ -88,9 +88,7 @@
 		"tsconfig-paths": "^4.0.0",
 		"uuid": "^8.3.2"
 	},
-	"publishConfig": {
-		"access": "public"
-	},
+	"private": true,
 	"jest": {
 		"moduleFileExtensions": [
 			"js",

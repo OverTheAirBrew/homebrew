@@ -26,9 +26,11 @@ RUN npm run convert-symlinks
 FROM node:16
 
 ARG APP=homebrew
+ARG RELEASE_NUMBER_ARG=0.0.0
 
 ENV NODE_ENV=production
 ENV HOME_DIR=/homebrew/data
+ENV RELEASE_NUMBER=${RELEASE_NUMBER_ARG}
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:3000/health || exit 1
 

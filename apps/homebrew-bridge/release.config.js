@@ -1,3 +1,3 @@
 const { generateReleaseConfig } = require('../../release.config-base');
 
-module.exports = generateReleaseConfig('homebrew');
+module.exports = generateReleaseConfig('homebrew-bridge');

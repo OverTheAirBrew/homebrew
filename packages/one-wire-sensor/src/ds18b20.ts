@@ -10,23 +10,34 @@ export class DS18B20Controller
   extends BaseController
   implements IOneWireController
 {
+  private patternStart = '/sys/bus/w1/devices/';
+  private patternEnd = '/w1_slave';
+
   constructor() {
     super();
   }
 
-  public async findDevices(hint?: string): Promise<string[]> {
-    const pattern = hint ?? '/sys/bus/w1/devices/28-*/w1_slave';
+  public async findDevices(): Promise<string[]> {
+    const pattern = await this.generatePattern();
     const files = sync(pattern);
     const normalizedFiles = files.map((file) => normalize(file));
-    return normalizedFiles;
+    return normalizedFiles.map((f) =>
+      f.replace(this.patternStart, '').replace(this.patternEnd, ''),
+    );
   }
 
-  protected async readData(deviceName: string) {
-    if (!existsSync(deviceName)) {
+  private async generatePattern(address: string = '28-*') {
+    return `${this.patternStart}${address}${this.patternEnd}`;
+  }
+
+  protected async readData(address: string) {
+    const devicePattern = await this.generatePattern(address);
+
+    if (!existsSync(devicePattern)) {
       throw new Error('One wire device not found');
     }
 
-    return readFileSync(deviceName).toString('utf-8');
+    return readFileSync(devicePattern).toString('utf-8');
   }
 
   protected async parseData(rawData: string) {
