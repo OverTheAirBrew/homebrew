@@ -13,6 +13,6 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        user: ${{ secrets.DOCKER_USERNAME }}
-        repos: '["overtheairbrew/homebrew", "overtheairbrew/homebrew-bridge"]'
+        user: overtheairbrew
+        repos: '["homebrew", "homebrew-bridge"]'
         substrings: '["next"]'
